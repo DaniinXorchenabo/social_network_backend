@@ -2,7 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "socialNetwork_backend", "socialNetwork_backend", "{477C7DC8-EF6E-42B1-BE8E-83EC14B2CACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "socialNetworkApp", "socialNetwork_backend\socialNetworkApp\socialNetworkApp.csproj", "{142154DE-AD75-4DE2-9ECE-8F8899598E99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "socialNetworkApp_old", "socialNetwork_backend\socialNetworkApp_old\socialNetworkApp_old.csproj", "{142154DE-AD75-4DE2-9ECE-8F8899598E99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "socialNetworkApp_old2", "socialNetwork_backend\socialNetworkApp_old2\socialNetworkApp_old2.csproj", "{54E824DB-F07B-4F4B-A540-3A4A409DDD48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "socialNetwork_backend\WebApplication1\WebApplication1.csproj", "{9DFB1B6C-55E0-4702-BBCC-227340C93594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "socialNetwork_backend\WebApplication2\WebApplication2.csproj", "{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,8 +20,23 @@ Global
 		{142154DE-AD75-4DE2-9ECE-8F8899598E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{142154DE-AD75-4DE2-9ECE-8F8899598E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{142154DE-AD75-4DE2-9ECE-8F8899598E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E824DB-F07B-4F4B-A540-3A4A409DDD48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E824DB-F07B-4F4B-A540-3A4A409DDD48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E824DB-F07B-4F4B-A540-3A4A409DDD48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E824DB-F07B-4F4B-A540-3A4A409DDD48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DFB1B6C-55E0-4702-BBCC-227340C93594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DFB1B6C-55E0-4702-BBCC-227340C93594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DFB1B6C-55E0-4702-BBCC-227340C93594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DFB1B6C-55E0-4702-BBCC-227340C93594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{142154DE-AD75-4DE2-9ECE-8F8899598E99} = {477C7DC8-EF6E-42B1-BE8E-83EC14B2CACB}
+		{54E824DB-F07B-4F4B-A540-3A4A409DDD48} = {477C7DC8-EF6E-42B1-BE8E-83EC14B2CACB}
+		{9DFB1B6C-55E0-4702-BBCC-227340C93594} = {477C7DC8-EF6E-42B1-BE8E-83EC14B2CACB}
+		{1E6690CE-7DB5-41A1-996B-A9AFEEA26FE4} = {477C7DC8-EF6E-42B1-BE8E-83EC14B2CACB}
 	EndGlobalSection
 EndGlobal
