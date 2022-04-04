@@ -1,6 +1,7 @@
 ﻿namespace socialNetworkApp.api.responses;
 
-public record BaseResponse<Error, Answer>(
-    List<Error>? errors = null,
-    List<Answer>? answers = null
+public record BaseResponse<Answer, Error>(
+    List<Answer>? answers = null,
+    List<Error>? errors = null
+
     );
