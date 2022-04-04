@@ -2,7 +2,7 @@
 using socialNetworkApp.api.responses;
 using socialNetworkApp.api.responses.utils;
 
-namespace socialNetworkApp.api.controllers;
+namespace socialNetworkApp.api.controllers.test;
 
 [AddAnswerType(AnswerType.pointAnswer)]
 

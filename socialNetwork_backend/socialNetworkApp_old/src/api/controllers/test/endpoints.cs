@@ -2,7 +2,7 @@
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
 
-namespace socialNetworkApp.api.controllers;
+namespace socialNetworkApp.api.controllers.test;
 
 
 [ApiController]
