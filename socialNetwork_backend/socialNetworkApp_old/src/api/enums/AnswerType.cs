@@ -3,5 +3,6 @@
 public enum AnswerType
 {
     pointAnswer,
-    massage
+    massage,
+    chat
 }
