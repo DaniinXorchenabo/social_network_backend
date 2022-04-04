@@ -2,5 +2,6 @@
 
 public enum AnswerType
 {
-    pointAnswer
+    pointAnswer,
+    massage
 }
