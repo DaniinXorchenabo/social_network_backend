@@ -1,21 +1,11 @@
 ﻿using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
+using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers;
 
-public record class PointAnswer : BaseResponse<BaseAnswerRes<Point>, EmptyError?>
+[AddAnswerType(AnswerType.pointAnswer)]
+public record class PointAnswer : BaseResponse<Point>
 {
-    public PointAnswer(Point data, AnswerType type = AnswerType.pointAnswer) :
-        base(new List<BaseAnswerRes<Point>>{new (type, data)}, null)
-    {
-    }
+    public PointAnswer(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
 }
-
-public record class ManyPointsAnswer : BaseResponse<BaseAnswerRes<Point>, EmptyError?>
-{
-    public ManyPointsAnswer(List<Point> data, AnswerType type = AnswerType.pointAnswer) :
-        base(data.Select(x => new BaseAnswerRes<Point>(type, x)).ToList())
-    {
-    }
-}
-

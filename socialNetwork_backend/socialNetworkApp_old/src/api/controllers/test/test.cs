@@ -11,15 +11,15 @@ public class Test : Controller
 {
     // GET
     [HttpGet("all")]
-    public ManyPointsAnswer GetAllPoints()
+    public PointAnswer GetAllPoints()
     {
-        return new (new List<Point>{new (1, 2), new (5, 1)});
+        return new (new Point(1, 2), new Point(5, 1));
     }
 
     [HttpGet("get/{x:int}.{y:int}")]
     public PointAnswer GetAnyPoint(int x, int y)
     {
-        var d = new PointAnswer(new Point(x, y)) { };
+        var d = new PointAnswer(new Point(x, y));
         return d;
     }
 

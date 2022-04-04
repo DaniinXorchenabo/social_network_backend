@@ -1,3 +1,9 @@
-﻿namespace socialNetworkApp.api.controllers;
+﻿using socialNetworkApp.api.enums;
+using socialNetworkApp.api.responses;
+using socialNetworkApp.api.responses.utils;
 
-public record class Point(int x = 0, int y = 0);
+namespace socialNetworkApp.api.controllers;
+
+[AddAnswerType(AnswerType.pointAnswer)]
+
+public record class Point(int x = 0, int y = 0) : EmptyAnswer;

@@ -26,7 +26,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     // serialize enums as strings in api responses (e.g. Role)
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     // ignore omitted parameters on models to enable optional params (e.g. User update)
-    x.JsonSerializerOptions.IgnoreNullValues = true;
+    // x.JsonSerializerOptions.IgnoreNullValues = true;
+    // x.JsonSerializerOptions.
 });
 
 // builder.Services
