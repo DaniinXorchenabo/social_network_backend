@@ -34,15 +34,17 @@ public class MessagesController: Controller
         );
     }
     [HttpPost("chat/{chat_id:guid}/new")]
-    public MessageAnswer SendMessage(Guid chat_id, string text)
+    public MessageAnswer SendMessage(Guid chat_id, CreateMessage new_msg)
     {
-        return new ();
+        return new (
+            new Message(Guid.NewGuid(), new_msg.text, new_msg.autor,
+                chat_id, DateTime.Now, null, new_msg.messageType));
     }    
     [HttpPut("chat/{chat_id:guid}/edit/{message_id:guid}")]
     public MessageAnswer EditMessage(Guid chat_id, Guid message_id, string new_text)
     {
         return new (
-            new Message(message_id, new_text, Guid.NewGuid(), chat_id, DateTime.Now, updated_at: DateTime.Now));
+            new Message(message_id, new_text, Guid.NewGuid(), chat_id, DateTime.Now, updatedAt: DateTime.Now));
     }
     [HttpDelete("chat/{chat_id:guid}/delete/{message_id:guid}")]
     public MessageAnswer DeleteMessage(Guid chat_id, Guid message_id)

@@ -3,18 +3,23 @@ using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
 using socialNetworkApp.api.responses.utils;
 
-namespace socialNetworkApp.api.controllers;
+namespace socialNetworkApp.api.controllers.messages;
 
 [AddAnswerType(AnswerType.massage)]
-
 public record class Message(
     Guid id,
     string text,
-    Guid autor,
+    Guid? autor,
     Guid chat_id,
-    DateTime created_at,
-    DateTime? updated_at = null,
+    DateTime createdAt,
+    DateTime? updatedAt = null,
     MessageType messageType = MessageType.text,
     bool wathed = false,
     bool isDeleted = false
-    ) : EmptyAnswer;
+) : EmptyAnswer;
+
+public record CreateMessage(
+    string text,
+    Guid autor,
+    MessageType messageType = MessageType.text
+) : EmptyAnswer;
