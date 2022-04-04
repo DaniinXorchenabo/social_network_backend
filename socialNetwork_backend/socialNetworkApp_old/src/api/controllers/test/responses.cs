@@ -10,3 +10,12 @@ public record class PointAnswer : BaseResponse<BaseAnswerRes<Point>, EmptyError?
     {
     }
 }
+
+public record class ManyPointsAnswer : BaseResponse<BaseAnswerRes<Point>, EmptyError?>
+{
+    public ManyPointsAnswer(List<Point> data, AnswerType type = AnswerType.pointAnswer) :
+        base(data.Select(x => new BaseAnswerRes<Point>(type, x)).ToList())
+    {
+    }
+}
+
