@@ -1,0 +1,11 @@
+﻿version: "3.5"
+
+services:
+  web:
+    build:
+      context: socialNetworkApp
+      dockerfile: Dockerfile
+    image: daniinxorchenabo/ibook_backend
+
+
+

@@ -5,9 +5,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["socialNetwork_backend/socialNetworkApp/socialNetworkApp.csproj", "socialNetworkApp/"]
-RUN dotnet restore "socialNetwork_backend/socialNetworkApp/socialNetworkApp.csproj"
-COPY . .
+COPY ["./socialNetworkApp.csproj", "socialNetworkApp/"]
+RUN dotnet restore "socialNetworkApp/socialNetworkApp.csproj"
+COPY . ./socialNetworkApp
 WORKDIR "/src/socialNetworkApp"
 RUN dotnet build "socialNetworkApp.csproj" -c Release -o /app/build
 
@@ -17,4 +17,4 @@ RUN dotnet publish "socialNetworkApp.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "socialNetworkApp.dll"]
+CMD ["dotnet", "socialNetworkApp.dll"]

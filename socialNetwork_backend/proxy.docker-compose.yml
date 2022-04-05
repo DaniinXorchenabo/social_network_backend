@@ -1,0 +1,72 @@
+﻿version: "3.5"
+
+networks:
+  production_network:
+    driver: bridge
+    name: asrto_production_proxy
+    external: false
+    ipam:
+      driver: default
+
+
+services:
+
+  proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    container_name: proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-true}
+    volumes:
+      - conf:/etc/nginx/conf.d:rw
+      - vhost:/etc/nginx/vhost.d
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+    networks:
+      - production_network
+  #    depends_on:
+  #      - db
+  #      - web
+  #      - front
+
+  acme-proxy:
+    # Контейнер обеспечивает автоматическое создание и обновление SSL сертификата
+    # check it for more info: https://github.com/nginx-proxy/nginx-proxy
+    # check it for more info: https://github.com/nginx-proxy/acme-companion
+    # check it for more info: https://github.com/nginx-proxy/acme-companion/blob/main/docs/Docker-Compose.md
+    # check it for more info: https://docker-mailserver.github.io/docker-mailserver/edge/config/security/ssl/
+
+    image: nginxproxy/acme-companion:latest
+    container_name: acme-proxy
+    restart: always
+    environment:
+      LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-false}
+      NGINX_PROXY_CONTAINER: proxy
+      DEFAULT_EMAIL: ${DEVELOPER_EMAIL}
+    depends_on:
+      - proxy
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - production_network
+
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
+  dhparam:
