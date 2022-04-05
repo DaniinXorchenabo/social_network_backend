@@ -47,7 +47,7 @@ public class PostController : Controller
     }
 
     [HttpGet("search/by_text")]
-    public PostAnswer SearchMessagesFromChat(string foundText, Guid?[] authorIds = null, int limit = 100,
+    public PostAnswer SearchMessagesFromChat(string foundText, Guid[]? authorIds = null, int limit = 100,
         int offset = 0)
     {
         return new(
