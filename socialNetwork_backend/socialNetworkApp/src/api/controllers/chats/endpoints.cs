@@ -12,16 +12,16 @@ public class ChatController : Controller
     {
         Guid a;
         return new(
-            new Chat(Guid.NewGuid(), "n", DateTime.Today,
+            new ChatDto(Guid.NewGuid(), "n", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a),
-            new Chat(Guid.NewGuid(), "ndfgh", DateTime.Today,
+            new ChatDto(Guid.NewGuid(), "ndfgh", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a),
-            new Chat(Guid.NewGuid(), "sdfn", DateTime.Today,
+            new ChatDto(Guid.NewGuid(), "sdfn", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a),
-            new Chat(Guid.NewGuid(), "dhdhgn", DateTime.Today,
+            new ChatDto(Guid.NewGuid(), "dhdhgn", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a)
         );
@@ -33,23 +33,23 @@ public class ChatController : Controller
         Guid a;
         Guid chat_id;
         return new(
-            new ChatWithMessage(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
                 new List<Guid>()
                     {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a,
-                new Message(Guid.NewGuid(), "sdfgsdfzsdgsdfgs", Guid.NewGuid(), chat_id, DateTime.Now, null)
+                new MessageDto(Guid.NewGuid(), "sdfgsdfzsdgsdfgs", Guid.NewGuid(), chat_id, DateTime.Now, null)
             ),
-            new ChatWithMessage(chat_id = Guid.NewGuid(), "23tg45g", DateTime.Today,
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "23tg45g", DateTime.Today,
                 new List<Guid>()
                     {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a,
-                new Message(Guid.NewGuid(), "drfgsfdg", Guid.NewGuid(), chat_id, DateTime.Now, null)
+                new MessageDto(Guid.NewGuid(), "drfgsfdg", Guid.NewGuid(), chat_id, DateTime.Now, null)
             ),
-            new ChatWithMessage(chat_id = Guid.NewGuid(), "dg", DateTime.Today,
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dg", DateTime.Today,
                 new List<Guid>()
                     {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a,
-                new Message(Guid.NewGuid(), "768edyjhr678r467yuj", Guid.NewGuid(), chat_id, DateTime.Now, null)
+                new MessageDto(Guid.NewGuid(), "768edyjhr678r467yuj", Guid.NewGuid(), chat_id, DateTime.Now, null)
             ));
     }
 
@@ -59,7 +59,7 @@ public class ChatController : Controller
     {
         Guid a;
         return new(
-            new Chat(chat_id, "n", DateTime.Today,
+            new ChatDto(chat_id, "n", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a));
     }
@@ -69,7 +69,7 @@ public class ChatController : Controller
     {
         Guid a;
         return new(
-            new Chat(Guid.NewGuid(), name, DateTime.Today,
+            new ChatDto(Guid.NewGuid(), name, DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a));
     }
@@ -80,39 +80,39 @@ public class ChatController : Controller
         Guid a;
         Guid chat_id;
         return new(
-            new ChatWithMessage(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
                 new List<Guid>()
                     {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a,
-                new Message(Guid.NewGuid(), messageText, Guid.NewGuid(), chat_id, DateTime.Now, null)
+                new MessageDto(Guid.NewGuid(), messageText, Guid.NewGuid(), chat_id, DateTime.Now, null)
             ));
     }
 
     [HttpPost("new")]
-    public ChatAnswerWithMessage CreateChat(CreateChat newChat)
+    public ChatAnswerWithMessage CreateChat(CreateChatDto newChatDto)
     {
         Guid a;
-        return new ChatAnswerWithMessage(new ChatWithMessage(
+        return new ChatAnswerWithMessage(new ChatWithMessageDto(
             a = Guid.NewGuid(),
-            newChat.name,
+            newChatDto.Name,
             DateTime.Now,
-            newChat.users,
-            newChat.userCreator,
-            new Message(new Guid(), SystemMessages.createChat, null, a, DateTime.Now, null, MessageType.systemMassage),
-            newChat.groupCreator,
-            newChat.chatCreatorType,
-            newChat.chatType,
+            newChatDto.Users,
+            newChatDto.UserCreator,
+            new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null, MessageType.SystemMassage),
+            newChatDto.GroupCreator,
+            newChatDto.ChatCreatorType,
+            newChatDto.ChatType,
             null,
             null,
-            newChat.photo
+            newChatDto.Photo
         ));
     }
 
     [HttpPut("edit/metainfo/{chat_id:guid}")]
-    public ChatAnswer CreateChat(Guid chat_id, UpdateChat updatedChat)
+    public ChatAnswer CreateChat(Guid chat_id, UpdateChatDto updatedChatDto)
     {
         Guid a;
-        return new ChatAnswer(new Chat(Guid.NewGuid(), updatedChat.name, DateTime.Today,
+        return new ChatAnswer(new ChatDto(Guid.NewGuid(), updatedChatDto.Name, DateTime.Today,
             new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
             a));
     }
@@ -121,7 +121,7 @@ public class ChatController : Controller
     public ChatAnswer CreateChat(Guid chat_id, UserOperationClass op, Guid[] users)
     {
         Guid a;
-        return new ChatAnswer(new Chat(Guid.NewGuid(), "sdfgs", DateTime.Today,
+        return new ChatAnswer(new ChatDto(Guid.NewGuid(), "sdfgs", DateTime.Today,
             new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
             a));
     }

@@ -4,8 +4,8 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.posts;
 
-[AddAnswerType(AnswerType.post)]
-public record class PostAnswer : BaseResponse<Post>
+[AddAnswerType(AnswerType.Post)]
+public record class PostAnswer : BaseResponse<PostDto>
 {
-    public PostAnswer(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
+    public PostAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
 }

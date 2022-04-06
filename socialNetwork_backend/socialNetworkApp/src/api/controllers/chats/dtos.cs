@@ -5,51 +5,51 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.chat;
 
-[AddAnswerType(AnswerType.chat)]
-public record class Chat(
-    Guid id,
-    string name,
-    DateTime createdAt,
-    List<Guid> users,
-    Guid? userCreator,
-    Guid? groupCreator = null,
-    ChatCreatorType chatCreatorType = ChatCreatorType.user,
-    ChatType chatType = ChatType.simple,
-    List<Guid>? admins = null,
-    List<Guid>? blackList = null,
-    string? photo = null,
-    string? invitationUrl = null
+[AddAnswerType(AnswerType.Chat)]
+public record class ChatDto(
+    Guid Id,
+    string Name,
+    DateTime CreatedAt,
+    List<Guid> Users,
+    Guid? UserCreator,
+    Guid? GroupCreator = null,
+    ChatCreatorType ChatCreatorType = ChatCreatorType.User,
+    ChatType ChatType = ChatType.Simple,
+    List<Guid>? Admins = null,
+    List<Guid>? BlackList = null,
+    string? Photo = null,
+    string? InvitationUrl = null
 ) : EmptyAnswer
 {
 }
 
-public record class ChatWithMessage(Guid id,
-    string name,
-    DateTime createdAt,
-    List<Guid> users,
-    Guid? userCreator,
-    Message? message,
-    Guid? groupCreator = null,
-    ChatCreatorType chatCreatorType = ChatCreatorType.user,
-    ChatType chatType = ChatType.simple,
-    List<Guid>? admins = null,
-    List<Guid>? blackList = null,
-    string? photo = null,
-    string? invitationUrl = null
+public record class ChatWithMessageDto(Guid Id,
+    string Name,
+    DateTime CreatedAt,
+    List<Guid> Users,
+    Guid? UserCreator,
+    MessageDto? Message,
+    Guid? GroupCreator = null,
+    ChatCreatorType ChatCreatorType = ChatCreatorType.User,
+    ChatType ChatType = ChatType.Simple,
+    List<Guid>? Admins = null,
+    List<Guid>? BlackList = null,
+    string? Photo = null,
+    string? InvitationUrl = null
 ) : EmptyAnswer;
 
-public record class CreateChat(
-    string name,
-    List<Guid> users,
-    Guid? userCreator,
-    Guid? groupCreator = null,
-    ChatCreatorType chatCreatorType = ChatCreatorType.user,
-    ChatType chatType = ChatType.simple,
-    string? photo = null
+public record class CreateChatDto(
+    string Name,
+    List<Guid> Users,
+    Guid? UserCreator,
+    Guid? GroupCreator = null,
+    ChatCreatorType ChatCreatorType = ChatCreatorType.User,
+    ChatType ChatType = ChatType.Simple,
+    string? Photo = null
 ) : EmptyAnswer;
 
-public record class UpdateChat(
-    string name,
-    ChatType chatType = ChatType.simple,
-    string? photo = null
+public record class UpdateChatDto(
+    string Name,
+    ChatType ChatType = ChatType.Simple,
+    string? Photo = null
 ) : EmptyAnswer;

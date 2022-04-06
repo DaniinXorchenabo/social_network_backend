@@ -6,34 +6,34 @@ namespace socialNetworkApp.api.responses;
 
 public record BaseResponse<TAnswer> where TAnswer : EmptyAnswer
 {
-    public List<BaseAnswerRes<TAnswer>>? answers { get; set; }
-    public List<EmptyError>? errors { get; set; }
+    public List<BaseAnswerRes<TAnswer>>? Answers { get; set; }
+    public List<EmptyError>? Errors { get; set; }
 
     public BaseResponse(List<BaseAnswerRes<TAnswer>>? ans = null, List<EmptyError>? err = null)
     {
-        this.answers = ans;
-        this.errors = err;
+        this.Answers = ans;
+        this.Errors = err;
     }
     public BaseResponse(List<TAnswer>? ans = null, List<EmptyError>? err = null)
     {
         AnswerType type = GetAnswerType();
-        this.answers = ans?.Select(x => new BaseAnswerRes<TAnswer>(type, x)).ToList();
-        this.errors = err;
+        this.Answers = ans?.Select(x => new BaseAnswerRes<TAnswer>(type, x)).ToList();
+        this.Errors = err;
     }
     public BaseResponse(List<EmptyError>? err = null, params TAnswer[] ans)
     {
         AnswerType type = GetAnswerType();
-        this.answers = ans.Select(x => new BaseAnswerRes<TAnswer>(type, x)).ToList();
-        this.errors = err;
+        this.Answers = ans.Select(x => new BaseAnswerRes<TAnswer>(type, x)).ToList();
+        this.Errors = err;
     }
-    public BaseResponse(params BaseResponsePart[] err_and_ans)
+    public BaseResponse(params BaseResponsePart[] errAndAns)
     {
         AnswerType type = GetAnswerType();
-        this.answers = err_and_ans
+        this.Answers = errAndAns
             .Where(x => x is TAnswer)
             .Select(x => new BaseAnswerRes<TAnswer>(type, (x as TAnswer)!))
             .ToList();
-        this.errors = err_and_ans
+        this.Errors = errAndAns
             .Where(x => x is EmptyError)
             .Select(x => (x as EmptyError)!)
             .ToList();

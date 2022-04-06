@@ -4,8 +4,8 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.test;
 
-[AddAnswerType(AnswerType.pointAnswer)]
+[AddAnswerType(AnswerType.PointAnswer)]
 public record class PointAnswer : BaseResponse<Point>
 {
-    public PointAnswer(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
+    public PointAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
 }

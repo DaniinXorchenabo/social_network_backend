@@ -2,11 +2,11 @@
 
 public enum MessageType
 {
-    text,
-    systemMassage
+    Text,
+    SystemMassage
 }
 
 public static class SystemMessages
 {
-    public static string createChat { get; set; } = "Чат был создан";
+    public static string CreateChat { get; set; } = "Чат был создан";
 }

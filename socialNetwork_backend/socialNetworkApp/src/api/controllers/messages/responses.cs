@@ -4,8 +4,8 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.messages;
 
-[AddAnswerType(AnswerType.massage)]
-public record class MessageAnswer : BaseResponse<Message>
+[AddAnswerType(AnswerType.Massage)]
+public record class MessageAnswer : BaseResponse<MessageDto>
 {
-    public MessageAnswer(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
+    public MessageAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
 }

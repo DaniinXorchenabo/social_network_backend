@@ -5,23 +5,23 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.posts;
 
-[AddAnswerType(AnswerType.post)]
-public record class Post(
-    Guid id,
-    string text,
-    Guid? autor,
-    DateTime createdAt,
-    DateTime? updatedAt = null,
-    int wathedConut = 0,
-    bool isDeleted = false
+[AddAnswerType(AnswerType.Post)]
+public record class PostDto(
+    Guid Id,
+    string Text,
+    Guid? Author,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt = null,
+    int ViewedCount = 0,
+    bool IsDeleted = false
 ) : EmptyAnswer;
 
-public record CreatePost(
-    string text
+public record CreatePostDto(
+    string Text
     
 ) : EmptyAnswer;
 
-public record UpdatePost(
-    string text
+public record UpdatePostDto(
+    string Text
     
 ) : EmptyAnswer;

@@ -5,7 +5,7 @@ using socialNetworkApp.api.enums;
 
 namespace socialNetworkApp.api.responses;
 
-public record BaseAnswerRes<TData>(AnswerType type, TData data);
+public record BaseAnswerRes<TData>(AnswerType Type, TData Data);
 
 public record EmptyAnswer : BaseResponsePart
 {

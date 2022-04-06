@@ -2,23 +2,23 @@
 
 public enum ChatType
 {
-    simple,
-    secret,
-    fantom
+    Simple,
+    Secret,
+    Fantom
 }
 
 public enum ChatCreatorType
 {
-    user,
-    group
+    User,
+    Group
 }
 
 public enum UserOperationClass
 {
-    usersAdd,
-    usersRemove,
-    adminsAdd,
-    adminsRemove,
-    blackListAdd,
-    blackListRemove
+    UsersAdd,
+    UsersRemove,
+    AdminsAdd,
+    AdminsRemove,
+    BlackListAdd,
+    BlackListRemove
 }

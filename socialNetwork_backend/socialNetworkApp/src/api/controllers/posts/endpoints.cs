@@ -12,7 +12,7 @@ public class PostController : Controller
     public PostAnswer GetMessagesFromChat(Guid postId)
     {
         return new(
-            new Post(postId, "sf", Guid.NewGuid(), DateTime.Now)
+            new PostDto(postId, "sf", Guid.NewGuid(), DateTime.Now)
         );
     }
 
@@ -20,9 +20,9 @@ public class PostController : Controller
     public PostAnswer GetMessagesFromChatThroughData(DateTime dateTime, int limit = 100, int offset = 0)
     {
         return new(
-            new Post(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), "serff", Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), "sdfhf", Guid.NewGuid(), DateTime.Now)
+            new PostDto(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), "serff", Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), "sdfhf", Guid.NewGuid(), DateTime.Now)
         );
     }
 
@@ -30,9 +30,9 @@ public class PostController : Controller
     public PostAnswer SearchMessagesFromChat(Guid authorId, int limit = 100, int offset = 0)
     {
         return new(
-            new Post(Guid.NewGuid(), "sf", authorId, DateTime.Now),
-            new Post(Guid.NewGuid(), "serff", authorId, DateTime.Now),
-            new Post(Guid.NewGuid(), "sdfhf", authorId, DateTime.Now)
+            new PostDto(Guid.NewGuid(), "sf", authorId, DateTime.Now),
+            new PostDto(Guid.NewGuid(), "serff", authorId, DateTime.Now),
+            new PostDto(Guid.NewGuid(), "sdfhf", authorId, DateTime.Now)
         );
     }
 
@@ -40,9 +40,9 @@ public class PostController : Controller
     public PostAnswer SearchMessagesFromChat(Guid[] authorIds, int limit = 100, int offset = 0)
     {
         return new(
-            new Post(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), "serff", Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), "sdfhf", Guid.NewGuid(), DateTime.Now)
+            new PostDto(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), "serff", Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), "sdfhf", Guid.NewGuid(), DateTime.Now)
         );
     }
 
@@ -51,25 +51,25 @@ public class PostController : Controller
         int offset = 0)
     {
         return new(
-            new Post(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now),
-            new Post(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now)
+            new PostDto(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now),
+            new PostDto(Guid.NewGuid(), foundText, Guid.NewGuid(), DateTime.Now)
         );
     }
 
 
     [HttpPost("new")]
-    public PostAnswer SendMessage(CreatePost newPost)
+    public PostAnswer SendMessage(CreatePostDto newPostDto)
     {
         return new(
-            new Post(Guid.NewGuid(), newPost.text, Guid.NewGuid(), DateTime.Now));
+            new PostDto(Guid.NewGuid(), newPostDto.Text, Guid.NewGuid(), DateTime.Now));
     }
 
     [HttpPut("edit/{post_id:guid}")]
-    public PostAnswer EditMessage(Guid postId, UpdatePost updatedPost)
+    public PostAnswer EditMessage(Guid postId, UpdatePostDto updatedPostDto)
     {
         return new(
-            new Post(Guid.NewGuid(), updatedPost.text, Guid.NewGuid(), DateTime.Now));
+            new PostDto(Guid.NewGuid(), updatedPostDto.Text, Guid.NewGuid(), DateTime.Now));
     }
 
     [HttpDelete("delete/{post_id:guid}")]

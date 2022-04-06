@@ -4,6 +4,6 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.test;
 
-[AddAnswerType(AnswerType.pointAnswer)]
+[AddAnswerType(AnswerType.PointAnswer)]
 
-public record class Point(int x = 0, int y = 0) : EmptyAnswer;
+public record class Point(int X = 0, int Y = 0) : EmptyAnswer;

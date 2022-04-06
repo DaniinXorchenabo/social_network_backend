@@ -4,13 +4,13 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.chat;
 
-[AddAnswerType(AnswerType.chat)]
-public record class ChatAnswer : BaseResponse<Chat>
+[AddAnswerType(AnswerType.Chat)]
+public record class ChatAnswer : BaseResponse<ChatDto>
 {
-    public ChatAnswer(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
+    public ChatAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
 }
 
-public record class ChatAnswerWithMessage : BaseResponse<ChatWithMessage>
+public record class ChatAnswerWithMessage : BaseResponse<ChatWithMessageDto>
 {
-    public ChatAnswerWithMessage(params BaseResponsePart[] err_and_ans): base(err_and_ans){}
+    public ChatAnswerWithMessage(params BaseResponsePart[] errAndAns): base(errAndAns){}
 }

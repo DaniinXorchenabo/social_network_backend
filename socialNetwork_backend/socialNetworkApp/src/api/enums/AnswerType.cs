@@ -2,8 +2,9 @@
 
 public enum AnswerType
 {
-    pointAnswer,
-    massage,
-    chat,
-    post
+    PointAnswer,
+    Massage,
+    Chat,
+    Post,
+    UserAnswer
 }

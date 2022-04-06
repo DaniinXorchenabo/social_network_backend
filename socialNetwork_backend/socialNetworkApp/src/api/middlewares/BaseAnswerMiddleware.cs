@@ -2,16 +2,16 @@
 
 public class BaseAnswerMiddleware
 {
-    private readonly RequestDelegate next;
+    private readonly RequestDelegate _next;
     
     public BaseAnswerMiddleware(RequestDelegate next)
     {
-        this.next = next;
+        this._next = next;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
-        await next.Invoke(context);
+        await _next.Invoke(context);
         
     }
 }

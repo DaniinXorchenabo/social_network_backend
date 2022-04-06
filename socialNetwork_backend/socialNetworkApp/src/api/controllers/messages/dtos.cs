@@ -5,21 +5,21 @@ using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.controllers.messages;
 
-[AddAnswerType(AnswerType.massage)]
-public record class Message(
-    Guid id,
-    string text,
-    Guid? autor,
-    Guid chat_id,
-    DateTime createdAt,
-    DateTime? updatedAt = null,
-    MessageType messageType = MessageType.text,
-    bool wathed = false,
-    bool isDeleted = false
+[AddAnswerType(AnswerType.Massage)]
+public record class MessageDto(
+    Guid Id,
+    string Text,
+    Guid? Autor,
+    Guid ChatId,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt = null,
+    MessageType MessageType = MessageType.Text,
+    bool Viewed = false,
+    bool IsDeleted = false
 ) : EmptyAnswer;
 
-public record CreateMessage(
-    string text,
-    Guid autor,
-    MessageType messageType = MessageType.text
+public record CreateMessageDto(
+    string Text,
+    Guid Author,
+    MessageType MessageType = MessageType.Text
 ) : EmptyAnswer;
