@@ -33,20 +33,20 @@ services:
     restart: ${RESTART_CONTAINER:-no}
 
     environment:
-      POSTGRES_DB: ${PGDATABASE}
-      POSTGRES_USER: ${PG_SUPERUSER_NAME}
-      POSTGRES_PASSWORD: ${PG_SUPERUSER_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      POSTGRES_USER: ${DB_SUPERUSER_NAME}
+      POSTGRES_PASSWORD: ${DB_SUPERUSER_PASSWORD}
       PGDATA: /var/lib/postgresql/data
       VIRTUAL_HOST: ${DB_VIRTUAL_HOST}
-      VIRTUAL_PORT: ${PG_HOST_PORT}
+      VIRTUAL_PORT: ${DB_HOST_PORT}
     volumes:
       - postrges14_volume:/var/lib/postgresql/data
     networks:
       - db_network
     ports:
-      - '${PG_HOST_PORT:-5432}:5432'
+      - '${DB_HOST_PORT:-5432}:5432'
     expose:
-      - '${PG_HOST_PORT:-5432}'
+      - '${DB_HOST_PORT:-5432}'
   
   
   #  complete_migrations:
@@ -62,6 +62,8 @@ services:
     environment:
       LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-true}
       DB_HOST: db
+      DB_PORT: ${DB_PORT:-5432}
+      DB_HOST_PORT: ${DB_PORT:-5432}
       VIRTUAL_HOST: ${BACKEND_API_VIRTUAL_HOST}
       VIRTUAL_PORT: ${BACKEND_API_PORT:-5264}
       SSL_TYPE: letsencrypt
@@ -102,8 +104,8 @@ services:
 
 volumes:
   postrges14_volume:
-    name: postrges14_volume-${VOLUME_MODE}
+    name: ibook_postrges14_volume-${VOLUME_MODE}
   pgadmin_volume:
-    name: pgadmin_volume-${VOLUME_MODE}
+    name: ibook_pgadmin_volume-${VOLUME_MODE}
   front_volume:
     name: ibook_front-${VOLUME_MODE}

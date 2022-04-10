@@ -6,19 +6,34 @@ namespace socialNetworkApp.config;
 
 public record class Env
 {
+    public static Env FirstEnv { get; private set; } = null!;
     public DbEnv Db { get; protected set; }
+    
 
     public Env(string envFileName = ".env")
     {
-        Db = new DbEnv();
-        IEnumerator<string?>[] values =
+
+        if (FirstEnv == null)
         {
-            Db.EnvInit("DB_HOST", "DB_PORT", "DB_SUPERUSER_NAME", "DB_SUPERUSER_PASSWORD", "DB_DATABASE_NAME")
-                .GetEnumerator()
-        };
-        _ = values.Select(x => x.MoveNext()).ToList();
-        LoadEnv(envFileName);
-        _ = values.Select(x => x.MoveNext()).ToList();
+
+            Db = new DbEnv();
+            IEnumerator<string?>[] values =
+            {
+                Db.EnvInit("DB_HOST", "DB_HOST_PORT", "DB_SUPERUSER_NAME",
+                        "DB_SUPERUSER_PASSWORD", "DB_DATABASE_NAME")
+                    .GetEnumerator()
+            };
+            _ = values.Select(x => x.MoveNext()).ToList();
+            LoadEnv(envFileName);
+            _ = values.Select(x => x.MoveNext()).ToList();
+
+            FirstEnv = this;
+
+        }
+        else
+        {
+            Db = FirstEnv.Db;
+        }
     }
 
     protected static void LoadEnv(string envFileName)
@@ -27,7 +42,14 @@ public record class Env
         while ((baseDirectory = Path.GetDirectoryName(baseDirectory))?.EndsWith("socialNetwork_backend") == false)
         {
         }
-        DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {Path.Combine(baseDirectory, envFileName)}));
+
+        if (baseDirectory == null)
+        {
+            throw new Exception(
+                $"You can create a socialNetwork_backend/.env file." +
+                $" For example, see https://github.com/DaniinXorchenabo/social_network_backend/blob/master/socialNetwork_backend/example.env");
+        }
+        DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {Path.Combine(baseDirectory!, envFileName)}));
     }
 }
 

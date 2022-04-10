@@ -1,14 +1,16 @@
-using System.Net.Mime;
 using System.Text.Json.Serialization;
-using dotenv.net;
-// using System.Web.Http.Controllers;
 using Microsoft.OpenApi.Models;
 using socialNetworkApp.api.middlewares;
 using socialNetworkApp.config;
 using socialNetworkApp.docs.swagger;
-using Swashbuckle;
+using Microsoft.EntityFrameworkCore;
+using socialNetworkApp.db;
+
+// using System.Web.Http.Controllers;
 
 // using Microsoft.AspNet.WebApi
+
+namespace socialNetworkApp;
 
 class Program
 {
@@ -36,6 +38,9 @@ class Program
             // x.JsonSerializerOptions.
         });
         builder.Services.AddSingleton<Env>();
+        builder.Services.AddDbContext<BaseBdConnection>();
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        
 
         // builder.Services
 
