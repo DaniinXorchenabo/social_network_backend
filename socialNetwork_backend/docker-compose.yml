@@ -61,7 +61,7 @@ services:
     restart: ${RESTART_CONTAINER:-no}
     environment:
       LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-true}
-      PGHOST: db
+      DB_HOST: db
       VIRTUAL_HOST: ${BACKEND_API_VIRTUAL_HOST}
       VIRTUAL_PORT: ${BACKEND_API_PORT:-5264}
       SSL_TYPE: letsencrypt
