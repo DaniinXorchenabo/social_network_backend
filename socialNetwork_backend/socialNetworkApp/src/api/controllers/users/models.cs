@@ -13,4 +13,8 @@ public class UserDb
     public string Username { get; set; }= default!;
     [Column("hashed_password")]
     public string HashedPassword { get; set; } = default!;
+    [Column("name")]
+    public string Name { get; set; }= default!;
+    [Column("surname")]
+    public string Surname { get; set; }= default!;
 }

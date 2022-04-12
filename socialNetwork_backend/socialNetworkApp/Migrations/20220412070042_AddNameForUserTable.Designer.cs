@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using socialNetworkApp.db;
@@ -11,9 +12,10 @@ using socialNetworkApp.db;
 namespace socialNetworkApp.Migrations
 {
     [DbContext(typeof(BaseBdConnection))]
-    partial class BaseBdConnectionModelSnapshot : ModelSnapshot
+    [Migration("20220412070042_AddNameForUserTable")]
+    partial class AddNameForUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

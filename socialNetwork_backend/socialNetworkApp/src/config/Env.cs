@@ -8,14 +8,12 @@ public record class Env
 {
     public static Env FirstEnv { get; private set; } = null!;
     public DbEnv Db { get; protected set; }
-    
+
 
     public Env(string envFileName = ".env")
     {
-
         if (FirstEnv == null)
         {
-
             Db = new DbEnv();
             IEnumerator<string?>[] values =
             {
@@ -28,7 +26,6 @@ public record class Env
             _ = values.Select(x => x.MoveNext()).ToList();
 
             FirstEnv = this;
-
         }
         else
         {
@@ -38,9 +35,19 @@ public record class Env
 
     protected static void LoadEnv(string envFileName)
     {
-        var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        while ((baseDirectory = Path.GetDirectoryName(baseDirectory))?.EndsWith("socialNetwork_backend") == false)
+        string? baseDirectory;
+        if (System.Environment.GetEnvironmentVariable("FROM_DOCKER") == "true")
         {
+            baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        }
+        else
+        {
+            baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Console.WriteLine(baseDirectory);
+            while ((baseDirectory = Path.GetDirectoryName(baseDirectory))?.EndsWith("socialNetwork_backend") == false)
+            {
+                Console.WriteLine(baseDirectory);
+            }
         }
 
         if (baseDirectory == null)
@@ -49,6 +56,7 @@ public record class Env
                 $"You can create a socialNetwork_backend/.env file." +
                 $" For example, see https://github.com/DaniinXorchenabo/social_network_backend/blob/master/socialNetwork_backend/example.env");
         }
+        Console.WriteLine(Path.Combine(baseDirectory!, envFileName));
         DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {Path.Combine(baseDirectory!, envFileName)}));
     }
 }

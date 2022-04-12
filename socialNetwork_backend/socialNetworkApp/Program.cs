@@ -16,6 +16,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
+
         var builder = WebApplication.CreateBuilder(args);
         // HttpRequestContext config = new HttpRequestContext();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,6 +46,12 @@ class Program
         // builder.Services
 
         var app = builder.Build();
+        
+        Env env = new Env();
+        using (IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+        {
+            scope.ServiceProvider.GetService<BaseBdConnection>()?.Database.Migrate();
+        }
 
         app.UseSwagger(c => { });
         app.UseSwaggerUI(c =>

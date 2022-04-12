@@ -14,7 +14,7 @@ public class BaseBdConnection : DbContext
     public BaseBdConnection(DbContextOptions<BaseBdConnection> options): base(options)
     {
         this._env = new Env();
-        Database.EnsureCreated();
+        // Database.EnsureCreated();
         Console.WriteLine(GetConnectionString(_env));
     }
 
