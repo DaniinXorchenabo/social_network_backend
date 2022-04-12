@@ -1,7 +1,7 @@
 ﻿version: "3.5"
 
 services:
-  web:
+  backend:
     build:
       context: socialNetworkApp
       dockerfile: Dockerfile

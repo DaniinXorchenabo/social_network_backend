@@ -53,27 +53,31 @@ services:
 
   backend:
     image: daniinxorchenabo/ibook_backend:${PYTHON_ENV_TAG:-latest}
-    networks:
-      - production_network
-      - backend_network
-      - db_network
 
     restart: ${RESTART_CONTAINER:-no}
+    env_file:
+      - .env
+    
     environment:
       LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-true}
       DB_HOST: db
       DB_PORT: ${DB_PORT:-5432}
       DB_HOST_PORT: ${DB_PORT:-5432}
       VIRTUAL_HOST: ${BACKEND_API_VIRTUAL_HOST}
-      VIRTUAL_PORT: ${BACKEND_API_PORT:-5264}
+      VIRTUAL_PORT: ${EXTERNAL_BACKEND_PORT:-5264}
       SSL_TYPE: letsencrypt
       LETSENCRYPT_HOST: ${BACKEND_API_VIRTUAL_HOST}
+      FROM_DOCKER: 'true'
     depends_on:
       - db
 
-    command: dotnet socialNetworkApp.dll 
+    command: dotnet socialNetworkApp.dll --urls http://0.0.0.0:${INTERNAL_BACKEND_PORT:-6000}
+    networks:
+      - production_network
+      - backend_network
+      - db_network
     ports:
-      - '${EXTERNAL_BACKEND_PORT:-80}:80'
+      - '${EXTERNAL_BACKEND_PORT:-80}:${INTERNAL_BACKEND_PORT:-6000}'
     expose:
       - ${EXTERNAL_BACKEND_PORT:-80}
 
