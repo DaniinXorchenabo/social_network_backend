@@ -4,6 +4,8 @@
 
 ## Run with `docker` and `docker-compose`
 
+### Run in local machine
+
 1. Clone this repo:
 
 ```bash
@@ -48,7 +50,8 @@ cd social_network_backend/socialNetwork_backend
       ```bash
       docker-compose -f .\docker-compose.yml -f .\proxy.docker-compose.yml -f .\build.docker-compose.yml up --build db backend
       ```
-6. If you wont to stop server, you would:
+6. Check it: [http://localhost:<port from `EXTERNAL_BACKEND_PORT` in `.env` file>/swagger/index.html]() or [http://<Your `IP` in local network>:<port from `EXTERNAL_BACKEND_PORT` in `.env` file>/swagger/index.html]()
+7. If you wont to stop the server, you would:
    
      ```bash
      docker-compose -f .\docker-compose.yml -f .\proxy.docker-compose.yml down
@@ -57,6 +60,8 @@ cd social_network_backend/socialNetwork_backend
 # Update the server
 
 ## Update the server, which running with a `docker`
+
+### Update in local machine
 1. Update you the local repo:
     ```bash
    cd <path/to/root/project/dir>/social_network_backend
