@@ -7,6 +7,7 @@ namespace socialNetworkApp.api.controllers.test;
 
 [ApiController]
 [Route("api/test")]
+[Produces("application/json")]
 public class Test : Controller
 {
     // GET

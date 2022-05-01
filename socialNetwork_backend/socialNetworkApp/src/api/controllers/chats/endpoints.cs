@@ -1,13 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using socialNetworkApp.api.controllers.messages;
 
 namespace socialNetworkApp.api.controllers.chat;
 
 [ApiController]
 [Route("api/chat")]
+[Produces("application/json")]
 public class ChatController : Controller
 {
+    
+    /// <summary>
+    /// Creates a TodoItem.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>A newly created TodoItem</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///    
+    ///     {
+    ///        "id": 1,
+    ///        "name": "Item #1",
+    ///        "isComplete": true
+    ///     }
+    ///
+    /// </remarks>
+    /// <response code="201">Returns the newly created item</response>
+    /// <response code="400">If the item is null</response>
     [HttpGet("get/last")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ChatAnswer GelLastChats(int limit = 100, int offset = 0)
     {
         Guid a;
@@ -28,6 +52,8 @@ public class ChatController : Controller
     }
 
     [HttpGet("get/with_message/last")]
+    [Authorize]
+    // [AllowAnonymous]
     public ChatAnswerWithMessage GelLastChatsWithlastMessage(int limit = 100, int offset = 0)
     {
         Guid a;

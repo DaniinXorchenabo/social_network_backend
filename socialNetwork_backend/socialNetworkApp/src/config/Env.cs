@@ -8,28 +8,49 @@ public record class Env
 {
     public static Env FirstEnv { get; private set; } = null!;
     public DbEnv Db { get; protected set; }
-
-
+    public BackendEnv Backend { get; protected set; }
+    
     public Env(string envFileName = ".env")
     {
         if (FirstEnv == null)
         {
             Db = new DbEnv();
-            IEnumerator<string?>[] values =
+            IEnumerator<string?>[] valuesDb =
             {
-                Db.EnvInit("DB_HOST", "DB_HOST_PORT", "DB_SUPERUSER_NAME",
-                        "DB_SUPERUSER_PASSWORD", "DB_DATABASE_NAME")
+                Db.EnvInit(
+                        "DB_HOST",
+                        "DB_HOST_PORT",
+                        "DB_SUPERUSER_NAME",
+                        "DB_SUPERUSER_PASSWORD",
+                        "DB_DATABASE_NAME"
+                        )
                     .GetEnumerator()
             };
-            _ = values.Select(x => x.MoveNext()).ToList();
+            
+            Backend = new BackendEnv();
+            IEnumerator<string?>[] valuesBackend =
+            {
+                Backend.EnvInit(
+                        "BACKEND_PROTOCOL",
+                        "BACKEND_HOST_RUNNABLE", 
+                        "BACKEND_PORT_INTERNAL",
+                        "BACKEND_AUTH_SECRET_KEY"
+                        )
+                    .GetEnumerator()
+            };
+            
+            _ = valuesDb.Select(x => x.MoveNext()).ToList();
+            _ = valuesBackend.Select(x => x.MoveNext()).ToList();
             LoadEnv(envFileName);
-            _ = values.Select(x => x.MoveNext()).ToList();
+            _ = valuesDb.Select(x => x.MoveNext()).ToList();
+            _ = valuesBackend.Select(x => x.MoveNext()).ToList();
 
             FirstEnv = this;
         }
         else
         {
             Db = FirstEnv.Db;
+            Backend = FirstEnv.Backend;
         }
     }
 
@@ -129,5 +150,47 @@ public record class DbEnv : BaseLoader
     public override IEnumerable<string?> EnvInit(params string[] data)
     {
         return EnvInit(data[0], data[1], data[2], data[3], data[4]);
+    }
+}
+
+public record class BackendEnv : BaseLoader
+{
+    public string BackendProtocol { get; protected set; } = null!;
+    public string BackendHostRunnable { get; protected set; } = null!;
+    public string BackendPortInternal { get; protected set; } = null!;
+    public string SecretKey { get; protected set; } = null!;
+    
+    public string Address => $"{BackendProtocol}://{BackendHostRunnable}:{BackendPortInternal}";
+
+    public IEnumerable<string?> EnvInit(
+        string backendProtocol,
+        string backendHostRunnable,
+        string backendPortInternal,
+        string secretKey,
+        params string[] data)
+    {
+        var enumerators = (this as IBaseLoader).PreloadEnv(backendProtocol, backendHostRunnable, backendPortInternal, secretKey);
+        yield return null;
+        (this.BackendProtocol,
+            (this.BackendHostRunnable,
+                (this.BackendPortInternal,(
+                    this.SecretKey ,_)))) = enumerators
+            .Where(x => x.MoveNext() || true)
+            .Select(x => x.Current ?? "")
+            .ToList();
+        yield return null;
+    }
+
+    public void Deconstruct(out string BackendProtocol, out string BackendHostRunnable, out string BackendPortInternal , out string SecretKey)
+    {
+        BackendProtocol = this.BackendProtocol;
+        BackendHostRunnable = this.BackendHostRunnable;
+        BackendPortInternal = this.BackendPortInternal;
+        SecretKey = this.SecretKey;
+    }
+
+    public override IEnumerable<string?> EnvInit(params string[] data)
+    {
+        return EnvInit(data[0], data[1], data[2], data[3]);
     }
 }

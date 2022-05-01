@@ -4,6 +4,7 @@ namespace socialNetworkApp.api.controllers.messages;
 
 [ApiController]
 [Route("api/messages")]
+[Produces("application/json")]
 public class MessagesController: Controller
 {
     [HttpGet("chat/{chat_id:guid}")]

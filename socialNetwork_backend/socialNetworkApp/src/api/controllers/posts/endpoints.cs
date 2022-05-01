@@ -6,6 +6,7 @@ namespace socialNetworkApp.api.controllers.posts;
 
 [ApiController]
 [Route("api/posts")]
+[Produces("application/json")]
 public class PostController : Controller
 {
     [HttpGet("get/{post_id:guid}")]
