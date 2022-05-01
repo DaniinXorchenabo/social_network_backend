@@ -29,8 +29,10 @@ class Program
         // HttpRequestContext config = new HttpRequestContext();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c => 
+        builder.Services.AddSwaggerGen(c =>
             {
+                // check it: https://stackoverflow.com/questions/43447688/setting-up-swagger-asp-net-core-using-the-authorization-headers-bearer
+                // check it: https://medium.com/nerd-for-tech/authentication-and-authorization-in-net-core-web-api-using-jwt-token-and-swagger-ui-cc8d05aef03c
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -51,7 +53,7 @@ class Program
                 });
                 // IDocumentFilter
 
-                
+
                 // c.SwaggerGeneratorOptions.SwaggerDocs
                 // c.SwaggerGeneratorOptions.SwaggerDocs
 
@@ -60,12 +62,11 @@ class Program
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
-                    BearerFormat = "JWT", 
+                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                     Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
                       Enter 'Bearer' [space] and then your token in the text input below.
                       \r\n\r\nExample: 'Bearer 12345abcdef'",
-                    
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -85,8 +86,8 @@ class Program
                         new List<string>()
                     }
                 });
-                
-                
+
+
                 c.SchemaFilter<EnumAsStringSchemaFilter>();
                 c.DocumentFilter<TestDocumentFilter>();
                 c.OperationFilter<TestOperationFilter>();
@@ -97,31 +98,32 @@ class Program
                 // c.IncludeXmlComments(xmlPath);
             }
         );
-        
+
         // builder.Services.AddAuthentication("Bearer") // схема аутентификации - с помощью jwt-токенов
-            // .AddJwtBearer(); // подключение аутентификации с помощью jwt-токенов
-        
-        builder.Services.AddAuthentication(option =>  
-        {  
-            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  
-            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;  
-  
-        }).AddJwtBearer(options =>  
-        {  
-            options.TokenValidationParameters = new TokenValidationParameters  
-            {  
-                ValidateIssuer = true,  
-                ValidateAudience = true,  
-                ValidateLifetime = false,  
-                ValidateIssuerSigningKey = true,  
-                ValidIssuer = env1.Backend.Address,  
-                ValidAudience = env1.Backend.Address,  
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(env1.Backend.SecretKey)) //Configuration["JwtToken:SecretKey"]  
-            };  
-        });  
+        // .AddJwtBearer(); // подключение аутентификации с помощью jwt-токенов
+
+        builder.Services.AddAuthentication(option =>
+        {
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = env1.Backend.Address,
+                ValidAudience = env1.Backend.Address,
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(env1.Backend.SecretKey)) //Configuration["JwtToken:SecretKey"]  
+            };
+        });
         builder.Services.AddAuthorization(); // добавление сервисов авторизации
-     
-        
+
+
         builder.Services.AddSwaggerGenNewtonsoftSupport();
 
         builder.Services.AddControllers().AddJsonOptions(x =>
@@ -132,7 +134,7 @@ class Program
             // x.JsonSerializerOptions.IgnoreNullValues = true;
             // x.JsonSerializerOptions.
         });
-        
+
         builder.Services.AddDbContext<BaseBdConnection>();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -147,14 +149,11 @@ class Program
         {
             scope.ServiceProvider.GetService<BaseBdConnection>()?.Database.Migrate();
         }
-        
-
-
 
 
         app.UseMiddleware<BaseAnswerMiddleware>();
         app.MapControllers();
-        
+
         app.UseAuthentication(); // добавление middleware аутентификации
         app.UseAuthorization(); // добавление middleware авторизации 
         app.UseSwagger(c => { });
@@ -165,7 +164,7 @@ class Program
             // c.RoutePrefix = string.Empty;
             // c.DescribeAllEnumsAsStrings();
         });
-        
+
         var envs = app.Services.GetService<Env>();
         Console.WriteLine($"{envs.Db.DbUsername}, {envs.Db.DbPassword}");
         Console.WriteLine($"{envs.Backend.BackendHostRunnable}, {envs.Backend.BackendPortInternal}");
