@@ -4,11 +4,17 @@ using SuccincT.Functional;
 
 namespace socialNetworkApp.config;
 
-public record class Env
+public abstract class IEnv
+{
+    public abstract DbEnv Db{ get; protected set; }
+    public abstract BackendEnv Backend { get; protected set; }
+}
+
+public  class Env: IEnv
 {
     public static Env FirstEnv { get; private set; } = null!;
-    public DbEnv Db { get; protected set; }
-    public BackendEnv Backend { get; protected set; }
+    public override DbEnv Db { get; protected set; }
+    public override BackendEnv Backend { get; protected set; }
     
     public Env(string envFileName = ".env")
     {

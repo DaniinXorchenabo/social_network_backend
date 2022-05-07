@@ -7,7 +7,7 @@ namespace socialNetworkApp.api.responses;
 
 public record BaseAnswerRes<TData>(AnswerType Type, TData Data);
 
-public record EmptyAnswer : BaseResponsePart
+public record class EmptyAnswer : BaseResponsePart
 {
     
 }

@@ -6,5 +6,6 @@ public enum AnswerType
     Massage,
     Chat,
     Post,
-    UserAnswer
+    UserAnswer,
+    Token
 }

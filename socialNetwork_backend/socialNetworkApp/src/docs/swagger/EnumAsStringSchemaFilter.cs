@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -46,6 +47,24 @@ public class TestOperationFilter : IOperationFilter
             var securityItem = new OpenApiSecurityRequirement();
             operation.Security.Add(securityItem);
         }
+
+        // foreach (var parameterInfo in context.MethodInfo.GetParameters())
+        // {
+        //     if (parameterInfo.CustomAttributes
+        //         .Any(x => x.AttributeType == typeof(FromFormAttribute)))
+        //     {
+        //         if(operation.RequestBody.Content.ContainsKey(@"application/x-www-form-urlencoded"))
+        //         {
+        //             operation.RequestBody.Content[@"application/x-www-form-urlencoded"]
+        //                     .Encoding[parameterInfo.Name] = new OpenApiEncoding();
+        //         }
+        //         else
+        //         {
+        //             operation.RequestBody.Content[@"application/x-www-form-urlencoded"] = new OpenApiMediaType();
+        //         }
+        //     }
+        // }
+            // 
     }
 }
 

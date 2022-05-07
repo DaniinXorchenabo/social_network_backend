@@ -1,13 +1,20 @@
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.OpenApi.Models;
 using socialNetworkApp.api.middlewares;
 using socialNetworkApp.config;
 using socialNetworkApp.docs.swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Extensions;
+using Npgsql;
+using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.db;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -23,8 +30,9 @@ class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         // добавление сервисов аутентификации
-        builder.Services.AddSingleton<Env>();
         var env1 = new Env();
+        builder.Services.AddSingleton<IEnv, Env>();
+        
 
         // HttpRequestContext config = new HttpRequestContext();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -111,8 +119,8 @@ class Program
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = false,
+                ValidateAudience = false, // TODO: true for validate a audience field
+                ValidateLifetime = false, // TODO: true for validate lifetime token
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = env1.Backend.Address,
                 ValidAudience = env1.Backend.Address,
@@ -121,7 +129,13 @@ class Program
                         Encoding.UTF8.GetBytes(env1.Backend.SecretKey)) //Configuration["JwtToken:SecretKey"]  
             };
         });
-        builder.Services.AddAuthorization(); // добавление сервисов авторизации
+        builder.Services.AddAuthorization(option =>
+        {
+            option.AddPolicy("Mods", policy => {
+                policy.RequireClaim("Mod", "Лондон", "London");
+            });
+            var policies = 1;
+        }); // добавление сервисов авторизации
 
 
         builder.Services.AddSwaggerGenNewtonsoftSupport();
@@ -137,6 +151,17 @@ class Program
 
         builder.Services.AddDbContext<BaseBdConnection>();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        
+        // var validator = builder.Services.FirstOrDefault(s => s.ServiceType == typeof(IObjectModelValidator));
+        // if (validator != null)
+        // {
+        //     builder.Services.Remove(validator);
+        //     builder.Services.Add(new ServiceDescriptor(typeof(IObjectModelValidator), _ => new NonValidatingValidator(), ServiceLifetime.Singleton));
+        // }
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
 
 
         // builder.Services
@@ -147,7 +172,17 @@ class Program
         // env.
         using (IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
-            scope.ServiceProvider.GetService<BaseBdConnection>()?.Database.Migrate();
+            var dbConnect = scope.ServiceProvider.GetService<BaseBdConnection>();
+            await dbConnect?.Database.MigrateAsync();
+            await using (var conn = (NpgsqlConnection)dbConnect?.Database.GetDbConnection()!)
+            {
+                conn?.Open();
+                conn?.ReloadTypes();
+            }
+            await using (var db = dbConnect)
+            {
+                db?.OnSrart();
+            }
         }
 
 
@@ -165,9 +200,10 @@ class Program
             // c.DescribeAllEnumsAsStrings();
         });
 
-        var envs = app.Services.GetService<Env>();
+        var envs = app.Services.GetService<IEnv>();
         Console.WriteLine($"{envs.Db.DbUsername}, {envs.Db.DbPassword}");
         Console.WriteLine($"{envs.Backend.BackendHostRunnable}, {envs.Backend.BackendPortInternal}");
+
         // app.UseEndpoints(endpoints =>
         // {] 
         //     endpoints.MapControllers();

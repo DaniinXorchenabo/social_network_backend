@@ -22,7 +22,7 @@ public record class ChatDto(
 ) : EmptyAnswer
 {
 }
-
+[AddAnswerType(AnswerType.Chat)]
 public record class ChatWithMessageDto(Guid Id,
     string Name,
     DateTime CreatedAt,

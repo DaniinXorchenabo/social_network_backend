@@ -1,10 +1,12 @@
-﻿using socialNetworkApp.api.enums;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses.utils;
 
 namespace socialNetworkApp.api.responses;
 
 
-public record BaseResponse<TAnswer> where TAnswer : EmptyAnswer
+public class BaseResponse<TAnswer> where TAnswer : EmptyAnswer
 {
     public List<BaseAnswerRes<TAnswer>>? Answers { get; set; }
     public List<EmptyError>? Errors { get; set; }
@@ -13,6 +15,7 @@ public record BaseResponse<TAnswer> where TAnswer : EmptyAnswer
     {
         this.Answers = ans;
         this.Errors = err;
+
     }
     public BaseResponse(List<TAnswer>? ans = null, List<EmptyError>? err = null)
     {
@@ -52,11 +55,25 @@ public record BaseResponse<TAnswer> where TAnswer : EmptyAnswer
         throw new Exception($"Аттрибут не задан у класса {typeof(TAnswer).Name}");
         
     }
+
+    public Task ExecuteResultAsync(ActionContext context)
+    {
+        // OkObjectResult
+        throw new NotImplementedException();
+    }
+
+    public int? StatusCode { get; }
 }
 
 
-
-public record BaseResponsePart
+public class Resp : ObjectResult, IActionResult, IStatusCodeActionResult
 {
-    
+    public Resp(int statusCode, object? value) : base(value)
+    {
+        StatusCode = statusCode;
+    }
+}
+
+public record class BaseResponsePart
+{
 }
