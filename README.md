@@ -79,3 +79,37 @@ cd social_network_backend/socialNetwork_backend
       ```bash
       docker-compose -f .\docker-compose.yml -f .\proxy.docker-compose.yml up -d db backend
       ```
+
+# Tutorials
+
+## How to use a `Swagger`
+
+A simple usage
+
+https://user-images.githubusercontent.com/45897837/167266853-1314e0a9-2158-47f2-8e70-f36e99a121ab.mp4
+
+-----------------
+
+Create a user from `Swagger`
+
+https://user-images.githubusercontent.com/45897837/167267072-3d38d485-8bed-479a-b5c9-1256aa232822.mp4
+
+-----------------
+
+Autorize in system
+
+https://user-images.githubusercontent.com/45897837/167267167-f10736e9-647c-43f3-88db-e55124a91507.mp4
+
+-----------------
+
+Autorization with roles
+
+https://user-images.githubusercontent.com/45897837/167267344-703f3fcf-43de-44c7-8f6e-30c02104da4b.mp4
+
+-----------------
+
+Autorization token in http headers
+
+https://user-images.githubusercontent.com/45897837/167267516-a2fdbdd5-1a24-4517-b971-5b7621309eea.mp4
+
+-----------------
