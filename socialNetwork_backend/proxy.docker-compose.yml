@@ -19,7 +19,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-true}
+      LETSENCRYPT_TEST: ${LETSENCRYPT_HTTPS_PROTOCOL_TEST:-true}
     volumes:
       - conf:/etc/nginx/conf.d:rw
       - vhost:/etc/nginx/vhost.d
@@ -45,9 +45,9 @@ services:
     container_name: acme-proxy
     restart: always
     environment:
-      LETSENCRYPT_TEST: ${TEST_HTTPS_PROTOCOL:-false}
+      LETSENCRYPT_TEST: ${LETSENCRYPT_HTTPS_PROTOCOL_TEST:-false}
       NGINX_PROXY_CONTAINER: proxy
-      DEFAULT_EMAIL: ${DEVELOPER_EMAIL}
+      DEFAULT_EMAIL: ${DOCKER_EMAIL_DEVELOPER}
     depends_on:
       - proxy
     volumes:

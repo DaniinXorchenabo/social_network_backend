@@ -63,7 +63,7 @@ public  class Env: IEnv
     protected static void LoadEnv(string envFileName)
     {
         string? baseDirectory;
-        if (System.Environment.GetEnvironmentVariable("FROM_DOCKER") == "true")
+        if (System.Environment.GetEnvironmentVariable("DOCKER_RUN_FROM_DOCKER") == "true")
         {
             baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
