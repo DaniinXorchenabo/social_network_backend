@@ -33,7 +33,7 @@ public class AuthController : Controller
     [ProducesResponseType(typeof(TokenAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces("application/json")]
-    public async Task< IActionResult> GetAuthToken(
+    public async Task<IActionResult> GetAuthToken(
         [FromForm] string username, // check it: https://metanit.com/sharp/aspnet5/8.5.php
         [FromForm] string password,
         [FromForm] AllModsEnum[]? scopes = null
@@ -41,8 +41,9 @@ public class AuthController : Controller
     {
         if (scopes == null)
         {
-            scopes = new AllModsEnum[]{};
+            scopes = new AllModsEnum[] { };
         }
+
         UserDb? user;
         await using (var db = Db)
         {
@@ -50,7 +51,6 @@ public class AuthController : Controller
             if (user == null)
             {
                 return new UnauthorizedResult();
-                
             }
         }
 
@@ -70,11 +70,68 @@ public class AuthController : Controller
         {
             claims.Add(new Claim(ClaimTypes.Role, scope.ToString()));
         }
-        
+
         // создаем JWT-токен
         var jwt = new JwtSecurityToken(
             issuer: Env_.Backend.Address,
-           
+            audience: "audience", // TODO: add audience
+            claims: claims,
+            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+            signingCredentials: new SigningCredentials(
+                AuthOptions.GetSymmetricSecurityKey(Env_.Backend.SecretKey),
+                SecurityAlgorithms.HmacSha256)
+        );
+
+        return new ObjectResult(new TokenAnswer(
+            TokenType.bearer,
+            new JwtSecurityTokenHandler().WriteToken(jwt)));
+    }
+
+    [HttpPost("token/data_as_body")]
+    [ProducesResponseType(typeof(TokenAnswer), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Produces("application/json")]
+    public async Task<IActionResult> GetAuthTokenWhereDataAsBody(
+        string username,
+        string password,
+        AllModsEnum[]? scopes = null
+    )
+    {
+        if (scopes == null)
+        {
+            scopes = new AllModsEnum[] { };
+        }
+
+        UserDb? user;
+        await using (var db = Db)
+        {
+            user = await db.Users.FirstOrDefaultAsync(x => x.Username == username);
+            if (user == null)
+            {
+                return new UnauthorizedResult();
+            }
+        }
+
+        if (!Security.Verify(password, user.HashedPassword))
+        {
+            return new UnauthorizedResult();
+        }
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, username),
+            // new Claim(ClaimTypes.Role, new EnumModList(scopes).ToString()),
+        };
+        var scopesAsSet = new EnumModList(scopes);
+        scopesAsSet.IntersectWith(new EnumModList(user.Mods.ToArray()));
+        foreach (var scope in scopesAsSet)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, scope.ToString()));
+        }
+
+        // создаем JWT-токен
+        var jwt = new JwtSecurityToken(
+            issuer: Env_.Backend.Address,
             audience: "audience", // TODO: add audience
             claims: claims,
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
