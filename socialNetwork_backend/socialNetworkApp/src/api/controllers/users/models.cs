@@ -7,19 +7,21 @@ using socialNetworkApp.db;
 namespace socialNetworkApp.api.controllers.users;
 
 [Table("users", Schema = "public")]
+[Index(nameof(Email), Name = "Index__UniqueEmail", IsUnique = true)]
+[Index(nameof(Username), Name = "Index__UniqueUsername", IsUnique = true)]
 public class UserDb : AbstractEntity
 {
+    // [Comment("The URL of the blog")]
+    [Key][Required] [Column("id")] public virtual Guid Id { get; set; }
 
-    [Key] [Column("id")] public virtual Guid Id { get; set; }
+    [Unicode][Required][Column("username")] public virtual string Username { get; set; }
 
-    [Unicode()] [Column("username")] public virtual string Username { get; set; }
+    [Unicode][Required][Column("email")] public virtual string Email { get; set; } 
+    [Required][Column("hashed_password")] public virtual string HashedPassword { get; set; }
+    [Required][Column("name")] public virtual string Name { get; set; }
+    [Required][Column("surname")] public virtual string Surname { get; set; }
 
-    [Unicode()][Column("email")] public virtual string Email { get; set; } 
-    [Column("hashed_password")] public virtual string HashedPassword { get; set; }
-    [Column("name")] public virtual string Name { get; set; }
-    [Column("surname")] public virtual string Surname { get; set; }
-
-    [Column("mods" )]// [Column("mods", TypeName = "integer[]")]
+    [Required] [Column("mods" )]// [Column("mods", TypeName = "integer[]")]
     public virtual List<AllModsEnum> Mods { get; set; } = new List<AllModsEnum>();
 
     // public virtual List<ModifiersOfAccessDb> Mods { get; set; } = new List<ModifiersOfAccessDb>();

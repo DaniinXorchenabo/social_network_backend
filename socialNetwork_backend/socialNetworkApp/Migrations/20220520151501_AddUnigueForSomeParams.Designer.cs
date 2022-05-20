@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
@@ -13,9 +14,10 @@ using socialNetworkApp.db;
 namespace socialNetworkApp.Migrations
 {
     [DbContext(typeof(BaseBdConnection))]
-    partial class BaseBdConnectionModelSnapshot : ModelSnapshot
+    [Migration("20220520151501_AddUnigueForSomeParams")]
+    partial class AddUnigueForSomeParams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
