@@ -1,4 +1,5 @@
-﻿using System.Web.Http.Filters;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using socialNetworkApp.api.controllers.auth;
@@ -35,7 +36,7 @@ public class ChatController : Controller
     [Authorize]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public Resp GelLastChats( int limit = 100, int offset = 0)
+    public async Task< IActionResult> GelLastChats( int limit = 100, int offset = 0)
     {
         Guid a;
         return  new Resp(200, new ChatAnswer(
@@ -55,9 +56,9 @@ public class ChatController : Controller
     }
 
     [HttpGet("get/with_message/last")]
-    [AuthorizeWithMods(AllModsEnum.chatCreator, AllModsEnum.chatReader)]
+    [AuthorizeWithMods(AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
-    public Resp GelLastChatsWithlastMessage(int limit = 100, int offset = 0)
+    public async Task< IActionResult> GelLastChatsWithlastMessage(int limit = 100, int offset = 0)
     {
         Guid a;
         Guid chat_id;
@@ -86,7 +87,7 @@ public class ChatController : Controller
     [HttpGet("get/{chat_id:guid}")]
     [AuthorizeWithMods(AllModsEnum.chatCreator, AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public Resp GelChatOnId(Guid chat_id)
+    public async Task< IActionResult> GelChatOnId(Guid chat_id)
     {
         Guid a;
         return  new Resp(200, new ChatAnswer(
@@ -97,7 +98,7 @@ public class ChatController : Controller
 
     [HttpGet("find/by_name")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public Resp SearchChatOnName(string name)
+    public async Task< IActionResult> SearchChatOnName(string name)
     {
         Guid a;
         return new Resp(200, new ChatAnswer(
@@ -108,7 +109,7 @@ public class ChatController : Controller
 
     [HttpGet("find/by_message")]
     [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
-    public Resp SearchChatOnTestMessage(string messageText)
+    public async Task< IActionResult> SearchChatOnTestMessage(string messageText)
     {
         Guid a;
         Guid chat_id;
@@ -123,8 +124,10 @@ public class ChatController : Controller
 
     [HttpPost("new")]
     [ValidationActionFilter]
-    [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status201Created)]
-    public Resp CreateChat(CreateChatDto newChatDto)
+    [ProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), StatusCodes.Status201Created)]
+    [MyProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), 422)]
+
+    public async Task< IActionResult> CreateChat(CreateChatDto newChatDto)
     {
         Guid a;
         return new Resp(201, new ChatAnswerWithMessage(new ChatWithMessageDto(
@@ -132,10 +135,10 @@ public class ChatController : Controller
             newChatDto.Name,
             DateTime.Now,
             newChatDto.Users,
-            newChatDto.UserCreator,
+             Guid.NewGuid(),
             new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null,
                 MessageType.SystemMassage),
-            newChatDto.GroupCreator,
+            null,
             newChatDto.ChatCreatorType,
             newChatDto.ChatType,
             null,
@@ -146,7 +149,7 @@ public class ChatController : Controller
 
     [HttpPut("edit/metainfo/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public Resp CreateChat(Guid chat_id, UpdateChatDto updatedChatDto)
+    public async Task< IActionResult> CreateChat(Guid chat_id, UpdateChatDto updatedChatDto)
     {
         Guid a;
         return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), updatedChatDto.Name, DateTime.Today,
@@ -156,7 +159,7 @@ public class ChatController : Controller
 
     [HttpPut("edit/users/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public Resp CreateChat(Guid chat_id, UserOperationClass op, Guid[] users)
+    public async Task< IActionResult> CreateChat(Guid chat_id, UserOperationClass op, Guid[] users)
     {
         Guid a;
         return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), "sdfgs", DateTime.Today,
@@ -166,7 +169,7 @@ public class ChatController : Controller
 
     [HttpDelete("dalete/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public Resp CreateChat(Guid chat_id)
+    public async Task< IActionResult> CreateChat(Guid chat_id)
     {
         return new Resp(200, new ChatAnswer());
     }

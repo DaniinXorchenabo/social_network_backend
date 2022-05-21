@@ -12,7 +12,7 @@ public class PostController : Controller
 {
     [HttpGet("get/{post_id:guid}")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp  GetMessagesFromChat(Guid postId)
+    public async Task< IActionResult>  GetMessagesFromChat(Guid postId)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(postId, "sf", Guid.NewGuid(), DateTime.Now)
@@ -21,7 +21,7 @@ public class PostController : Controller
 
     [HttpGet("get/all")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp GetMessagesFromChatThroughData(DateTime dateTime, int limit = 100, int offset = 0)
+    public async Task< IActionResult> GetMessagesFromChatThroughData(DateTime dateTime, int limit = 100, int offset = 0)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
@@ -32,7 +32,7 @@ public class PostController : Controller
 
     [HttpGet("get/author/{author_id:guid}")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp SearchMessagesFromChat(Guid authorId, int limit = 100, int offset = 0)
+    public async Task< IActionResult> SearchMessagesFromChat(Guid authorId, int limit = 100, int offset = 0)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(Guid.NewGuid(), "sf", authorId, DateTime.Now),
@@ -43,7 +43,7 @@ public class PostController : Controller
 
     [HttpGet("get/authors")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp SearchMessagesFromChat(Guid[] authorIds, int limit = 100, int offset = 0)
+    public async Task< IActionResult> SearchMessagesFromChat(Guid[] authorIds, int limit = 100, int offset = 0)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(Guid.NewGuid(), "sf", Guid.NewGuid(), DateTime.Now),
@@ -54,7 +54,7 @@ public class PostController : Controller
 
     [HttpGet("search/by_text")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp SearchMessagesFromChat(string foundText, Guid[]? authorIds = null, int limit = 100,
+    public async Task< IActionResult> SearchMessagesFromChat(string foundText, Guid[]? authorIds = null, int limit = 100,
         int offset = 0)
     {
         return new Resp(200, new PostAnswer(
@@ -67,7 +67,7 @@ public class PostController : Controller
 
     [HttpPost("new")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp SendMessage(CreatePostDto newPostDto)
+    public async Task< IActionResult> SendMessage(CreatePostDto newPostDto)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(Guid.NewGuid(), newPostDto.Text, Guid.NewGuid(), DateTime.Now)));
@@ -75,7 +75,7 @@ public class PostController : Controller
 
     [HttpPut("edit/{post_id:guid}")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp EditMessage(Guid postId, UpdatePostDto updatedPostDto)
+    public async Task< IActionResult> EditMessage(Guid postId, UpdatePostDto updatedPostDto)
     {
         return new Resp(200, new PostAnswer(
             new PostDto(Guid.NewGuid(), updatedPostDto.Text, Guid.NewGuid(), DateTime.Now)));
@@ -83,7 +83,7 @@ public class PostController : Controller
 
     [HttpDelete("delete/{post_id:guid}")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
-    public Resp DeleteMessage(Guid postId)
+    public async Task< IActionResult> DeleteMessage(Guid postId)
     {
         return new Resp(200, new PostAnswer());
     }
