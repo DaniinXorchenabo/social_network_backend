@@ -66,6 +66,7 @@ public  class Env: IEnv
         if (System.Environment.GetEnvironmentVariable("DOCKER_RUN_FROM_DOCKER") == "true")
         {
             baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Console.WriteLine($"baseDirectory from docker: <{baseDirectory}> ");
         }
         else
         {
