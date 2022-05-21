@@ -34,9 +34,9 @@ public class UserController : Controller
 
     [HttpPost("new")]
     [ValidationActionFilter]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserDb), 201)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<Resp> CreateUser(CreateUser newUser)
+    public async Task<IActionResult> CreateUser(CreateUser newUser)
     {
         // ModelState.IsValid
         await using (var db = Db)
@@ -53,8 +53,24 @@ public class UserController : Controller
             await db.SaveChangesAsync();
         }
 
-        return new Resp(200, new ObjectResult(newUser));
+        return new Resp(201, newUser);
     }
+    
+    [HttpGet("")]
+    [ProducesResponseType(typeof(UserAnswer), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPublicUser()
+    {
+        // ModelState.IsValid
+        await using (var db = Db)
+        {
+            var users = await (from entity in Db.Users
+                //TODO: 
+                // where entity.IsDeleted == false
+                select entity).ToListAsync();
+            return new Resp(200, new UserAnswer(users));
+        }
+    }
+    
 }
 
 public static class AuthOptions
