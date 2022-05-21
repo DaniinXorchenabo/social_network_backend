@@ -7,5 +7,5 @@ namespace socialNetworkApp.api.controllers.test;
 [AddAnswerType(AnswerType.PointAnswer)]
 public  class PointAnswer : BaseResponse<Point>
 {
-    public PointAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
+    public PointAnswer(params dynamic[] errAndAns): base(errAndAns){}
 }

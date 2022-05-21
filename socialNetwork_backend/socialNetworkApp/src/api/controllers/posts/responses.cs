@@ -7,5 +7,5 @@ namespace socialNetworkApp.api.controllers.posts;
 [AddAnswerType(AnswerType.Post)]
 public  class PostAnswer : BaseResponse<PostDto>
 {
-    public PostAnswer(params BaseResponsePart[] errAndAns): base(errAndAns){}
+    public PostAnswer(params dynamic[] errAndAns): base(errAndAns){}
 }
