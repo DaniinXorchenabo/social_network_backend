@@ -1,9 +1,14 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Writers;
+using socialNetworkApp.api.attributes;
+using socialNetworkApp.api.responses.error;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace socialNetworkApp.docs.swagger;
@@ -20,6 +25,94 @@ public class EnumAsStringSchemaFilter : ISchemaFilter
                 .ToList()
                 .ForEach(name => model.Enum.Add(new OpenApiString($"{name}")));
         }
+        
+        if (context.Type == typeof(OneFieldErrorValidate))
+        {
+            Console.WriteLine("");
+        }
+        
+        if (context.Type == typeof(ValidateOneField))
+        {
+            Console.WriteLine("");
+        }
+        
+        if (context.Type.IsGenericType && context.Type.GetGenericTypeDefinition() == typeof(ValidateError<>))
+        {
+            Console.WriteLine("");
+            // model.Example = new OpenApiObject();
+            // model.Example[context]
+        }
+        
+        if (context.Type.IsGenericType && context.Type.GetGenericTypeDefinition().IsSubclassOf(typeof(ValidateError<>)))
+        {
+            Console.WriteLine("");
+            // model.Example = new OpenApiObject();
+            // model.Example[context]
+        }
+        
+        if (context.Type.BaseType != null && context.Type.BaseType.IsGenericType &&
+            context.Type.BaseType.GetGenericTypeDefinition() == typeof(ValidateError<>))
+        {
+            Console.WriteLine("");
+            model.Example = new OpenApiObject();
+            var dictEnumField = context.Type.GetProperties()
+                .Where(y => y
+                    .CustomAttributes
+                    .Any(x => x.AttributeType == typeof(DictEnumSwaggerAttribute)))
+                .FirstOrDefault();
+            if (dictEnumField != null)
+            {
+                Dictionary<string, OpenApiSchema> dd = new Dictionary<string, OpenApiSchema>();
+        
+                Enum.GetNames(context.Type.BaseType.GenericTypeArguments.Where(x => x.IsSubclassOf(typeof(Enum)))
+                        .FirstOrDefault()).ToList()
+                    .ForEach(name =>
+                    {
+                        dd[name] = context.SchemaRepository.Schemas
+                            .FirstOrDefault(
+                                x => x.Key == dictEnumField
+                                    .PropertyType
+                                    .GenericTypeArguments[1]
+                                    .Name).Value;
+                    });
+                // Enum.GetNames(context.Type.BaseType.GenericTypeArguments.Where(x => x.IsSubclassOf(typeof(Enum)))
+                //     .FirstOrDefault()).ToList().ForEach(
+                //     name =>
+                //     {
+                //         
+                //     }
+                // );
+                    
+                // context.SchemaGenerator.GenerateSchema(
+                //     context.Type.BaseType.GenericTypeArguments.Where(x => x.IsSubclassOf(typeof(Enum)))
+                //         .FirstOrDefault(), new SchemaRepository("dfdfdf")
+                // );
+                //
+                // var o = new OpenApiObject();
+                // foreach (var openApiSchema in dd)
+                // {
+                //     model.Example.Write(
+                //         new OpenApiJsonWriter(
+                //             new StringWriter(
+                //                 new StringBuilder($"{openApiSchema.Key}: dfdf"),
+                //                 null
+                //             )
+                //         )
+                //     );
+                // }
+            }
+        }
+        
+        if (context.Type == typeof(Dictionary<string, ValidateOneField>))
+        {
+            Console.WriteLine("");
+        }
+        
+        if (context.Type == typeof(Dictionary<string, ValidateOneField>))
+        {
+            Console.WriteLine("");
+        }
+        
         // model.Sec
     }
 }
@@ -64,7 +157,7 @@ public class TestOperationFilter : IOperationFilter
         //         }
         //     }
         // }
-            // 
+        // 
     }
 }
 
