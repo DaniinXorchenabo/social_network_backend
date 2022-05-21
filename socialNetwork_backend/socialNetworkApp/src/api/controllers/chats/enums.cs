@@ -22,3 +22,11 @@ public enum UserOperationClass
     BlackListAdd,
     BlackListRemove
 }
+
+public enum ChatToUserRole
+{
+    User,
+    Admin,
+    Creator,
+    BlackList
+}
