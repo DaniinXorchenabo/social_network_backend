@@ -2,10 +2,16 @@
 
 namespace socialNetworkApp.api.responses.error;
 
-public class ValidateError<TEnum>: BaseErrorRes where TEnum: Enum
+
+public class ValidateError : BaseErrorRes
+{
+    public virtual Dictionary<string, ValidateOneField> Errors { get; set; }
+    
+}
+public class ValidateError<TEnum>: ValidateError where TEnum: Enum
 {
     [DictEnumSwagger]
-    public Dictionary<string, ValidateOneField> Errors { get; set; }
+    public override Dictionary<string, ValidateOneField> Errors { get; set; }
     public TEnum testEnum { get; set; }
     
 }
