@@ -36,6 +36,7 @@ public class UserController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(UserDb), 201)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    // [MyProducesResponseType(typeof(UserDb<CreateUser>), 422)]
     public async Task<IActionResult> CreateUser(CreateUser newUser)
     {
         // ModelState.IsValid
