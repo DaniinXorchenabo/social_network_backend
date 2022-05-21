@@ -77,6 +77,7 @@ public enum AllModsEnum
      // {
      // return new ModList() {mod1, mod2};
      //  }
+     
 }
 
 
@@ -119,7 +120,10 @@ public class ModList: SortedSet<Mod>
 
 public class EnumModList: SortedSet<AllModsEnum>
 {
-    
+    public static AllModsEnum[] GetChaReaderFunc()
+    {
+        return new AllModsEnum[]{ AllModsEnum.chatReader};
+    }
     public EnumModList(AllModsEnum[] data): base()
         {
             foreach (var item in data)

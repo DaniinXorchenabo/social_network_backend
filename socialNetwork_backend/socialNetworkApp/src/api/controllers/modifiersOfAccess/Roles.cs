@@ -9,4 +9,5 @@ public class RolesFromMods
         AllModsEnum.userReader,  AllModsEnum.userUpdater, AllModsEnum.userDeleter,
         AllModsEnum.postReader, AllModsEnum.postCreator, AllModsEnum.postUpdater, AllModsEnum.postDeleter
     };
+    
 }
