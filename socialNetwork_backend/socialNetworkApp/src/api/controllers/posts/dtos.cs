@@ -1,4 +1,5 @@
 ﻿using socialNetworkApp.api.controllers.messages;
+using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
 using socialNetworkApp.api.responses.utils;
@@ -6,22 +7,56 @@ using socialNetworkApp.api.responses.utils;
 namespace socialNetworkApp.api.controllers.posts;
 
 [AddAnswerType(AnswerType.Post)]
-public record class PostDto(
-    Guid Id,
-    string Text,
-    Guid? Author,
-    DateTime CreatedAt,
-    DateTime? UpdatedAt = null,
-    int ViewedCount = 0,
-    bool IsDeleted = false
-) : EmptyAnswer;
+public class PostDto : AbstractDto
+{
+    public Guid Id { get; set; }
+    public string Text{ get; set; }
+    public Guid? Author{ get; set; }
+    public DateTime CreatedAt{ get; set; }
+    public DateTime? UpdatedAt { get; set; } = null;
+    public int ViewedCount{ get; set; } = 0;
+    public bool IsDeleted{ get; set; } = false;
 
-public record CreatePostDto(
-    string Text
+    public PostDto(Guid id = default, string text = null, Guid? author = default, DateTime createdAt = default,
+        DateTime? updatedAt = default, int viewedCount = default, bool isDeleted = default)
+    {
+        Id = id;
+        Text = text ?? throw new ArgumentNullException(nameof(text));
+        Author = author;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+        ViewedCount = viewedCount;
+        IsDeleted = isDeleted;
+    }
+    public PostDto(object obj) : base(obj){}
     
-) : EmptyAnswer;
+    public PostDto(){}
+}
 
-public record UpdatePostDto(
-    string Text
+[AddAnswerType(AnswerType.Post)]
+public class CreatePostDto : AbstractDto
+{
+    public string Text{ get; set; }
+
+    public CreatePostDto(string text = null)
+    {
+        Text = text ?? throw new ArgumentNullException(nameof(text));
+    }
+    public CreatePostDto(object obj) : base(obj){}
     
-) : EmptyAnswer;
+    public CreatePostDto(){}
+}
+
+[AddAnswerType(AnswerType.Post)]
+public class UpdatePostDto : AbstractDto
+{
+    public string Text{ get; set; }
+
+    public UpdatePostDto(string text = null)
+    {
+        Text = text ?? throw new ArgumentNullException(nameof(text));
+    }
+    public UpdatePostDto(object obj) : base(obj){}
+    
+    public UpdatePostDto(){}
+}

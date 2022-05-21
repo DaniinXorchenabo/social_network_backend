@@ -5,9 +5,19 @@ using socialNetworkApp.api.enums;
 
 namespace socialNetworkApp.api.responses;
 
-public record BaseAnswerRes<TData>(AnswerType Type, TData Data);
+public class BaseAnswerRes<TData> where TData: EmptyAnswer
+{
+    public BaseAnswerRes(AnswerType type = default, TData data = default)
+    {
+        Type = type;
+        Data = data ?? throw new ArgumentNullException(nameof(data));
+    }
 
-public record class EmptyAnswer : BaseResponsePart
+    public AnswerType Type { get; set; }
+    public TData Data { get; set; }
+}
+
+public class EmptyAnswer : BaseResponsePart
 {
     
 }

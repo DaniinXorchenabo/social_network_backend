@@ -2,15 +2,15 @@
 
 namespace socialNetworkApp.api.responses;
 
-public record class BaseErrorRes : EmptyError
+public  class BaseErrorRes : EmptyError
 {
-    public ErrorType Type;
-    public string Name;
-    public string? Summary;
-    public string? Description = null;
+    public ErrorType Type { get; set; }
+    public string Name{ get; set; }
+    public string? Summary{ get; set; }
+    public string? Description{ get; set; } = null;
 }
 
-public record class EmptyError : BaseResponsePart
+public  class EmptyError : BaseResponsePart
 {
     
 }
