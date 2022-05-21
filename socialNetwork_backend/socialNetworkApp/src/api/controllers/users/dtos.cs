@@ -10,57 +10,85 @@ using socialNetworkApp.api.responses.utils;
 namespace socialNetworkApp.api.controllers.users;
 
 [AddAnswerType(AnswerType.UserAnswer)]
-public record class UserDto(
-    Guid Id,
-    string Username,
-    string HashedPassword
-) : EmptyAnswer;
-
-
-public class UserDtoAbstract : AbstractDto
+public  class UserDto : AbstractDto
 {
-    private static HashSet<string> _MyProperties { get; set; }
-
-    public virtual HashSet<string> MyProperties
-    {
-        get => UserDtoAbstract._MyProperties;
-    }
-
-    static UserDtoAbstract()
-    {
-        var classType = typeof(UserDtoAbstract);
-        _MyProperties = new HashSet<string>();
-        _ = classType.GetProperties()
-            .Where(x => x.PropertyType.IsPublic)
-            .Select(x => _MyProperties.Add(x.Name));
-    }
+    public Guid Id{ get; set; }
+    public string Username{ get; set; }
+    public string HashedPassword{ get; set; }
     
+    public UserDto(object obj) : base(obj){}
     
-    [Required] [EmailAddress] [Display(Name="email")] public virtual string Email { get; set; } = default!;
-    [Required][Display(Name="username")]  public virtual string Username { get; set; } = default!;
-    [Required][Display(Name="name")] public virtual string Name { get; set; } = default!;
-    [Required][Display(Name="surname")] public virtual string Surname { get; set; } = default!;
+    public UserDto(){}
 }
 
 
+// public interface EmailField
+// {
+//     
+//
+// }
+[AddAnswerType(AnswerType.UserAnswer)]
+public class UserDtoAbstract : AbstractDto //, EmailField
+{
+    // private static HashSet<string> _MyProperties { get; set; }
+    //
+    // public virtual HashSet<string> MyProperties
+    // {
+    //     get => UserDtoAbstract._MyProperties;
+    // }
+    //
+    // static UserDtoAbstract()
+    // {
+    //     var classType = typeof(UserDtoAbstract);
+    //     _MyProperties = new HashSet<string>();
+    //     _ = classType.GetProperties()
+    //         .Where(x => x.PropertyType.IsPublic)
+    //         .Select(x => _MyProperties.Add(x.Name));
+    // }
+    
+    
+    [Required][Display(Name="username")]  public virtual string Username { get; set; } = default!;
+    [Required][Display(Name="name")] public virtual string Name { get; set; } = default!;
+    [Required][Display(Name="surname")] public virtual string Surname { get; set; } = default!;
+    [Required] [EmailAddress] [Display(Name="email")] public string Email { get; set; }
+    
+    public UserDtoAbstract(object obj) : base(obj){}
+    
+    public UserDtoAbstract(){}
+}
+
+
+[AddAnswerType(AnswerType.UserAnswer)]
 public class CreateUser: UserDtoAbstract
 {
-    private static HashSet<string> _MyProperties { get; set; }
-
-    public virtual HashSet<string> MyProperties
-    {
-        get => CreateUser._MyProperties;
-    }
-
-    static CreateUser()
-    {
-        var classType = typeof(CreateUser);
-        _MyProperties = new HashSet<string>();
-        _ = classType.GetProperties()
-            .Where(x => x.PropertyType.IsPublic)
-            .Select(x => _MyProperties.Add(x.Name));
-    }
+    // private static HashSet<string> _MyProperties { get; set; }
+    //
+    // public virtual HashSet<string> MyProperties
+    // {
+    //     get => CreateUser._MyProperties;
+    // }
+    //
+    // static CreateUser()
+    // {
+    //     var classType = typeof(CreateUser);
+    //     _MyProperties = new HashSet<string>();
+    //     _ = classType.GetProperties()
+    //         .Where(x => x.PropertyType.IsPublic)
+    //         .Select(x => _MyProperties.Add(x.Name));
+    // }
     
     [Required][Display(Name="password")] public string Password { get; set; }
     // [JsonIgnore][Display(Name="hashed_password")] public string HashedPassword { get; set; }
+    public CreateUser(object obj) : base(obj){}
+    
+    public CreateUser(){}
+}
+
+[AddAnswerType(AnswerType.UserAnswer)]
+public class GetUser : UserDtoAbstract
+{
+    [Required][Display(Name="id")] public virtual Guid Id { get; set; } = default!;
+    public GetUser(object obj) : base(obj){}
+    
+    public GetUser(){}
 }
