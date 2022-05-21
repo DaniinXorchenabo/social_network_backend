@@ -34,9 +34,9 @@ public class UserController : Controller
 
     [HttpPost("new")]
     [ValidationActionFilter]
-    [ProducesResponseType(typeof(UserDb), 201)]
+    [ProducesResponseType(typeof(UserAnswer), 201)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    // [MyProducesResponseType(typeof(UserDb<CreateUser>), 422)]
+    [MyProducesResponseType(typeof(UserAnswer<CreateUser>), 422)]
     public async Task<IActionResult> CreateUser(CreateUser newUser)
     {
         // ModelState.IsValid
@@ -52,9 +52,10 @@ public class UserController : Controller
             Console.WriteLine(newUserDb);
             await db.Users.AddAsync(newUserDb);
             await db.SaveChangesAsync();
+            return new Resp(201, new UserAnswer(newUserDb));
         }
 
-        return new Resp(201, newUser);
+        
     }
     
     [HttpGet("")]

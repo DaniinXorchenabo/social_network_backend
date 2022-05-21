@@ -43,6 +43,7 @@ public class MessagesController : Controller
 
     [HttpPost("chat/{chat_id:guid}/new")]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
+    [MyProducesResponseType(typeof(MessageAnswer<CreateMessageDto>), 422)]
     public async Task< IActionResult> SendMessage(Guid chat_id, CreateMessageDto new_msg)
     {
         return new Resp(200, new MessageAnswer(
@@ -52,10 +53,11 @@ public class MessagesController : Controller
 
     [HttpPut("chat/{chat_id:guid}/edit/{message_id:guid}")]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult>  EditMessage(Guid chat_id, Guid message_id, string new_text)
+    [MyProducesResponseType(typeof(MessageAnswer<UpdateMessageDto>), 422)]
+    public async Task< IActionResult>  EditMessage(Guid chat_id, Guid message_id, UpdateMessageDto updateMsg)
     {
         return new Resp(200, new MessageAnswer(
-            new MessageDto(message_id, new_text, Guid.NewGuid(), chat_id, DateTime.Now, updatedAt: DateTime.Now)));
+            new MessageDto(message_id, updateMsg.new_text, Guid.NewGuid(), chat_id, DateTime.Now, updatedAt: DateTime.Now)));
     }
 
     [HttpDelete("chat/{chat_id:guid}/delete/{message_id:guid}")]

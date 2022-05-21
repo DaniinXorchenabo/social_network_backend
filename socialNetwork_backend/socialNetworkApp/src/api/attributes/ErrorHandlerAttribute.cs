@@ -18,9 +18,6 @@ namespace System.Web.Http.Filters
 
             if (!modelState.IsValid)
             {
-                // TODO: проверить работоспособность этой штуки.
-                // TODO: Найти способ валидировать ошибки при создании модели
-
                 Type validationErrorAnswerType = (actionContext.ActionDescriptor.FilterDescriptors
                     .FirstOrDefault(x => x.Filter.GetType() == typeof(MyProducesResponseTypeAttribute))
                     ?.Filter as MyProducesResponseTypeAttribute).Type;

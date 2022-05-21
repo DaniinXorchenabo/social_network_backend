@@ -7,20 +7,20 @@ using socialNetworkApp.api.responses.utils;
 namespace socialNetworkApp.api.controllers.chat;
 
 [AddAnswerType(AnswerType.Chat)]
-public  class ChatDto : AbstractDto
+public class ChatDto : AbstractDto
 {
-    public Guid Id{ get; set; }
-    public string Name{ get; set; }
-    public DateTime CreatedAt{ get; set; }
-    public List<Guid> Users{ get; set; }
-    public Guid? UserCreator{ get; set; }
-    public Guid? GroupCreator{ get; set; } = null;
-    public ChatCreatorType ChatCreatorType{ get; set; } = ChatCreatorType.User;
-    public ChatType ChatType { get; set; }= ChatType.Simple;
-    public List<Guid>? Admins{ get; set; } = null;
-    public List<Guid>? BlackList{ get; set; } = null;
-    public string? Photo{ get; set; } = null;
-    public string? InvitationUrl{ get; set; } = null;
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public List<Guid> Users { get; set; }
+    public Guid? UserCreator { get; set; }
+    public Guid? GroupCreator { get; set; } = null;
+    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    public ChatType ChatType { get; set; } = ChatType.Simple;
+    public List<Guid>? Admins { get; set; } = null;
+    public List<Guid>? BlackList { get; set; } = null;
+    public string? Photo { get; set; } = null;
+    public string? InvitationUrl { get; set; } = null;
 
     public ChatDto(Guid id = default, string name = null, DateTime createdAt = default, List<Guid> users = null,
         Guid? userCreator = default, Guid? groupCreator = default, ChatCreatorType chatCreatorType = default,
@@ -40,28 +40,32 @@ public  class ChatDto : AbstractDto
         Photo = photo;
         InvitationUrl = invitationUrl;
     }
-    
-    public ChatDto(object obj) : base(obj){}
-    
-    public ChatDto(){}
+
+    public ChatDto(object obj) : base(obj)
+    {
+    }
+
+    public ChatDto()
+    {
+    }
 }
 
 [AddAnswerType(AnswerType.Chat)]
-public  class ChatWithMessageDto : AbstractDto
+public class ChatWithMessageDto : AbstractDto
 {
-    public Guid Id{ get; set; }
-    public string Name{ get; set; }
-    public DateTime CreatedAt{ get; set; }
-    public List<Guid> Users{ get; set; }
-    public Guid? UserCreator{ get; set; }
-    public MessageDto? Message{ get; set; }
-    public Guid? GroupCreator{ get; set; } = null;
-    public ChatCreatorType ChatCreatorType{ get; set; } = ChatCreatorType.User;
-    public ChatType ChatType{ get; set; } = ChatType.Simple;
-    public List<Guid>? Admins{ get; set; } = null;
-    public List<Guid>? BlackList{ get; set; } = null;
-    public string? Photo{ get; set; } = null;
-    public string? InvitationUrl{ get; set; } = null;
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public List<Guid> Users { get; set; }
+    public Guid? UserCreator { get; set; }
+    public MessageDto? Message { get; set; }
+    public Guid? GroupCreator { get; set; } = null;
+    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    public ChatType ChatType { get; set; } = ChatType.Simple;
+    public List<Guid>? Admins { get; set; } = null;
+    public List<Guid>? BlackList { get; set; } = null;
+    public string? Photo { get; set; } = null;
+    public string? InvitationUrl { get; set; } = null;
 
     public ChatWithMessageDto(Guid id = default, string name = null, DateTime createdAt = default,
         List<Guid> users = null, Guid? userCreator = default, MessageDto? message = null, Guid? groupCreator = default,
@@ -82,21 +86,28 @@ public  class ChatWithMessageDto : AbstractDto
         Photo = photo;
         InvitationUrl = invitationUrl;
     }
-    
-    public ChatWithMessageDto(object obj) : base(obj){}
-    
-    public ChatWithMessageDto(){}
+
+    public ChatWithMessageDto(object obj) : base(obj)
+    {
+    }
+
+    public ChatWithMessageDto()
+    {
+    }
 }
+
 [AddAnswerType(AnswerType.Chat)]
 public class CreateChatDto : AbstractDto
 {
-    public string Name{ get; set; }
-    public List<Guid> Users{ get; set; }
+    public string Name { get; set; }
+
+    public List<Guid> Users { get; set; }
+
     // public Guid? UserCreator;
     // public Guid? GroupCreator = null;
-    public ChatCreatorType ChatCreatorType { get; set; }= ChatCreatorType.User;
-    public ChatType ChatType{ get; set; } = ChatType.Simple;
-    public string? Photo{ get; set; } = null;
+    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    public ChatType ChatType { get; set; } = ChatType.Simple;
+    public string? Photo { get; set; } = null;
 
     public CreateChatDto(string name = null, List<Guid> users = null, Guid? userCreator = default,
         Guid? groupCreator = default, ChatCreatorType chatCreatorType = default, ChatType chatType = default,
@@ -110,16 +121,22 @@ public class CreateChatDto : AbstractDto
         ChatType = chatType;
         Photo = photo;
     }
-    public CreateChatDto(object obj) : base(obj){}
-    
-    public CreateChatDto(){}
+
+    public CreateChatDto(object obj) : base(obj)
+    {
+    }
+
+    public CreateChatDto()
+    {
+    }
 }
+
 [AddAnswerType(AnswerType.Chat)]
 public class UpdateChatDto : AbstractDto
 {
-    public string Name{ get; set; }
-    public ChatType ChatType{ get; set; } = ChatType.Simple;
-    public string? Photo{ get; set; } = null;
+    public string Name { get; set; }
+    public ChatType ChatType { get; set; } = ChatType.Simple;
+    public string? Photo { get; set; } = null;
 
     public UpdateChatDto(string name = null, ChatType chatType = default, string? photo = null)
     {
@@ -127,7 +144,20 @@ public class UpdateChatDto : AbstractDto
         ChatType = chatType;
         Photo = photo;
     }
-    public UpdateChatDto(object obj) : base(obj){}
-    
-    public UpdateChatDto(){}
+
+    public UpdateChatDto(object obj) : base(obj)
+    {
+    }
+
+    public UpdateChatDto()
+    {
+    }
+}
+
+
+[AddAnswerType(AnswerType.Chat)]
+public class UpdateChatUsersDto : AbstractDto
+{
+    public UserOperationClass op { get; set; }
+    public Guid[] users { get; set; }
 }

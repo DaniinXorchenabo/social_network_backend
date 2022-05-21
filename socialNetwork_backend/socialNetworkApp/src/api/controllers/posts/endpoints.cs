@@ -67,6 +67,7 @@ public class PostController : Controller
 
     [HttpPost("new")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
+    [MyProducesResponseType(typeof(PostAnswer<CreatePostDto>), 422)]
     public async Task< IActionResult> SendMessage(CreatePostDto newPostDto)
     {
         return new Resp(200, new PostAnswer(
@@ -75,6 +76,7 @@ public class PostController : Controller
 
     [HttpPut("edit/{post_id:guid}")]
     [ProducesResponseType(typeof(PostAnswer), StatusCodes.Status200OK)]
+    [MyProducesResponseType(typeof(PostAnswer<UpdatePostDto>), 422)]
     public async Task< IActionResult> EditMessage(Guid postId, UpdatePostDto updatedPostDto)
     {
         return new Resp(200, new PostAnswer(

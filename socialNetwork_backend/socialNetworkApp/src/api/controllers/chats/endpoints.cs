@@ -149,7 +149,8 @@ public class ChatController : Controller
 
     [HttpPut("edit/metainfo/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> CreateChat(Guid chat_id, UpdateChatDto updatedChatDto)
+    [MyProducesResponseType(typeof(ChatAnswer<UpdateChatDto>), 422)]
+    public async Task< IActionResult> EditMetainfoChat(Guid chat_id, UpdateChatDto updatedChatDto)
     {
         Guid a;
         return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), updatedChatDto.Name, DateTime.Today,
@@ -159,7 +160,8 @@ public class ChatController : Controller
 
     [HttpPut("edit/users/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> CreateChat(Guid chat_id, UserOperationClass op, Guid[] users)
+    [MyProducesResponseType(typeof(ChatAnswer<UpdateChatUsersDto>), 422)]
+    public async Task< IActionResult> EditUsersChat(Guid chat_id, UpdateChatUsersDto updateUsers)
     {
         Guid a;
         return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), "sdfgs", DateTime.Today,
@@ -169,7 +171,7 @@ public class ChatController : Controller
 
     [HttpDelete("dalete/{chat_id:guid}")]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> CreateChat(Guid chat_id)
+    public async Task< IActionResult> DeleteChat(Guid chat_id)
     {
         return new Resp(200, new ChatAnswer());
     }

@@ -55,3 +55,9 @@ public class CreateMessageDto : AbstractDto
     
     public CreateMessageDto(){}
 }
+
+
+public class UpdateMessageDto : AbstractDto
+{
+    public string new_text { get; set; }
+}
