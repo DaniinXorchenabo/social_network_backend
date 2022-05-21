@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <RootNamespace>socialNetworkApp</RootNamespace>
         
     </PropertyGroup>
@@ -15,6 +15,7 @@
       <PackageReference Include="dotenv.net" Version="3.1.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
+      <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,6 +29,7 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
+      <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     </ItemGroup>
 
 </Project>
