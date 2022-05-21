@@ -186,7 +186,7 @@ class Program
         }
 
 
-        app.UseMiddleware<BaseAnswerMiddleware>();
+        // app.UseMiddleware<BaseAnswerMiddleware>();
         app.MapControllers();
 
         app.UseAuthentication(); // добавление middleware аутентификации
