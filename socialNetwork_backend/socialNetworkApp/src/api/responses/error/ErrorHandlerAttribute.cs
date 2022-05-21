@@ -18,7 +18,7 @@ namespace System.Web.Http.Filters
             {
                 // TODO: проверить работоспособность этой штуки.
                 // TODO: Найти способ валидировать ошибки при создании модели
-                actionContext.Result = new Resp(422, new List<string> {"sdf", "w4s"});
+                actionContext.Result = new Resp(422, modelState);
             }
             // .CreateErrorResponse(HttpStatusCode.BadRequest, modelState);
         }
