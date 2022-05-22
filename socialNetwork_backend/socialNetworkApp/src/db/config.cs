@@ -2,6 +2,7 @@
 using socialNetworkApp.api.controllers.users;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using socialNetworkApp.api.controllers.chat;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.config;
 
@@ -17,6 +18,8 @@ public class BaseBdConnection : DbContext
     private readonly Env _env;
 
     public DbSet<UserDb> Users { get; set; } = null!;
+    public DbSet<ChatDb> Chats { get; set; } = null!;
+    public DbSet<ChatToUserDb> ChatsToUsers { get; set; } = null!;
 
     public BaseBdConnection(DbContextOptions<BaseBdConnection> options) : base(options)
     {
@@ -40,7 +43,22 @@ public class BaseBdConnection : DbContext
         Console.WriteLine(GetConnectionString(_env));
     }
 
-    protected override void OnModelCreating(ModelBuilder builder) => builder.HasPostgresEnum<AllModsEnum>();
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.HasPostgresEnum<AllModsEnum>();
+        builder.HasPostgresEnum<ChatCreatorType>();
+        builder.HasPostgresEnum<ChatType>();
+        builder.HasPostgresEnum<ChatToUserRole>();
+        builder.Entity<ChatToUserDb>().HasKey(u => new { u.UserId, u.ChatId});
+        builder.Entity<ChatToUserDb>()
+            .HasOne(u => u.UserEntity)
+            .WithMany(c => c.ChatUserEntities)
+            .HasForeignKey(u => u.UserId);
+        builder.Entity<ChatToUserDb>()
+            .HasOne(u => u.ChatEntity)
+            .WithMany(c => c.ChatUserEntities)
+            .HasForeignKey(u => u.ChatId);
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

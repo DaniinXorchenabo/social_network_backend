@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using socialNetworkApp.api.controllers.chat;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.db;
 
@@ -24,12 +25,14 @@ public class UserDb : AbstractEntity
     [Required] [Column("name")] public virtual string Name { get; set; }
 
     [Required] [Column("surname")] public virtual string Surname { get; set; }
-    //TODO: 
-    // [Required] [Column("is_deleted")] public virtual bool IsDeleted { get; set; } = false;
+    [Required] [Column("is_deleted")] public virtual bool IsDeleted { get; set; } = false;
 
     [Required]
     [Column("mods")] // [Column("mods", TypeName = "integer[]")]
     public virtual List<AllModsEnum> Mods { get; set; } = new List<AllModsEnum>();
+    
+    public List<ChatToUserDb> ChatUserEntities { get; set; } =  new List<ChatToUserDb>();
+
 
     public UserDb(object obj) : base(obj)
     {
