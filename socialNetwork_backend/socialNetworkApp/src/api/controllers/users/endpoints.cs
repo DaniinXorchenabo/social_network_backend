@@ -67,8 +67,7 @@ public class UserController : Controller
         await using (var db = Db)
         {
             var users = await (from entity in Db.Users
-                //TODO: 
-                // where entity.IsDeleted == false
+                where entity.IsDeleted == false
                 select entity).ToListAsync();
             return new Resp(200, new UserAnswer(users));
         }

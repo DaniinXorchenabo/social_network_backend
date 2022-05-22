@@ -157,12 +157,12 @@ class Program
         builder.Services.AddDbContext<BaseBdConnection>();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         
-        // var validator = builder.Services.FirstOrDefault(s => s.ServiceType == typeof(IObjectModelValidator));
-        // if (validator != null)
-        // {
-        //     builder.Services.Remove(validator);
-        //     builder.Services.Add(new ServiceDescriptor(typeof(IObjectModelValidator), _ => new NonValidatingValidator(), ServiceLifetime.Singleton));
-        // }
+        var validator = builder.Services.FirstOrDefault(s => s.ServiceType == typeof(IObjectModelValidator));
+        if (validator != null)
+        {
+            builder.Services.Remove(validator);
+            builder.Services.Add(new ServiceDescriptor(typeof(IObjectModelValidator), _ => new NonValidatingValidator(), ServiceLifetime.Singleton));
+        }
         builder.Services.Configure<ApiBehaviorOptions>(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
@@ -191,7 +191,7 @@ class Program
         }
 
 
-        // app.UseMiddleware<BaseAnswerMiddleware>();
+        app.UseMiddleware<BaseAnswerMiddleware>();
         app.MapControllers();
 
         app.UseAuthentication(); // добавление middleware аутентификации
