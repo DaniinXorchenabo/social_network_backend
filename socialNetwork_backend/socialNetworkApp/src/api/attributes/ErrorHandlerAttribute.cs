@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
@@ -39,11 +40,13 @@ namespace System.Web.Http.Filters
                             ErrorMessage=valueError.ErrorMessage
                         });
                     }
+
                     var ValObj = new ValidateOneField
                     {
                         FieldName = keyValuePair.Key,
                         Errors = errorList,
-                        ValidationState = keyValuePair.Value.ValidationState.ToString(),
+                        ValidationState = keyValuePair.Value.ValidationState
+                            
                     };
                     validateErrorIntoResp.Errors[keyValuePair.Key] = ValObj;
                 }

@@ -39,6 +39,9 @@ class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(type => $"{type.Name}_{System.Guid.NewGuid()}");
+                
+                
                 // check it: https://stackoverflow.com/questions/43447688/setting-up-swagger-asp-net-core-using-the-authorization-headers-bearer
                 // check it: https://medium.com/nerd-for-tech/authentication-and-authorization-in-net-core-web-api-using-jwt-token-and-swagger-ui-cc8d05aef03c
                 c.SwaggerDoc("v1", new OpenApiInfo

@@ -12,6 +12,7 @@ public class ValidateError<TEnum>: ValidateError where TEnum: Enum
 {
     [DictEnumSwagger]
     public override Dictionary<string, ValidateOneField> Errors { get; set; }
+    // public Dictionary<TEnum, ValidateOneField> TestErrors { get; set; }
     public TEnum testEnum { get; set; }
     
 }
@@ -27,7 +28,7 @@ public  class ValidateOneField
 {
     public string FieldName { get; set; }
     public List<OneFieldErrorValidate> Errors { get; set; }
-    public string ValidationState { get; set; }
+    public Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState ValidationState { get; set; }
 }
 
    public class OneFieldErrorValidate

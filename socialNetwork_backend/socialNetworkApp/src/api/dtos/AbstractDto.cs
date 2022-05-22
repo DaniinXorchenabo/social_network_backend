@@ -1,5 +1,8 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
+using socialNetworkApp.api.responses.utils;
 using socialNetworkApp.db;
 
 namespace socialNetworkApp.api.dtos;
@@ -43,6 +46,29 @@ public class AbstractDto: EmptyAnswer
             .Select(x => x.GetValue(this))
             .Where(x => x != null)
             .Select(x => x.ToString()));
+    }
+}
+
+[AddAnswerType(AnswerType.UserAnswer)]
+public class Pagination: AbstractDto
+{
+
+    [Required]
+    [Range(1, 1000)]
+    [Display(Name = "limit")]
+    public int Limit { get; set; } = 100;
+
+    [Required]
+    [Range(0.0, long.MaxValue)]
+    [Display(Name = "offset")]
+    public long Offset { get; set; } = 0;
+    
+    public Pagination(object obj) : base(obj)
+    {
+    }
+
+    public Pagination()
+    {
     }
 }
 

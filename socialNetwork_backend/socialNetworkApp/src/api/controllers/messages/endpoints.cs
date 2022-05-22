@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Web.Http.Filters;
+using Microsoft.AspNetCore.Mvc;
+using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.responses;
 
 namespace socialNetworkApp.api.controllers.messages;
@@ -9,8 +11,10 @@ namespace socialNetworkApp.api.controllers.messages;
 public class MessagesController : Controller
 {
     [HttpGet("chat/{chat_id:guid}")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> GetMessagesFromChat(Guid chat_id, int limit = 100, int offset = 0)
+    [MyProducesResponseType(typeof(MessageAnswer<Pagination>), 422)]
+    public async Task< IActionResult> GetMessagesFromChat(Guid chat_id, [FromQuery] Pagination pagination)
     {
         return new Resp(200, new MessageAnswer(
             new MessageDto(Guid.NewGuid(), "sf", Guid.NewGuid(), chat_id, DateTime.Now),
@@ -20,8 +24,10 @@ public class MessagesController : Controller
     }
 
     [HttpGet("chat/{chat_id:guid}/datatime")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> GetMessagesFromChatThroughData(Guid chat_id, DateTime dateTime, int limit = 100)
+    [MyProducesResponseType(typeof(MessageAnswer<Pagination>), 422)]
+    public async Task< IActionResult> GetMessagesFromChatThroughData(Guid chat_id, DateTime dateTime, [FromQuery] Pagination pagination)
     {
         return new Resp(200, new MessageAnswer(
             new MessageDto(Guid.NewGuid(), "sf", Guid.NewGuid(), chat_id, DateTime.Now),
@@ -31,8 +37,10 @@ public class MessagesController : Controller
     }
 
     [HttpGet("chat/{chat_id:guid}/search/text")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> SearchMessagesFromChat(Guid chat_id, string foundText, int limit = 100, int offset = 0)
+    [MyProducesResponseType(typeof(MessageAnswer<Pagination>), 422)]
+    public async Task< IActionResult> SearchMessagesFromChat(Guid chat_id, string foundText, [FromQuery] Pagination pagination)
     {
         return new Resp(200, new MessageAnswer(
             new MessageDto(Guid.NewGuid(), "sf", Guid.NewGuid(), chat_id, DateTime.Now),
@@ -42,6 +50,7 @@ public class MessagesController : Controller
     }
 
     [HttpPost("chat/{chat_id:guid}/new")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(MessageAnswer<CreateMessageDto>), 422)]
     public async Task< IActionResult> SendMessage(Guid chat_id, CreateMessageDto new_msg)
@@ -52,6 +61,7 @@ public class MessagesController : Controller
     }
 
     [HttpPut("chat/{chat_id:guid}/edit/{message_id:guid}")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(MessageAnswer<UpdateMessageDto>), 422)]
     public async Task< IActionResult>  EditMessage(Guid chat_id, Guid message_id, UpdateMessageDto updateMsg)
@@ -61,6 +71,7 @@ public class MessagesController : Controller
     }
 
     [HttpDelete("chat/{chat_id:guid}/delete/{message_id:guid}")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
     public async Task< IActionResult> DeleteMessage(Guid chat_id, Guid message_id)
     {

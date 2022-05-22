@@ -9,6 +9,7 @@ using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.config;
 using socialNetworkApp.db;
 using System.Security.Cryptography;
+using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.api.controllers.users;
@@ -30,6 +31,7 @@ public class AuthController : Controller
     }
 
     [HttpPost("token")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(TokenAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces("application/json")]
@@ -88,6 +90,7 @@ public class AuthController : Controller
     }
 
     [HttpPost("token/data_as_body")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(TokenAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces("application/json")]

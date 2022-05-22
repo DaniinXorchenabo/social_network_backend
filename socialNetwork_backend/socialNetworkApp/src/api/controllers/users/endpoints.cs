@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,7 @@ using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using socialNetworkApp.api.controllers.auth;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
+using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.responses;
 
 namespace socialNetworkApp.api.controllers.users;
@@ -39,6 +41,7 @@ public class UserController : Controller
     [MyProducesResponseType(typeof(UserAnswer<CreateUser>), 422)]
     public async Task<IActionResult> CreateUser(CreateUser newUser)
     {
+        // var d = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
         // ModelState.IsValid
         await using (var db = Db)
         {
@@ -46,7 +49,7 @@ public class UserController : Controller
             {
                 Id = Guid.NewGuid(),
                 HashedPassword = Security.GetHashedPassword(newUser.Password),
-                Mods = new List<AllModsEnum>(RolesFromMods.User) 
+                Mods = new List<AllModsEnum>(RolesFromMods.User)
             };
             Console.WriteLine(newUser);
             Console.WriteLine(newUserDb);
@@ -54,14 +57,15 @@ public class UserController : Controller
             await db.SaveChangesAsync();
             return new Resp(201, new UserAnswer(newUserDb));
         }
-
-        
     }
-    
+
     [HttpGet("")]
+    [ValidationActionFilter]
     [ProducesResponseType(typeof(UserAnswer), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPublicUser()
+    [MyProducesResponseType(typeof(UserAnswer<Pagination>), 422)]
+    public async Task<IActionResult> GetPublicUser([FromQuery] Pagination pagination)
     {
+        Console.WriteLine(pagination.ToString());
         // ModelState.IsValid
         await using (var db = Db)
         {
@@ -72,8 +76,8 @@ public class UserController : Controller
             return new Resp(200, new UserAnswer(users));
         }
     }
-    
 }
+
 
 public static class AuthOptions
 {

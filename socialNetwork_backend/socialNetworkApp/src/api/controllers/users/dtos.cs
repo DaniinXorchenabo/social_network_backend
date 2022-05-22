@@ -33,7 +33,7 @@ public class UserDtoAbstract : AbstractDto //, EmailField
     [Required][Display(Name="username")]  public virtual string Username { get; set; } = default!;
     [Required][Display(Name="name")] public virtual string Name { get; set; } = default!;
     [Required][Display(Name="surname")] public virtual string Surname { get; set; } = default!;
-    [Required] [EmailAddress] [Display(Name="email")] public string Email { get; set; }
+    [Required][EmailAddress] [Display(Name="email")] public string Email { get; set; }
     
     public UserDtoAbstract(object obj) : base(obj){}
     
