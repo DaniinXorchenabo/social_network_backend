@@ -103,8 +103,6 @@ public class CreateChatDto : AbstractDto
 
     public List<Guid> Users { get; set; }
 
-    // public Guid? UserCreator;
-    // public Guid? GroupCreator = null;
     public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
     public ChatType ChatType { get; set; } = ChatType.Simple;
     public string? Photo { get; set; } = null;
@@ -115,8 +113,6 @@ public class CreateChatDto : AbstractDto
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Users = users ?? throw new ArgumentNullException(nameof(users));
-        // UserCreator = userCreator;
-        // GroupCreator = groupCreator;
         ChatCreatorType = chatCreatorType;
         ChatType = chatType;
         Photo = photo;
@@ -153,7 +149,6 @@ public class UpdateChatDto : AbstractDto
     {
     }
 }
-
 
 [AddAnswerType(AnswerType.Chat)]
 public class UpdateChatUsersDto : AbstractDto

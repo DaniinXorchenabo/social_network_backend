@@ -3,7 +3,7 @@
 public class BaseAnswerMiddleware
 {
     private readonly RequestDelegate _next;
-    
+
     public BaseAnswerMiddleware(RequestDelegate next)
     {
         this._next = next;
@@ -12,6 +12,5 @@ public class BaseAnswerMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         await _next.Invoke(context);
-        
     }
 }

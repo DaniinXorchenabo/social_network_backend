@@ -6,18 +6,16 @@ using socialNetworkApp.api.responses;
 
 namespace socialNetworkApp.api.controllers.test;
 
-
 [ApiController]
 [Route("api/test")]
 [Produces("application/json")]
 public class Test : Controller
 {
-    // GET
     [HttpGet("all")]
     [ValidationActionFilter]
     public PointAnswer GetAllPoints([FromQuery] Pagination pagination)
     {
-        return new (new Point(1, 2), new Point(5, 1));
+        return new(new Point(1, 2), new Point(5, 1));
     }
 
     [HttpGet("get/{x:int}.{y:int}")]

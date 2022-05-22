@@ -22,6 +22,7 @@ public class UserDb : AbstractEntity
     [Unicode] [Required] [Column("email")] public virtual string Email { get; set; }
     [Required] [Column("hashed_password")] public virtual string HashedPassword { get; set; }
     [Required] [Column("name")] public virtual string Name { get; set; }
+
     [Required] [Column("surname")] public virtual string Surname { get; set; }
     //TODO: 
     // [Required] [Column("is_deleted")] public virtual bool IsDeleted { get; set; } = false;
@@ -29,8 +30,6 @@ public class UserDb : AbstractEntity
     [Required]
     [Column("mods")] // [Column("mods", TypeName = "integer[]")]
     public virtual List<AllModsEnum> Mods { get; set; } = new List<AllModsEnum>();
-
-    // public virtual List<ModifiersOfAccessDb> Mods { get; set; } = new List<ModifiersOfAccessDb>();
 
     public UserDb(object obj) : base(obj)
     {

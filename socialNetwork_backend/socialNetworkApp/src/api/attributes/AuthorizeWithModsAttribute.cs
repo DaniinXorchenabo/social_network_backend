@@ -9,58 +9,8 @@ namespace socialNetworkApp.api.controllers.auth;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class AuthorizeWithModsAttribute : AuthorizeAttribute, IAuthorizeData
 {
-    /*protected ModList CurrentMods = new ModList() { };
-    
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthorizeAttribute"/> class.
-    /// </summary>
-    public AuthorizeWithModsAttribute()
-    {
-    }
-    
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthorizeAttribute"/> class with the specified policy.
-    /// </summary>
-    /// <param name="policy">The name of the policy to require for authorization.</param>
-    public AuthorizeWithModsAttribute(string policy)
-    {
-        Policy = policy;
-    }
-    
-    public AuthorizeWithModsAttribute(Mod mod)
-    {
-        this.QuantityMod = mod;
-    }
-    
-    public AuthorizeWithModsAttribute(AllModsEnum mod)
-    {
-        this.QuantityMod = mod;
-    }
-    
-    public AuthorizeWithModsAttribute(ModList mods)
-    {
-        this.Mods = mods;
-    }
-    
-    
-    public ModList Mods
-    {
-        get { return CurrentMods; }
-        set { CurrentMods += value; }
-    }
-    
-    public Mod QuantityMod
-    {
-        set { CurrentMods += value; }
-    }*/
-    
     protected EnumModList CurrentMods = new EnumModList() { };
-    
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthorizeAttribute"/> class with the specified policy.
-    /// </summary>
-    /// <param name="policy">The name of the policy to require for authorization.</param>
     public AuthorizeWithModsAttribute(string policy)
     {
         Policy = policy;
@@ -70,7 +20,7 @@ public class AuthorizeWithModsAttribute : AuthorizeAttribute, IAuthorizeData
     {
         this.QuantityMod = mod;
     }
-    
+
     public AuthorizeWithModsAttribute(params AllModsEnum[] mod)
     {
         foreach (var allModsEnum in mod)
@@ -101,12 +51,12 @@ public class AuthorizeWithModsAttribute : AuthorizeAttribute, IAuthorizeData
             }
         }
     }
-    
+
     public AllModsEnum QuantityMod
     {
         set
         {
-            CurrentMods += value; 
+            CurrentMods += value;
             if (Roles == "" | Roles == null)
             {
                 Roles = value.ToString();
@@ -117,13 +67,4 @@ public class AuthorizeWithModsAttribute : AuthorizeAttribute, IAuthorizeData
             }
         }
     }
-
-    // public Mod Mods
-    // {
-    //     set
-    //     {
-    //         CurrentMods += value;
-    //         
-    //     }
-    // }
 }

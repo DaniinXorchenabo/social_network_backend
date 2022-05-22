@@ -7,23 +7,22 @@ using socialNetworkApp.db;
 
 namespace socialNetworkApp.api.dtos;
 
-public class AbstractDto: EmptyAnswer
+public class AbstractDto : EmptyAnswer
 {
-    
     public AbstractDto(object obj)
     {
         var myStaticData = DtoStaticData.AllClasses[this.GetType()];
         var ObjFields = EntityStaticData.AllClasses[obj.GetType()].PropertiesAsString;
         var moveFields = new HashSet<string>(ObjFields);
         moveFields.IntersectWith(myStaticData.PropertiesAsString);
-        
+
         Console.WriteLine($"-------------- {this.GetType().Name}");
         Console.WriteLine(string.Join(", ", ObjFields));
         Console.WriteLine(string.Join(", ", myStaticData.PropertiesAsString));
         Console.WriteLine(string.Join(", ", moveFields));
         Console.WriteLine("--------------");
-        
-        
+
+
         foreach (var moveField in moveFields)
         {
             this.GetType().GetProperty(moveField).SetValue(
@@ -50,9 +49,8 @@ public class AbstractDto: EmptyAnswer
 }
 
 [AddAnswerType(AnswerType.UserAnswer)]
-public class Pagination: AbstractDto
+public class Pagination : AbstractDto
 {
-
     [Required]
     [Range(1, 1000)]
     [Display(Name = "limit")]
@@ -62,7 +60,7 @@ public class Pagination: AbstractDto
     [Range(0.0, long.MaxValue)]
     [Display(Name = "offset")]
     public long Offset { get; set; } = 0;
-    
+
     public Pagination(object obj) : base(obj)
     {
     }
@@ -86,8 +84,8 @@ public class DtoStaticData
         var newObj = new DtoStaticData(cls);
         AllClasses[cls] = newObj;
         IEnumerable<Type> list = Assembly.GetAssembly(cls).GetTypes()
-            .Where(type => type.IsSubclassOf(cls)); // using System.Linq
-        
+            .Where(type => type.IsSubclassOf(cls));
+
         foreach (var itm in list)
         {
             RecursionInitObjects(itm);
@@ -95,6 +93,7 @@ public class DtoStaticData
     }
 
     public HashSet<string> PropertiesAsString { get; set; } = new HashSet<string>();
+
     public DtoStaticData(Type initType)
     {
         _ = initType.GetProperties()

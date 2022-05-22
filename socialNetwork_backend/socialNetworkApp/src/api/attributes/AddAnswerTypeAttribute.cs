@@ -2,7 +2,7 @@
 
 namespace socialNetworkApp.api.responses.utils;
 
-public class AddAnswerTypeAttribute: Attribute
+public class AddAnswerTypeAttribute : Attribute
 {
     public AnswerType Type { get; set; }
 

@@ -16,6 +16,7 @@ public class Mod
     {
         return Name;
     }
+
     public static ModList operator +(Mod mod1, Mod mod2)
     {
         return new ModList() {mod1, mod2};
@@ -68,34 +69,44 @@ public static class AllMods
 
 public enum AllModsEnum
 {
-    msgReader, msgCreator, msgUpdater, msgDeleter,
-    chatReader, chatCreator, chatUpdater, chatDeleter,
-    userReader, userCreator, userUpdater, userDeleter,
-    postReader, postCreator, postUpdater, postDeleter
-    
-     // public static ModList operator +(AllModsEnum mod1, AllModsEnum mod2)
-     // {
-     // return new ModList() {mod1, mod2};
-     //  }
-     
+    msgReader,
+    msgCreator,
+    msgUpdater,
+    msgDeleter,
+    chatReader,
+    chatCreator,
+    chatUpdater,
+    chatDeleter,
+    userReader,
+    userCreator,
+    userUpdater,
+    userDeleter,
+    postReader,
+    postCreator,
+    postUpdater,
+    postDeleter
+
+    // public static ModList operator +(AllModsEnum mod1, AllModsEnum mod2)
+    // {
+    // return new ModList() {mod1, mod2};
+    //  }
 }
 
-
-public class ModList: SortedSet<Mod>
+public class ModList : SortedSet<Mod>
 {
     public static ModList operator +(ModList list, Mod mod)
     {
         list.Add(mod);
         return list;
     }
-    
-    public static ModList operator +( Mod mod, ModList list)
+
+    public static ModList operator +(Mod mod, ModList list)
     {
         list.Add(mod);
         return list;
     }
-    
-    public static ModList operator +( ModList list1, ModList list2)
+
+    public static ModList operator +(ModList list1, ModList list2)
     {
         list1.UnionWith(list2);
         return list1;
@@ -118,38 +129,38 @@ public class ModList: SortedSet<Mod>
     }
 }
 
-public class EnumModList: SortedSet<AllModsEnum>
+public class EnumModList : SortedSet<AllModsEnum>
 {
     public static AllModsEnum[] GetChaReaderFunc()
     {
-        return new AllModsEnum[]{ AllModsEnum.chatReader};
+        return new AllModsEnum[] {AllModsEnum.chatReader};
     }
-    public EnumModList(AllModsEnum[] data): base()
-        {
-            foreach (var item in data)
-            {
-                this.Add(item);
-            }
-        }
 
-    public EnumModList(): base()
+    public EnumModList(AllModsEnum[] data) : base()
     {
-        
+        foreach (var item in data)
+        {
+            this.Add(item);
+        }
     }
-    
+
+    public EnumModList() : base()
+    {
+    }
+
     public static EnumModList operator +(EnumModList list, AllModsEnum mod)
     {
         list.Add(mod);
         return list;
     }
-    
-    public static EnumModList operator +( AllModsEnum mod, EnumModList list)
+
+    public static EnumModList operator +(AllModsEnum mod, EnumModList list)
     {
         list.Add(mod);
         return list;
     }
-    
-    public static EnumModList operator +( EnumModList list1, EnumModList list2)
+
+    public static EnumModList operator +(EnumModList list1, EnumModList list2)
     {
         list1.UnionWith(list2);
         return list1;

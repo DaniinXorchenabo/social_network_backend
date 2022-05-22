@@ -15,34 +15,16 @@ namespace socialNetworkApp.api.controllers.chat;
 [Produces("application/json")]
 public class ChatController : Controller
 {
-    /// <summary>
-    /// Creates a TodoItem.
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns>A newly created TodoItem</returns>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /Todo
-    ///     {
-    ///        "id": 1,
-    ///        "name": "Item #1",
-    ///        "isComplete": true
-    ///     }
-    ///
-    /// </remarks>
-    /// <response code="201">Returns the newly created item</response>
-    /// <response code="400">If the item is null</response>
     [HttpGet("get/last")]
     [Authorize]
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [MyProducesResponseType(typeof(ChatAnswer<Pagination>), 422)]
-    public async Task< IActionResult> GelLastChats( [FromQuery] Pagination pagination)
+    public async Task<IActionResult> GelLastChats([FromQuery] Pagination pagination)
     {
         Guid a;
-        return  new Resp(200, new ChatAnswer(
+        return new Resp(200, new ChatAnswer(
             new ChatDto(Guid.NewGuid(), "n", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a),
@@ -57,17 +39,17 @@ public class ChatController : Controller
                 a))
         );
     }
-    
+
     [HttpGet("get/with_message/last")]
     [ValidationActionFilter]
     [AuthorizeWithMods(AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswerWithMessage<Pagination>), 422)]
-    public async Task< IActionResult> GelLastChatsWithlastMessage([FromQuery] Pagination pagination)
+    public async Task<IActionResult> GelLastChatsWithlastMessage([FromQuery] Pagination pagination)
     {
         Guid a;
         Guid chat_id;
-        return  new Resp(200, new ChatAnswerWithMessage(
+        return new Resp(200, new ChatAnswerWithMessage(
             new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
                 new List<Guid>()
                     {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
@@ -88,18 +70,15 @@ public class ChatController : Controller
             )));
     }
 
-    
-    
-
 
     [HttpGet("get/{chat_id:guid}")]
     [ValidationActionFilter]
     [AuthorizeWithMods(AllModsEnum.chatCreator, AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> GelChatOnId(Guid chat_id)
+    public async Task<IActionResult> GelChatOnId(Guid chat_id)
     {
         Guid a;
-        return  new Resp(200, new ChatAnswer(
+        return new Resp(200, new ChatAnswer(
             new ChatDto(chat_id, "n", DateTime.Today,
                 new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
                 a)));
@@ -109,7 +88,7 @@ public class ChatController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswer<Pagination>), 422)]
-    public async Task< IActionResult> SearchChatOnName(string name, [FromQuery] Pagination pagination)
+    public async Task<IActionResult> SearchChatOnName(string name, [FromQuery] Pagination pagination)
     {
         Guid a;
         return new Resp(200, new ChatAnswer(
@@ -122,7 +101,7 @@ public class ChatController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswerWithMessage<Pagination>), 422)]
-    public async Task< IActionResult> SearchChatOnTestMessage(string messageText, [FromQuery] Pagination pagination)
+    public async Task<IActionResult> SearchChatOnTestMessage(string messageText, [FromQuery] Pagination pagination)
     {
         Guid a;
         Guid chat_id;
@@ -139,8 +118,7 @@ public class ChatController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), StatusCodes.Status201Created)]
     [MyProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), 422)]
-
-    public async Task< IActionResult> CreateChat(CreateChatDto newChatDto)
+    public async Task<IActionResult> CreateChat(CreateChatDto newChatDto)
     {
         Guid a;
         return new Resp(201, new ChatAnswerWithMessage(new ChatWithMessageDto(
@@ -164,10 +142,10 @@ public class ChatController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswer<UpdateChatDto>), 422)]
-    public async Task< IActionResult> EditMetainfoChat(Guid chat_id, UpdateChatDto updatedChatDto)
+    public async Task<IActionResult> EditMetainfoChat(Guid chat_id, UpdateChatDto updatedChatDto)
     {
         Guid a;
-        return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), updatedChatDto.Name, DateTime.Today,
+        return new Resp(200, new ChatAnswer(new ChatDto(Guid.NewGuid(), updatedChatDto.Name, DateTime.Today,
             new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
             a)));
     }
@@ -176,10 +154,10 @@ public class ChatController : Controller
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswer<UpdateChatUsersDto>), 422)]
-    public async Task< IActionResult> EditUsersChat(Guid chat_id, UpdateChatUsersDto updateUsers)
+    public async Task<IActionResult> EditUsersChat(Guid chat_id, UpdateChatUsersDto updateUsers)
     {
         Guid a;
-        return new Resp(200,new ChatAnswer(new ChatDto(Guid.NewGuid(), "sdfgs", DateTime.Today,
+        return new Resp(200, new ChatAnswer(new ChatDto(Guid.NewGuid(), "sdfgs", DateTime.Today,
             new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
             a)));
     }
@@ -187,7 +165,7 @@ public class ChatController : Controller
     [HttpDelete("dalete/{chat_id:guid}")]
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
-    public async Task< IActionResult> DeleteChat(Guid chat_id)
+    public async Task<IActionResult> DeleteChat(Guid chat_id)
     {
         return new Resp(200, new ChatAnswer());
     }

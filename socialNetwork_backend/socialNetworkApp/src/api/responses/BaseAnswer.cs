@@ -5,7 +5,7 @@ using socialNetworkApp.api.enums;
 
 namespace socialNetworkApp.api.responses;
 
-public class BaseAnswerRes<TData> where TData: EmptyAnswer
+public class BaseAnswerRes<TData> where TData : EmptyAnswer
 {
     public BaseAnswerRes(AnswerType type = default, TData data = default)
     {
@@ -19,5 +19,4 @@ public class BaseAnswerRes<TData> where TData: EmptyAnswer
 
 public class EmptyAnswer : BaseResponsePart
 {
-    
 }

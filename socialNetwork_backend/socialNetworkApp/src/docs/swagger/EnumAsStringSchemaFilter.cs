@@ -25,31 +25,31 @@ public class EnumAsStringSchemaFilter : ISchemaFilter
                 .ToList()
                 .ForEach(name => model.Enum.Add(new OpenApiString($"{name}")));
         }
-        
+
         if (context.Type == typeof(OneFieldErrorValidate))
         {
             Console.WriteLine("");
         }
-        
+
         if (context.Type == typeof(ValidateOneField))
         {
             Console.WriteLine("");
         }
-        
+
         if (context.Type.IsGenericType && context.Type.GetGenericTypeDefinition() == typeof(ValidateError<>))
         {
             Console.WriteLine("");
             // model.Example = new OpenApiObject();
             // model.Example[context]
         }
-        
+
         if (context.Type.IsGenericType && context.Type.GetGenericTypeDefinition().IsSubclassOf(typeof(ValidateError<>)))
         {
             Console.WriteLine("");
             // model.Example = new OpenApiObject();
             // model.Example[context]
         }
-        
+
         if (context.Type.BaseType != null && context.Type.BaseType.IsGenericType &&
             context.Type.BaseType.GetGenericTypeDefinition() == typeof(ValidateError<>))
         {
@@ -63,7 +63,7 @@ public class EnumAsStringSchemaFilter : ISchemaFilter
             if (dictEnumField != null)
             {
                 Dictionary<string, OpenApiSchema> dd = new Dictionary<string, OpenApiSchema>();
-        
+
                 Enum.GetNames(context.Type.BaseType.GenericTypeArguments.Where(x => x.IsSubclassOf(typeof(Enum)))
                         .FirstOrDefault()).ToList()
                     .ForEach(name =>
@@ -82,7 +82,7 @@ public class EnumAsStringSchemaFilter : ISchemaFilter
                 //         
                 //     }
                 // );
-                    
+
                 // context.SchemaGenerator.GenerateSchema(
                 //     context.Type.BaseType.GenericTypeArguments.Where(x => x.IsSubclassOf(typeof(Enum)))
                 //         .FirstOrDefault(), new SchemaRepository("dfdfdf")
@@ -102,17 +102,17 @@ public class EnumAsStringSchemaFilter : ISchemaFilter
                 // }
             }
         }
-        
+
         if (context.Type == typeof(Dictionary<string, ValidateOneField>))
         {
             Console.WriteLine("");
         }
-        
+
         if (context.Type == typeof(Dictionary<string, ValidateOneField>))
         {
             Console.WriteLine("");
         }
-        
+
         // model.Sec
     }
 }

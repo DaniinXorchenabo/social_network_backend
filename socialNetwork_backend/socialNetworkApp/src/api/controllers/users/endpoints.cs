@@ -21,7 +21,7 @@ namespace socialNetworkApp.api.controllers.users;
 
 [Tags("user")]
 [ApiController]
-[Route("user")]
+[Route("api/user")]
 [Produces("application/json")]
 public class UserController : Controller
 {
@@ -41,8 +41,6 @@ public class UserController : Controller
     [MyProducesResponseType(typeof(UserAnswer<CreateUser>), 422)]
     public async Task<IActionResult> CreateUser(CreateUser newUser)
     {
-        // var d = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
-        // ModelState.IsValid
         await using (var db = Db)
         {
             var newUserDb = new UserDb(newUser)
@@ -66,7 +64,6 @@ public class UserController : Controller
     public async Task<IActionResult> GetPublicUser([FromQuery] Pagination pagination)
     {
         Console.WriteLine(pagination.ToString());
-        // ModelState.IsValid
         await using (var db = Db)
         {
             var users = await (from entity in Db.Users
@@ -77,7 +74,6 @@ public class UserController : Controller
         }
     }
 }
-
 
 public static class AuthOptions
 {

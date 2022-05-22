@@ -6,16 +6,16 @@ namespace socialNetworkApp.config;
 
 public abstract class IEnv
 {
-    public abstract DbEnv Db{ get; protected set; }
+    public abstract DbEnv Db { get; protected set; }
     public abstract BackendEnv Backend { get; protected set; }
 }
 
-public  class Env: IEnv
+public class Env : IEnv
 {
     public static Env FirstEnv { get; private set; } = null!;
     public override DbEnv Db { get; protected set; }
     public override BackendEnv Backend { get; protected set; }
-    
+
     public Env(string envFileName = ".env")
     {
         if (FirstEnv == null)
@@ -29,22 +29,22 @@ public  class Env: IEnv
                         "DB_SUPERUSER_NAME",
                         "DB_SUPERUSER_PASSWORD",
                         "DB_DATABASE_NAME"
-                        )
+                    )
                     .GetEnumerator()
             };
-            
+
             Backend = new BackendEnv();
             IEnumerator<string?>[] valuesBackend =
             {
                 Backend.EnvInit(
                         "BACKEND_PROTOCOL",
-                        "BACKEND_HOST_RUNNABLE", 
+                        "BACKEND_HOST_RUNNABLE",
                         "BACKEND_PORT_INTERNAL",
                         "BACKEND_AUTH_SECRET_KEY"
-                        )
+                    )
                     .GetEnumerator()
             };
-            
+
             _ = valuesDb.Select(x => x.MoveNext()).ToList();
             _ = valuesBackend.Select(x => x.MoveNext()).ToList();
             LoadEnv(envFileName);
@@ -84,6 +84,7 @@ public  class Env: IEnv
                 $"You can create a socialNetwork_backend/.env file." +
                 $" For example, see https://github.com/DaniinXorchenabo/social_network_backend/blob/master/socialNetwork_backend/example.env");
         }
+
         Console.WriteLine(Path.Combine(baseDirectory!, envFileName));
         DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {Path.Combine(baseDirectory!, envFileName)}));
     }
@@ -166,7 +167,7 @@ public record class BackendEnv : BaseLoader
     public string BackendHostRunnable { get; protected set; } = null!;
     public string BackendPortInternal { get; protected set; } = null!;
     public string SecretKey { get; protected set; } = null!;
-    
+
     public string Address => $"{BackendProtocol}://{BackendHostRunnable}:{BackendPortInternal}";
 
     public IEnumerable<string?> EnvInit(
@@ -176,19 +177,21 @@ public record class BackendEnv : BaseLoader
         string secretKey,
         params string[] data)
     {
-        var enumerators = (this as IBaseLoader).PreloadEnv(backendProtocol, backendHostRunnable, backendPortInternal, secretKey);
+        var enumerators =
+            (this as IBaseLoader).PreloadEnv(backendProtocol, backendHostRunnable, backendPortInternal, secretKey);
         yield return null;
         (this.BackendProtocol,
             (this.BackendHostRunnable,
-                (this.BackendPortInternal,(
-                    this.SecretKey ,_)))) = enumerators
+                (this.BackendPortInternal, (
+                    this.SecretKey, _)))) = enumerators
             .Where(x => x.MoveNext() || true)
             .Select(x => x.Current ?? "")
             .ToList();
         yield return null;
     }
 
-    public void Deconstruct(out string BackendProtocol, out string BackendHostRunnable, out string BackendPortInternal , out string SecretKey)
+    public void Deconstruct(out string BackendProtocol, out string BackendHostRunnable, out string BackendPortInternal,
+        out string SecretKey)
     {
         BackendProtocol = this.BackendProtocol;
         BackendHostRunnable = this.BackendHostRunnable;

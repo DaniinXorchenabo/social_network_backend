@@ -23,7 +23,8 @@ namespace System.Web.Http.Filters
                     .FirstOrDefault(x => x.Filter.GetType() == typeof(MyProducesResponseTypeAttribute))
                     ?.Filter as MyProducesResponseTypeAttribute).Type;
 
-                var validateErrorIntoResp = Activator.CreateInstance(validationErrorAnswerType.GenericTypeArguments[2]) as ValidateError;
+                var validateErrorIntoResp =
+                    Activator.CreateInstance(validationErrorAnswerType.GenericTypeArguments[2]) as ValidateError;
                 validateErrorIntoResp.Name = "Validation error";
                 validateErrorIntoResp.Summary = "Validation error";
                 validateErrorIntoResp.Description = "Ошибка в валидации данных";
@@ -36,8 +37,8 @@ namespace System.Web.Http.Filters
                     {
                         errorList.Add(new OneFieldErrorValidate
                         {
-                            Exception=valueError.Exception?.ToString(),
-                            ErrorMessage=valueError.ErrorMessage
+                            Exception = valueError.Exception?.ToString(),
+                            ErrorMessage = valueError.ErrorMessage
                         });
                     }
 
@@ -46,16 +47,14 @@ namespace System.Web.Http.Filters
                         FieldName = keyValuePair.Key,
                         Errors = errorList,
                         ValidationState = keyValuePair.Value.ValidationState
-                            
                     };
                     validateErrorIntoResp.Errors[keyValuePair.Key] = ValObj;
                 }
-                
+
                 var resp = Activator.CreateInstance(validationErrorAnswerType, validateErrorIntoResp);
-        
+
                 actionContext.Result = new Resp(422, resp);
             }
-            // .CreateErrorResponse(HttpStatusCode.BadRequest, modelState);
         }
     }
 
@@ -67,8 +66,3 @@ namespace System.Web.Http.Filters
         }
     }
 }
-
-// public class ErrorHandlerAttribute
-// {
-//     
-// }

@@ -6,8 +6,7 @@ public class RolesFromMods
     {
         AllModsEnum.msgReader, AllModsEnum.msgCreator, AllModsEnum.msgUpdater, AllModsEnum.msgDeleter,
         AllModsEnum.chatReader, AllModsEnum.chatCreator, AllModsEnum.chatUpdater, AllModsEnum.chatDeleter,
-        AllModsEnum.userReader,  AllModsEnum.userUpdater, AllModsEnum.userDeleter,
+        AllModsEnum.userReader, AllModsEnum.userUpdater, AllModsEnum.userDeleter,
         AllModsEnum.postReader, AllModsEnum.postCreator, AllModsEnum.postUpdater, AllModsEnum.postDeleter
     };
-    
 }

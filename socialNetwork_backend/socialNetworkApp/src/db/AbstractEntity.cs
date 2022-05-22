@@ -11,14 +11,14 @@ public abstract class AbstractEntity
         var ObjFields = DtoStaticData.AllClasses[obj.GetType()].PropertiesAsString;
         var moveFields = new HashSet<string>(ObjFields);
         moveFields.IntersectWith(myStaticData.PropertiesAsString);
-        
+
         Console.WriteLine($"-------------- {this.GetType().Name}");
         Console.WriteLine(string.Join(", ", ObjFields));
         Console.WriteLine(string.Join(", ", myStaticData.PropertiesAsString));
         Console.WriteLine(string.Join(", ", moveFields));
         Console.WriteLine("--------------");
-        
-        
+
+
         foreach (var moveField in moveFields)
         {
             this.GetType().GetProperty(moveField).SetValue(

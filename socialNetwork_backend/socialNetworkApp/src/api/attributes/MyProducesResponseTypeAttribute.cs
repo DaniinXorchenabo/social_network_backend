@@ -43,17 +43,14 @@ namespace Microsoft.AspNetCore.Mvc
                             new AssemblyName(Guid.NewGuid().ToString()),
                             AssemblyBuilderAccess.Run);
                         ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MyDynamicModule");
-                        // moduleBuilder
+
                         TypeBuilder typeBuilder = moduleBuilder.DefineType(
                             $"{validateType.Name}ValidateError{statusCode}",
                             TypeAttributes.Public
                             | TypeAttributes.Class
                             | TypeAttributes.AutoClass
                             | TypeAttributes.AnsiClass
-                            // | TypeAttributes.ExplicitLayout
-                            // | TypeAttributes
-                            // , typeof(ValidateError)
-                            );
+                        );
                         var newEnumType = GenerateEnum(
                             $"{typeBuilder.Name}Enum",
                             sourceFields
@@ -66,39 +63,7 @@ namespace Microsoft.AspNetCore.Mvc
                         var parentWithGeneric = typeof(ValidateError<>).MakeGenericType(newEnumType);
                         typeBuilder.SetParent(parentWithGeneric);
 
-                        // add public fields to match the source object
-                        // foreach (FieldInfo sourceField in sourceFields)
-                        // {
-                        //     FieldBuilder fieldBuilder = typeBuilder.DefineField(
-                        //         sourceField.Name,
-                        //         sourceField.FieldType,
-                        //         FieldAttributes.Public);
-                        //     fieldBuilder.SetOffset(fieldOffset);
-                        //     fieldOffset += sizeof(Int32);
-                        // }
-
-                        // create the dynamic class
                         Type dynamicType = typeBuilder.CreateType();
-
-                        // create an instance of the class
-                        // object destObject = Activator.CreateInstance(dynamicType);
-
-                        // copy the values of the public fields of the
-                        // source object to the dynamic object
-                        // foreach (FieldInfo sourceField in sourceFields)
-                        // {
-                        //     FieldInfo destField
-                        //         = destObject.GetType().GetField(sourceField.Name);
-                        //     destField.SetValue(
-                        //         destObject,
-                        //         sourceField.GetValue(sourceObject));
-                        // }
-
-                        // give the new class to the caller for casting purposes
-
-
-                        // return the new object
-                        // return destObject;
 
                         Type[] GetAllGenerics(Type currentType)
                         {
@@ -106,28 +71,20 @@ namespace Microsoft.AspNetCore.Mvc
                             {
                                 return GetAllGenerics(currentType.BaseType);
                             }
-                        
+
                             return currentType.GenericTypeArguments;
                         }
-                        
-                        
+
+
                         var newRespType = typeof(BaseResponse<,,>);
                         var generics = GetAllGenerics(type);
-                        // foreach (var typeGenericTypeArgument in generics.Take(2))
-                        // {
                         newRespType = newRespType.MakeGenericType(generics[0], generics[1], dynamicType!);
-                        // }
-                        
-                        // newRespType = newRespType.MakeGenericType(dynamicType);
-                        
-                        
+
                         ValidateErrorClasses[type] = newRespType;
                         Type = newRespType ?? type ?? throw new ArgumentNullException(nameof(dynamicType));
-                        
+
                         object destObject = Activator.CreateInstance(newRespType);
                         Console.WriteLine("");
-                        // destObject
-                        
                     }
                 }
             }

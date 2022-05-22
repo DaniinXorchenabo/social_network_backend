@@ -1,16 +1,14 @@
-﻿
-
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace socialNetworkApp.api.controllers.modifiersOfAccess;
- 
+
 class AgeHandler : AuthorizationHandler<AgeRequirement>
 {
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         AgeRequirement requirement
-        )
+    )
     {
         // получаем claim с типом ClaimTypes.DateOfBirth - год рождения
         var yearClaim = context.User.FindFirst(c => c.Type == ClaimTypes.DateOfBirth);
@@ -26,6 +24,7 @@ class AgeHandler : AuthorizationHandler<AgeRequirement>
                 }
             }
         }
+
         return Task.CompletedTask;
     }
 }

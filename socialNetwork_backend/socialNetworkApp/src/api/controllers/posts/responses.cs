@@ -7,14 +7,17 @@ using socialNetworkApp.api.responses.utils;
 namespace socialNetworkApp.api.controllers.posts;
 
 [AddAnswerType(AnswerType.Post)]
-public  class PostAnswer<TValidate> : BaseResponse<PostDto, TValidate> where TValidate: AbstractDto
+public class PostAnswer<TValidate> : BaseResponse<PostDto, TValidate> where TValidate : AbstractDto
 {
-    public PostAnswer(params dynamic[] errAndAns): base(errAndAns){}
+    public PostAnswer(params dynamic[] errAndAns) : base(errAndAns)
+    {
+    }
 }
 
-
 [AddAnswerType(AnswerType.Post)]
-public  class PostAnswer : PostAnswer<AbstractDto>
+public class PostAnswer : PostAnswer<AbstractDto>
 {
-    public PostAnswer(params dynamic[] errAndAns): base(errAndAns){}
+    public PostAnswer(params dynamic[] errAndAns) : base(errAndAns)
+    {
+    }
 }
