@@ -15,63 +15,6 @@ namespace socialNetworkApp.api.controllers.chat;
 [Produces("application/json")]
 public class ChatController : Controller
 {
-    
-    [HttpGet("get/with_message/last")]
-    [ValidationActionFilter]
-    [AuthorizeWithMods(AllModsEnum.chatReader)]
-    [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
-    [MyProducesResponseType(typeof(ChatAnswerWithMessage<Pagination>), 422)]
-    public async Task< IActionResult> GelLastChatsWithlastMessage([FromQuery] Pagination pagination)
-    {
-        Guid a;
-        Guid chat_id;
-        return  new Resp(200, new ChatAnswerWithMessage(
-            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
-                new List<Guid>()
-                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a,
-                new MessageDto(Guid.NewGuid(), "sdfgsdfzsdgsdfgs", Guid.NewGuid(), chat_id, DateTime.Now, null)
-            ),
-            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "23tg45g", DateTime.Today,
-                new List<Guid>()
-                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a,
-                new MessageDto(Guid.NewGuid(), "drfgsfdg", Guid.NewGuid(), chat_id, DateTime.Now, null)
-            ),
-            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dg", DateTime.Today,
-                new List<Guid>()
-                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a,
-                new MessageDto(Guid.NewGuid(), "768edyjhr678r467yuj", Guid.NewGuid(), chat_id, DateTime.Now, null)
-            )));
-    }
-
-    
-    [HttpPost("new")]
-    [ValidationActionFilter]
-    [ProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), StatusCodes.Status201Created)]
-    [MyProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), 422)]
-
-    public async Task< IActionResult> CreateChat(CreateChatDto newChatDto)
-    {
-        Guid a;
-        return new Resp(201, new ChatAnswerWithMessage(new ChatWithMessageDto(
-            a = Guid.NewGuid(),
-            newChatDto.Name,
-            DateTime.Now,
-            newChatDto.Users,
-            Guid.NewGuid(),
-            new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null,
-                MessageType.SystemMassage),
-            null,
-            newChatDto.ChatCreatorType,
-            newChatDto.ChatType,
-            null,
-            null,
-            newChatDto.Photo
-        )));
-    }
-    
     /// <summary>
     /// Creates a TodoItem.
     /// </summary>
@@ -114,7 +57,39 @@ public class ChatController : Controller
                 a))
         );
     }
+    
+    [HttpGet("get/with_message/last")]
+    [ValidationActionFilter]
+    [AuthorizeWithMods(AllModsEnum.chatReader)]
+    [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
+    [MyProducesResponseType(typeof(ChatAnswerWithMessage<Pagination>), 422)]
+    public async Task< IActionResult> GelLastChatsWithlastMessage([FromQuery] Pagination pagination)
+    {
+        Guid a;
+        Guid chat_id;
+        return  new Resp(200, new ChatAnswerWithMessage(
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dfgdfg", DateTime.Today,
+                new List<Guid>()
+                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
+                a,
+                new MessageDto(Guid.NewGuid(), "sdfgsdfzsdgsdfgs", Guid.NewGuid(), chat_id, DateTime.Now, null)
+            ),
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "23tg45g", DateTime.Today,
+                new List<Guid>()
+                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
+                a,
+                new MessageDto(Guid.NewGuid(), "drfgsfdg", Guid.NewGuid(), chat_id, DateTime.Now, null)
+            ),
+            new ChatWithMessageDto(chat_id = Guid.NewGuid(), "dg", DateTime.Today,
+                new List<Guid>()
+                    {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
+                a,
+                new MessageDto(Guid.NewGuid(), "768edyjhr678r467yuj", Guid.NewGuid(), chat_id, DateTime.Now, null)
+            )));
+    }
 
+    
+    
 
 
     [HttpGet("get/{chat_id:guid}")]
@@ -160,7 +135,30 @@ public class ChatController : Controller
             )));
     }
 
+    [HttpPost("new")]
+    [ValidationActionFilter]
+    [ProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), StatusCodes.Status201Created)]
+    [MyProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), 422)]
 
+    public async Task< IActionResult> CreateChat(CreateChatDto newChatDto)
+    {
+        Guid a;
+        return new Resp(201, new ChatAnswerWithMessage(new ChatWithMessageDto(
+            a = Guid.NewGuid(),
+            newChatDto.Name,
+            DateTime.Now,
+            newChatDto.Users,
+            Guid.NewGuid(),
+            new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null,
+                MessageType.SystemMassage),
+            null,
+            newChatDto.ChatCreatorType,
+            newChatDto.ChatType,
+            null,
+            null,
+            newChatDto.Photo
+        )));
+    }
 
     [HttpPut("edit/metainfo/{chat_id:guid}")]
     [ValidationActionFilter]
