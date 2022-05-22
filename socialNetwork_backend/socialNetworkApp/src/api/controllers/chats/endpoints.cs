@@ -130,7 +130,7 @@ public class ChatController : Controller
             new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null,
                 MessageType.SystemMassage),
             null,
-            newChatDto.ChatCreatorType,
+            newChatDto.ChatCreatorTypeField,
             newChatDto.ChatType,
             null,
             null,

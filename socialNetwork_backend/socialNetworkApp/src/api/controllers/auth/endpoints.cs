@@ -88,7 +88,8 @@ public class AuthController : Controller
             TokenType.bearer,
             new JwtSecurityTokenHandler().WriteToken(jwt)));
     }
-
+    
+    [Obsolete]
     [HttpPost("token/data_as_body")]
     [ValidationActionFilter]
     [ProducesResponseType(typeof(TokenAnswer), StatusCodes.Status200OK)]

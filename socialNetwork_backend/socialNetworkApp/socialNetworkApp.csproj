@@ -29,6 +29,7 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
+      <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
       <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     </ItemGroup>
 

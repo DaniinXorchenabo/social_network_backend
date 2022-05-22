@@ -1,4 +1,5 @@
-﻿using socialNetworkApp.api.controllers.messages;
+﻿using System.ComponentModel.DataAnnotations;
+using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
@@ -9,23 +10,27 @@ namespace socialNetworkApp.api.controllers.messages;
 [AddAnswerType(AnswerType.Massage)]
 public class MessageDto : AbstractDto
 {
-    public Guid Id { get; set; }
-    public string Text { get; set; }
-    public Guid? Autor { get; set; }
-    public Guid ChatId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; } = null;
-    public MessageType MessageType { get; set; } = MessageType.Text;
-    public bool Viewed { get; set; } = false;
-    public bool IsDeleted { get; set; } = false;
+    [Required] [Display(Name = "id")] public virtual Guid Id { get; set; }
+    [Required] [Display(Name = "text")] public virtual string Text { get; set; }
+    [Required] [Display(Name = "author")] public virtual Guid? Author { get; set; }
+    [Required] [Display(Name = "chat_id")] public virtual Guid ChatId { get; set; }
 
-    public MessageDto(Guid id = default, string text = null, Guid? autor = default, Guid chatId = default,
+    [Required]
+    [Display(Name = "created_at")]
+    public virtual DateTime CreatedAt { get; set; }
+
+    [Display(Name = "updated_at")] public virtual DateTime? UpdatedAt { get; set; } = null;
+    [Display(Name = "message_type")] public virtual MessageType MessageType { get; set; } = MessageType.Text;
+    [Display(Name = "viewed")] public virtual bool Viewed { get; set; } = false;
+    [Display(Name = "is_deleted")] public virtual bool IsDeleted { get; set; } = false;
+
+    public MessageDto(Guid id = default, string text = null, Guid? author = default, Guid chatId = default,
         DateTime createdAt = default, DateTime? updatedAt = default, MessageType messageType = default,
         bool viewed = default, bool isDeleted = default)
     {
         Id = id;
         Text = text ?? throw new ArgumentNullException(nameof(text));
-        Autor = autor;
+        Author = author;
         ChatId = chatId;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
@@ -46,9 +51,9 @@ public class MessageDto : AbstractDto
 [AddAnswerType(AnswerType.Massage)]
 public class CreateMessageDto : AbstractDto
 {
-    public string Text { get; set; }
-    public Guid Author { get; set; }
-    public MessageType MessageType { get; set; } = MessageType.Text;
+    [Required] [Display(Name = "text")] public virtual string Text { get; set; }
+    [Required] [Display(Name = "author")] public virtual Guid Author { get; set; }
+    [Display(Name = "message_type")] public virtual MessageType MessageType { get; set; } = MessageType.Text;
 
     public CreateMessageDto(string text = null, Guid author = default, MessageType messageType = default)
     {
@@ -68,5 +73,5 @@ public class CreateMessageDto : AbstractDto
 
 public class UpdateMessageDto : AbstractDto
 {
-    public string new_text { get; set; }
+    [Display(Name = "new_text")] public virtual string? NewText { get; set; }
 }

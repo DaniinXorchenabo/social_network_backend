@@ -36,10 +36,10 @@ class Program
 
         // HttpRequestContext config = new HttpRequestContext();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
+        
         builder.Services.AddSwaggerGen(c =>
             {
-                c.CustomSchemaIds(type => $"{type.Name}_{System.Guid.NewGuid()}");
+                c.CustomSchemaIds(type => $"{type.ToString()}_{System.Guid.NewGuid()}");
                 
                 
                 // check it: https://stackoverflow.com/questions/43447688/setting-up-swagger-asp-net-core-using-the-authorization-headers-bearer
@@ -146,7 +146,9 @@ class Program
         builder.Services.AddControllers().AddJsonOptions(x =>
         {
             // serialize enums as strings in api responses (e.g. Role)
+            
             x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            
             // ignore omitted parameters on models to enable optional params (e.g. User update)
             // x.JsonSerializerOptions.IgnoreNullValues = true;
             // x.JsonSerializerOptions.

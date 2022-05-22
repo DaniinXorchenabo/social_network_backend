@@ -69,7 +69,7 @@ public class MessagesController : Controller
     public async Task<IActionResult> EditMessage(Guid chat_id, Guid message_id, UpdateMessageDto updateMsg)
     {
         return new Resp(200, new MessageAnswer(
-            new MessageDto(message_id, updateMsg.new_text, Guid.NewGuid(), chat_id, DateTime.Now,
+            new MessageDto(message_id, updateMsg.NewText, Guid.NewGuid(), chat_id, DateTime.Now,
                 updatedAt: DateTime.Now)));
     }
 

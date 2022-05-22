@@ -1,4 +1,6 @@
-﻿using socialNetworkApp.api.controllers.messages;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
@@ -9,18 +11,25 @@ namespace socialNetworkApp.api.controllers.chat;
 [AddAnswerType(AnswerType.Chat)]
 public class ChatDto : AbstractDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public List<Guid> Users { get; set; }
-    public Guid? UserCreator { get; set; }
-    public Guid? GroupCreator { get; set; } = null;
-    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
-    public ChatType ChatType { get; set; } = ChatType.Simple;
-    public List<Guid>? Admins { get; set; } = null;
-    public List<Guid>? BlackList { get; set; } = null;
-    public string? Photo { get; set; } = null;
-    public string? InvitationUrl { get; set; } = null;
+    [Required] [Display(Name = "id")] public virtual Guid Id { get; set; }
+    [Required] [Display(Name = "name")] public virtual string Name { get; set; }
+
+    [Required]
+    [Display(Name = "created_at")]
+    public virtual DateTime CreatedAt { get; set; }
+
+    [Required] [Display(Name = "users")] public virtual List<Guid> Users { get; set; }
+    [Display(Name = "user_creator")] public virtual Guid? UserCreator { get; set; }
+    [Display(Name = "group_creator")] public virtual Guid? GroupCreator { get; set; } = null;
+
+    [Display(Name = "chat_creator_type")]
+    public virtual ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+
+    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "admins")] public virtual List<Guid>? Admins { get; set; } = null;
+    [Display(Name = "black_list")] public virtual List<Guid>? BlackList { get; set; } = null;
+    [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
+    [Display(Name = "invitation_url")] public virtual string? InvitationUrl { get; set; } = null;
 
     public ChatDto(Guid id = default, string name = null, DateTime createdAt = default, List<Guid> users = null,
         Guid? userCreator = default, Guid? groupCreator = default, ChatCreatorType chatCreatorType = default,
@@ -53,19 +62,27 @@ public class ChatDto : AbstractDto
 [AddAnswerType(AnswerType.Chat)]
 public class ChatWithMessageDto : AbstractDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public List<Guid> Users { get; set; }
-    public Guid? UserCreator { get; set; }
-    public MessageDto? Message { get; set; }
-    public Guid? GroupCreator { get; set; } = null;
-    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
-    public ChatType ChatType { get; set; } = ChatType.Simple;
-    public List<Guid>? Admins { get; set; } = null;
-    public List<Guid>? BlackList { get; set; } = null;
-    public string? Photo { get; set; } = null;
-    public string? InvitationUrl { get; set; } = null;
+    [Required] [Display(Name = "id")] public virtual Guid Id { get; set; }
+    [Required] [Display(Name = "name")] public virtual string Name { get; set; }
+
+    [Required]
+    [Display(Name = "created_at")]
+    public virtual DateTime CreatedAt { get; set; }
+
+    [Required] [Display(Name = "users")] public virtual List<Guid> Users { get; set; }
+    [Display(Name = "user_creator")] public virtual Guid? UserCreator { get; set; }
+    [Display(Name = "message")] public virtual MessageDto? Message { get; set; }
+    [Display(Name = "group_creator")] public virtual Guid? GroupCreator { get; set; } = null;
+
+    [Display(Name = "chat_creator_type")]
+    [JsonPropertyName("chat_creator_type")]
+    public virtual ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+
+    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "admins")] public virtual List<Guid>? Admins { get; set; } = null;
+    [Display(Name = "black_list")] public virtual List<Guid>? BlackList { get; set; } = null;
+    [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
+    [Display(Name = "invitation_url")] public virtual string? InvitationUrl { get; set; } = null;
 
     public ChatWithMessageDto(Guid id = default, string name = null, DateTime createdAt = default,
         List<Guid> users = null, Guid? userCreator = default, MessageDto? message = null, Guid? groupCreator = default,
@@ -99,21 +116,24 @@ public class ChatWithMessageDto : AbstractDto
 [AddAnswerType(AnswerType.Chat)]
 public class CreateChatDto : AbstractDto
 {
-    public string Name { get; set; }
+    // [Obsolete]
+    [Required] [Display(Name = "name")] public virtual string Name { get; set; }
 
-    public List<Guid> Users { get; set; }
+    [Required] [Display(Name = "users")] public virtual List<Guid> Users { get; set; }
 
-    public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
-    public ChatType ChatType { get; set; } = ChatType.Simple;
-    public string? Photo { get; set; } = null;
+    [Display(Name = "chat__creator__type__1")]
+    public virtual ChatCreatorType ChatCreatorTypeField { get; set; } = ChatCreatorType.User;
+
+    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
 
     public CreateChatDto(string name = null, List<Guid> users = null, Guid? userCreator = default,
-        Guid? groupCreator = default, ChatCreatorType chatCreatorType = default, ChatType chatType = default,
+        Guid? groupCreator = default, ChatCreatorType chatCreatorTypeField = default, ChatType chatType = default,
         string? photo = null)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Users = users ?? throw new ArgumentNullException(nameof(users));
-        ChatCreatorType = chatCreatorType;
+        ChatCreatorTypeField = chatCreatorTypeField;
         ChatType = chatType;
         Photo = photo;
     }
@@ -130,9 +150,9 @@ public class CreateChatDto : AbstractDto
 [AddAnswerType(AnswerType.Chat)]
 public class UpdateChatDto : AbstractDto
 {
-    public string Name { get; set; }
-    public ChatType ChatType { get; set; } = ChatType.Simple;
-    public string? Photo { get; set; } = null;
+    [Display(Name = "name")] public virtual string? Name { get; set; }
+    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
 
     public UpdateChatDto(string name = null, ChatType chatType = default, string? photo = null)
     {
@@ -153,6 +173,8 @@ public class UpdateChatDto : AbstractDto
 [AddAnswerType(AnswerType.Chat)]
 public class UpdateChatUsersDto : AbstractDto
 {
-    public UserOperationClass op { get; set; }
-    public Guid[] users { get; set; }
+    [Display(Name = "user_operation_class")]
+    public virtual UserOperationClass op { get; set; }
+
+    [Display(Name = "users")] public virtual Guid[] users { get; set; }
 }

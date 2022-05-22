@@ -6,6 +6,7 @@ using socialNetworkApp.api.responses;
 
 namespace socialNetworkApp.api.controllers.posts;
 
+[Obsolete]
 [ApiController]
 [Route("api/posts")]
 [Produces("application/json")]
