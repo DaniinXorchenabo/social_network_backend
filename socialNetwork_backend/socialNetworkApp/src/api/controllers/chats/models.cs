@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.api.controllers.users;
 using socialNetworkApp.db;
@@ -22,7 +23,10 @@ public class ChatDb : AbstractEntity
     [Column("image")] public string? Photo { get; set; } = null;
     [Column("invitation_url")] public string? InvitationUrl { get; set; } = null;
 
+    [NotMapped]
     public List<ChatToUserDb> ChatUserEntities { get; set; } = new List<ChatToUserDb>();
+    [NotMapped]
+    public List<MessageDb> MessageEntities { get; set; } =  new List<MessageDb>();
 
 
     public ChatDb(object obj) : base(obj)
@@ -46,6 +50,8 @@ public class ChatToUserDb : AbstractEntity
     
     [NotMapped]
     public UserDb UserEntity { get; set; }
+    [NotMapped]
+    public List<MessageDb> MessageEntities { get; set; } =  new List<MessageDb>();
 
 
     public ChatToUserDb(object obj) : base(obj)

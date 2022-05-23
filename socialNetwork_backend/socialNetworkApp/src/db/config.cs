@@ -3,8 +3,10 @@ using socialNetworkApp.api.controllers.users;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using socialNetworkApp.api.controllers.chat;
+using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.config;
+using ChatToUserDb = socialNetworkApp.api.controllers.chat.ChatToUserDb;
 
 namespace socialNetworkApp.db;
 
@@ -20,6 +22,7 @@ public class BaseBdConnection : DbContext
     public DbSet<UserDb> Users { get; set; } = null!;
     public DbSet<ChatDb> Chats { get; set; } = null!;
     public DbSet<ChatToUserDb> ChatsToUsers { get; set; } = null!;
+    public DbSet<MessageDb> Messages { get; set; } = null!;
 
     public BaseBdConnection(DbContextOptions<BaseBdConnection> options) : base(options)
     {
@@ -49,6 +52,7 @@ public class BaseBdConnection : DbContext
         builder.HasPostgresEnum<ChatCreatorType>();
         builder.HasPostgresEnum<ChatType>();
         builder.HasPostgresEnum<ChatToUserRole>();
+        builder.HasPostgresEnum<MessageType>();
         builder.Entity<ChatToUserDb>().HasKey(u => new { u.UserId, u.ChatId});
         builder.Entity<ChatToUserDb>()
             .HasOne(u => u.UserEntity)
@@ -58,6 +62,19 @@ public class BaseBdConnection : DbContext
             .HasOne(u => u.ChatEntity)
             .WithMany(c => c.ChatUserEntities)
             .HasForeignKey(u => u.ChatId);
+        
+        builder.Entity<MessageDb>()
+            .HasOne(u => u.AuthorEntity)
+            .WithMany(c => c.MessageEntities)
+            .HasForeignKey(u => u.AuthorId);
+        builder.Entity<MessageDb>()
+            .HasOne(u => u.ChatEntity)
+            .WithMany(c => c.MessageEntities)
+            .HasForeignKey(u => u.ChatId);
+        builder.Entity<MessageDb>()
+            .HasOne(u => u.ChatsAndUsersEntity)
+            .WithMany(c => c.MessageEntities)
+            .HasForeignKey(u => new {u.AuthorId, u.ChatId});
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

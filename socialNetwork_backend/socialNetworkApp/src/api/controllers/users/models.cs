@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using socialNetworkApp.api.controllers.chat;
+using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.db;
+using ChatToUserDb = socialNetworkApp.api.controllers.chat.ChatToUserDb;
 
 namespace socialNetworkApp.api.controllers.users;
 
@@ -32,6 +33,8 @@ public class UserDb : AbstractEntity
     public virtual List<AllModsEnum> Mods { get; set; } = new List<AllModsEnum>();
     
     public List<ChatToUserDb> ChatUserEntities { get; set; } =  new List<ChatToUserDb>();
+    public List<MessageDb> MessageEntities { get; set; } =  new List<MessageDb>();
+    
 
 
     public UserDb(object obj) : base(obj)

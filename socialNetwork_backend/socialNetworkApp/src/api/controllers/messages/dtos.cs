@@ -12,7 +12,7 @@ public class MessageDto : AbstractDto
 {
     [Required] [Display(Name = "id")] public virtual Guid Id { get; set; }
     [Required] [Display(Name = "text")] public virtual string Text { get; set; }
-    [Required] [Display(Name = "author")] public virtual Guid? Author { get; set; }
+    [Required] [Display(Name = "author")] public virtual Guid? AuthorId { get; set; }
     [Required] [Display(Name = "chat_id")] public virtual Guid ChatId { get; set; }
 
     [Required]
@@ -24,13 +24,13 @@ public class MessageDto : AbstractDto
     [Display(Name = "viewed")] public virtual bool Viewed { get; set; } = false;
     [Display(Name = "is_deleted")] public virtual bool IsDeleted { get; set; } = false;
 
-    public MessageDto(Guid id = default, string text = null, Guid? author = default, Guid chatId = default,
+    public MessageDto(Guid id = default, string text = null, Guid? authorId = default, Guid chatId = default,
         DateTime createdAt = default, DateTime? updatedAt = default, MessageType messageType = default,
         bool viewed = default, bool isDeleted = default)
     {
         Id = id;
         Text = text ?? throw new ArgumentNullException(nameof(text));
-        Author = author;
+        AuthorId = authorId;
         ChatId = chatId;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
@@ -52,13 +52,13 @@ public class MessageDto : AbstractDto
 public class CreateMessageDto : AbstractDto
 {
     [Required] [Display(Name = "text")] public virtual string Text { get; set; }
-    [Required] [Display(Name = "author")] public virtual Guid Author { get; set; }
+    [Required] [Display(Name = "author_id")] public virtual Guid AuthorId { get; set; }
     [Display(Name = "message_type")] public virtual MessageType MessageType { get; set; } = MessageType.Text;
 
-    public CreateMessageDto(string text = null, Guid author = default, MessageType messageType = default)
+    public CreateMessageDto(string text = null, Guid authorId = default, MessageType messageType = default)
     {
         Text = text ?? throw new ArgumentNullException(nameof(text));
-        Author = author;
+        AuthorId = authorId;
         MessageType = messageType;
     }
 

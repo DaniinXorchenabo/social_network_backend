@@ -58,7 +58,7 @@ public class MessagesController : Controller
     public async Task<IActionResult> SendMessage(Guid chat_id, CreateMessageDto new_msg)
     {
         return new Resp(200, new MessageAnswer(
-            new MessageDto(Guid.NewGuid(), new_msg.Text, new_msg.Author,
+            new MessageDto(Guid.NewGuid(), new_msg.Text, new_msg.AuthorId,
                 chat_id, DateTime.Now, null, new_msg.MessageType)));
     }
 
