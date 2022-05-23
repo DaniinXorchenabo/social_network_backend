@@ -31,8 +31,8 @@ public class MessageDb : AbstractEntity
     public  DateTime CreatedAt { get; set; }
     [Column("updated_at")] public  DateTime? UpdatedAt { get; set; } = null;
     
-    // [Column("message_type", TypeName = "chat_creator_type")]
-    // public  MessageType MessageType { get; set; } = MessageType.Text;
+    [Column("message_type", TypeName = "message_type")]
+    public  MessageType MessageType { get; set; } = MessageType.Text;
     
     [Column("is_viewed")] public  bool Viewed { get; set; } = false;
     [Column("is_deleted")] public  bool IsDeleted { get; set; } = false;
