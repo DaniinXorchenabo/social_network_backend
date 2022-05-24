@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using socialNetworkApp.api.dtos;
 
 namespace socialNetworkApp.db;
@@ -46,6 +48,8 @@ public abstract class AbstractEntity
             .Where(x => x != null)
             .Select(x => x?.ToString()));
     }
+    
+    // public st
 }
 
 public class EntityStaticData
@@ -78,5 +82,14 @@ public class EntityStaticData
         _ = initType.GetProperties()
             .Where(x => x.PropertyType.IsPublic)
             .Select(x => PropertiesAsString.Add(x.Name)).ToList();
+    }
+}
+
+
+public class QBuilder
+{
+    public static Task<List<TModelType>> Select<TModelType>( IQueryable<TModelType> query, Pagination pagination )
+    {
+        return query.Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
     }
 }
