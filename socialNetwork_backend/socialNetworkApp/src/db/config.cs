@@ -15,6 +15,10 @@ public class BaseBdConnection : DbContext
     static BaseBdConnection()
     {
         NpgsqlConnection.GlobalTypeMapper.MapEnum<AllModsEnum>();
+        NpgsqlConnection.GlobalTypeMapper.MapEnum<ChatCreatorTypeEnum>();;
+        NpgsqlConnection.GlobalTypeMapper.MapEnum<ChatTypeEnum>();;
+        NpgsqlConnection.GlobalTypeMapper.MapEnum<ChatToUserRoleEnum>();;
+        NpgsqlConnection.GlobalTypeMapper.MapEnum<MessageTypeEnum>();;
     }
 
     private readonly Env _env;
@@ -49,11 +53,12 @@ public class BaseBdConnection : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.HasPostgresEnum<AllModsEnum>();
-        builder.HasPostgresEnum<ChatCreatorType>();
-        builder.HasPostgresEnum<ChatType>();
-        builder.HasPostgresEnum<ChatToUserRole>();
-        builder.HasPostgresEnum<MessageType>();
-        builder.Entity<ChatToUserDb>().HasKey(u => new { u.UserId, u.ChatId});
+        builder.HasPostgresEnum<ChatCreatorTypeEnum>();
+        builder.HasPostgresEnum<ChatTypeEnum>();
+        builder.HasPostgresEnum<ChatToUserRoleEnum>();
+        builder.HasPostgresEnum<MessageTypeEnum>();
+        builder.Entity<ChatToUserDb>()
+            .HasKey(u => new { u.UserId, u.ChatId});
         builder.Entity<ChatToUserDb>()
             .HasOne(u => u.UserEntity)
             .WithMany(c => c.ChatUserEntities)
@@ -75,12 +80,42 @@ public class BaseBdConnection : DbContext
             .HasOne(u => u.ChatsAndUsersEntity)
             .WithMany(c => c.MessageEntities)
             .HasForeignKey(u => new {u.AuthorId, u.ChatId});
+        
+        // builder.Entity<SubscriptionLevel>()
+        //     .ToTable("SubscriptionLevels");
+        //
+        // builder.Entity<Customer>()
+        //     .ToTable("Customers");
+                
+        // builder.Entity<ChatDb>()
+        //     .Property(c => c.ChatCreatorType)
+        //     .HasConversion<string>();
+        // builder.Entity<ChatDb>()
+        //     .Property(c => c.ChatType)
+        //     .HasConversion<string>();
+        //
+        // builder.Entity<ChatToUserDb>()
+        //     .Property(c => c.Roles)
+        //     .HasConversion<List<string>>();
+        //
+        // builder.Entity<MessageDb>()
+        //     .Property(s => s.MessageType)
+        //     .HasConversion<string>();
+        
+        // builder.Entity<UserDb>()
+        //     .Property(s => s.Mods)
+        //     .HasConversion<List<string>>();
+
+        // base.OnModelCreating(builder);
+        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Console.WriteLine(GetConnectionString(_env));
         optionsBuilder.UseNpgsql(GetConnectionString(_env));
+            // .UseCamelCaseNamingConvention();
+        
     }
 
     public string GetConnectionString(Env env)
