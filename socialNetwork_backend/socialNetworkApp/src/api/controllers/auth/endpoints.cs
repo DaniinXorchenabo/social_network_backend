@@ -64,6 +64,8 @@ public class AuthController : Controller
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, username),
+            new Claim("Id", user.Id.ToString()),
+            // new Claim(ClaimTypes.NameIdentifier, user.Id),
             // new Claim(ClaimTypes.Role, new EnumModList(scopes).ToString()),
         };
         var scopesAsSet = new EnumModList(scopes);
@@ -85,7 +87,7 @@ public class AuthController : Controller
         );
 
         return new ObjectResult(new TokenAnswer(
-            TokenType.bearer,
+            TokenTypeEnum.bearer,
             new JwtSecurityTokenHandler().WriteToken(jwt)));
     }
     
@@ -124,6 +126,7 @@ public class AuthController : Controller
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, username),
+            new Claim("Id", user.Id.ToString()),
             // new Claim(ClaimTypes.Role, new EnumModList(scopes).ToString()),
         };
         var scopesAsSet = new EnumModList(scopes);
@@ -145,7 +148,7 @@ public class AuthController : Controller
         );
 
         return new ObjectResult(new TokenAnswer(
-            TokenType.bearer,
+            TokenTypeEnum.bearer,
             new JwtSecurityTokenHandler().WriteToken(jwt)));
     }
 }
