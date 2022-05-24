@@ -20,12 +20,12 @@ public class MessageDto : AbstractDto
     public virtual DateTime CreatedAt { get; set; }
 
     [Display(Name = "updated_at")] public virtual DateTime? UpdatedAt { get; set; } = null;
-    [Display(Name = "message_type")] public virtual MessageType MessageType { get; set; } = MessageType.Text;
+    [Display(Name = "message_type")] public virtual MessageTypeEnum MessageTypeEnum { get; set; } = MessageTypeEnum.Text;
     [Display(Name = "viewed")] public virtual bool Viewed { get; set; } = false;
     [Display(Name = "is_deleted")] public virtual bool IsDeleted { get; set; } = false;
 
     public MessageDto(Guid id = default, string text = null, Guid? authorId = default, Guid chatId = default,
-        DateTime createdAt = default, DateTime? updatedAt = default, MessageType messageType = default,
+        DateTime createdAt = default, DateTime? updatedAt = default, MessageTypeEnum messageTypeEnum = default,
         bool viewed = default, bool isDeleted = default)
     {
         Id = id;
@@ -34,7 +34,7 @@ public class MessageDto : AbstractDto
         ChatId = chatId;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
-        MessageType = messageType;
+        MessageTypeEnum = messageTypeEnum;
         Viewed = viewed;
         IsDeleted = isDeleted;
     }
@@ -53,13 +53,13 @@ public class CreateMessageDto : AbstractDto
 {
     [Required] [Display(Name = "text")] public virtual string Text { get; set; }
     [Required] [Display(Name = "author_id")] public virtual Guid AuthorId { get; set; }
-    [Display(Name = "message_type")] public virtual MessageType MessageType { get; set; } = MessageType.Text;
+    [Display(Name = "message_type")] public virtual MessageTypeEnum MessageTypeEnum { get; set; } = MessageTypeEnum.Text;
 
-    public CreateMessageDto(string text = null, Guid authorId = default, MessageType messageType = default)
+    public CreateMessageDto(string text = null, Guid authorId = default, MessageTypeEnum messageTypeEnum = default)
     {
         Text = text ?? throw new ArgumentNullException(nameof(text));
         AuthorId = authorId;
-        MessageType = messageType;
+        MessageTypeEnum = messageTypeEnum;
     }
 
     public CreateMessageDto(object obj) : base(obj)

@@ -23,17 +23,17 @@ public class ChatDto : AbstractDto
     [Display(Name = "group_creator")] public virtual Guid? GroupCreator { get; set; } = null;
 
     [Display(Name = "chat_creator_type")]
-    public virtual ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    public virtual ChatCreatorTypeEnum ChatCreatorTypeEnum { get; set; } = ChatCreatorTypeEnum.User;
 
-    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
     [Display(Name = "admins")] public virtual List<Guid>? Admins { get; set; } = null;
     [Display(Name = "black_list")] public virtual List<Guid>? BlackList { get; set; } = null;
     [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
     [Display(Name = "invitation_url")] public virtual string? InvitationUrl { get; set; } = null;
 
     public ChatDto(Guid id = default, string name = null, DateTime createdAt = default, List<Guid> users = null,
-        Guid? userCreator = default, Guid? groupCreator = default, ChatCreatorType chatCreatorType = default,
-        ChatType chatType = default, List<Guid>? admins = null, List<Guid>? blackList = null, string? photo = null,
+        Guid? userCreator = default, Guid? groupCreator = default, ChatCreatorTypeEnum chatCreatorTypeEnum = default,
+        ChatTypeEnum chatTypeEnum = default, List<Guid>? admins = null, List<Guid>? blackList = null, string? photo = null,
         string? invitationUrl = null)
     {
         Id = id;
@@ -42,8 +42,8 @@ public class ChatDto : AbstractDto
         Users = users ?? throw new ArgumentNullException(nameof(users));
         UserCreator = userCreator;
         GroupCreator = groupCreator;
-        ChatCreatorType = chatCreatorType;
-        ChatType = chatType;
+        ChatCreatorTypeEnum = chatCreatorTypeEnum;
+        ChatTypeEnum = chatTypeEnum;
         Admins = admins;
         BlackList = blackList;
         Photo = photo;
@@ -76,9 +76,9 @@ public class ChatWithMessageDto : AbstractDto
 
     [Display(Name = "chat_creator_type")]
     [JsonPropertyName("chat_creator_type")]
-    public virtual ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    public virtual ChatCreatorTypeEnum ChatCreatorTypeEnum { get; set; } = ChatCreatorTypeEnum.User;
 
-    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
     [Display(Name = "admins")] public virtual List<Guid>? Admins { get; set; } = null;
     [Display(Name = "black_list")] public virtual List<Guid>? BlackList { get; set; } = null;
     [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
@@ -86,7 +86,7 @@ public class ChatWithMessageDto : AbstractDto
 
     public ChatWithMessageDto(Guid id = default, string name = null, DateTime createdAt = default,
         List<Guid> users = null, Guid? userCreator = default, MessageDto? message = null, Guid? groupCreator = default,
-        ChatCreatorType chatCreatorType = default, ChatType chatType = default, List<Guid>? admins = null,
+        ChatCreatorTypeEnum chatCreatorTypeEnum = default, ChatTypeEnum chatTypeEnum = default, List<Guid>? admins = null,
         List<Guid>? blackList = null, string? photo = null, string? invitationUrl = null)
     {
         Id = id;
@@ -96,8 +96,8 @@ public class ChatWithMessageDto : AbstractDto
         UserCreator = userCreator;
         Message = message;
         GroupCreator = groupCreator;
-        ChatCreatorType = chatCreatorType;
-        ChatType = chatType;
+        ChatCreatorTypeEnum = chatCreatorTypeEnum;
+        ChatTypeEnum = chatTypeEnum;
         Admins = admins;
         BlackList = blackList;
         Photo = photo;
@@ -119,22 +119,22 @@ public class CreateChatDto : AbstractDto
     // [Obsolete]
     [Required] [Display(Name = "name")] public virtual string Name { get; set; }
 
-    [Required] [Display(Name = "users")] public virtual List<Guid> Users { get; set; }
+    [Required] [Display(Name = "users")] public virtual HashSet<Guid> Users { get; set; }
 
     [Display(Name = "chat__creator__type__1")]
-    public virtual ChatCreatorType ChatCreatorTypeField { get; set; } = ChatCreatorType.User;
+    public virtual ChatCreatorTypeEnum ChatCreatorTypeEnumField { get; set; } = ChatCreatorTypeEnum.User;
 
-    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
     [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
 
-    public CreateChatDto(string name = null, List<Guid> users = null, Guid? userCreator = default,
-        Guid? groupCreator = default, ChatCreatorType chatCreatorTypeField = default, ChatType chatType = default,
+    public CreateChatDto(string name = null, HashSet<Guid> users = null, Guid? userCreator = default,
+        Guid? groupCreator = default, ChatCreatorTypeEnum chatCreatorTypeEnumField = default, ChatTypeEnum chatTypeEnum = default,
         string? photo = null)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Users = users ?? throw new ArgumentNullException(nameof(users));
-        ChatCreatorTypeField = chatCreatorTypeField;
-        ChatType = chatType;
+        ChatCreatorTypeEnumField = chatCreatorTypeEnumField;
+        ChatTypeEnum = chatTypeEnum;
         Photo = photo;
     }
 
@@ -151,13 +151,13 @@ public class CreateChatDto : AbstractDto
 public class UpdateChatDto : AbstractDto
 {
     [Display(Name = "name")] public virtual string? Name { get; set; }
-    [Display(Name = "chat_type")] public virtual ChatType ChatType { get; set; } = ChatType.Simple;
+    [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
     [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
 
-    public UpdateChatDto(string name = null, ChatType chatType = default, string? photo = null)
+    public UpdateChatDto(string name = null, ChatTypeEnum chatTypeEnum = default, string? photo = null)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
-        ChatType = chatType;
+        ChatTypeEnum = chatTypeEnum;
         Photo = photo;
     }
 
@@ -174,7 +174,7 @@ public class UpdateChatDto : AbstractDto
 public class UpdateChatUsersDto : AbstractDto
 {
     [Display(Name = "user_operation_class")]
-    public virtual UserOperationClass op { get; set; }
+    public virtual UserOperationClassEnum op { get; set; }
 
-    [Display(Name = "users")] public virtual Guid[] users { get; set; }
+    [Display(Name = "users")] public virtual HashSet<Guid> Users { get; set; }
 }

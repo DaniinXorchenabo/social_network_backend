@@ -11,14 +11,15 @@ namespace socialNetworkApp.api.controllers.chat;
 [Table("chats", Schema = "public")]
 public class ChatDb : AbstractEntity
 {
+    
     [Key] [Column("id")] public Guid Id { get; set; }
     [Column("name")] public string Name { get; set; }
 
     [Column("created_at")] public DateTime CreatedAt { get; set; }
 
-    [Column("chat_creator_type", TypeName = "chat_creator_type")] public ChatCreatorType ChatCreatorType { get; set; } = ChatCreatorType.User;
+    [Column("chat_creator_type")] public ChatCreatorTypeEnum ChatCreatorTypeEnum { get; set; } = ChatCreatorTypeEnum.User;
 
-    [Column("chat_type", TypeName = "chat_type")] public ChatType ChatType { get; set; } = ChatType.Simple;
+    [Column("chat_type")] public ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
 
     [Column("image")] public string? Photo { get; set; } = null;
     [Column("invitation_url")] public string? InvitationUrl { get; set; } = null;
@@ -43,7 +44,7 @@ public class ChatToUserDb : AbstractEntity
 {
     [ForeignKey("chat_id__fk")][Column("chat_id")] public virtual Guid ChatId { get; set; }
     [ForeignKey("user_id__fk")][Column("user_id")] public virtual Guid UserId { get; set; }
-    [Column("roles", TypeName = "chat_to_user_role[]")] public virtual List<ChatToUserRole> Roles { get; set; } = new() {ChatToUserRole.User};
+    [Column("roles")] public virtual List<ChatToUserRoleEnum> Roles { get; set; } = new() {ChatToUserRoleEnum.User};
 
     [NotMapped]
     public ChatDb ChatEntity { get; set; }

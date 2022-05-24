@@ -1,19 +1,19 @@
 ﻿namespace socialNetworkApp.api.controllers.chat;
 
-public enum ChatType
+public enum ChatTypeEnum
 {
     Simple,
     Secret,
     Fantom
 }
 
-public enum ChatCreatorType
+public enum ChatCreatorTypeEnum
 {
     User,
     Group
 }
 
-public enum UserOperationClass
+public enum UserOperationClassEnum
 {
     UsersAdd,
     UsersRemove,
@@ -23,7 +23,7 @@ public enum UserOperationClass
     BlackListRemove
 }
 
-public enum ChatToUserRole
+public enum ChatToUserRoleEnum
 {
     User,
     Admin,
