@@ -59,7 +59,7 @@ public class MessagesController : Controller
     {
         return new Resp(200, new MessageAnswer(
             new MessageDto(Guid.NewGuid(), new_msg.Text, new_msg.AuthorId,
-                chat_id, DateTime.Now, null, new_msg.MessageType)));
+                chat_id, DateTime.Now, null, new_msg.MessageTypeEnum)));
     }
 
     [HttpPut("chat/{chat_id:guid}/edit/{message_id:guid}")]
