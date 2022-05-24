@@ -1,12 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using socialNetworkApp.api.controllers.auth;
 using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.responses;
+using socialNetworkApp.config;
+using socialNetworkApp.db;
 
 namespace socialNetworkApp.api.controllers.chat;
 
@@ -15,34 +19,37 @@ namespace socialNetworkApp.api.controllers.chat;
 [Produces("application/json")]
 public class ChatController : Controller
 {
+    protected readonly IEnv Env_;
+    protected readonly BaseBdConnection Db;
+    protected readonly IHttpContextAccessor HttpContext;
+
+    public ChatController(IEnv env, BaseBdConnection context)
+    {
+        Env_ = env;
+        Db = context;
+        // HttpContext = httpContext;
+    }
+
     [HttpGet("get/last")]
-    [Authorize]
+    // [Authorize]
     [ValidationActionFilter]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [MyProducesResponseType(typeof(ChatAnswer<Pagination>), 422)]
     public async Task<IActionResult> GelLastChats([FromQuery] Pagination pagination)
     {
-        Guid a;
-        return new Resp(200, new ChatAnswer(
-            new ChatDto(Guid.NewGuid(), "n", DateTime.Today,
-                new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a),
-            new ChatDto(Guid.NewGuid(), "ndfgh", DateTime.Today,
-                new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a),
-            new ChatDto(Guid.NewGuid(), "sdfn", DateTime.Today,
-                new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a),
-            new ChatDto(Guid.NewGuid(), "dhdhgn", DateTime.Today,
-                new List<Guid>() {(a = Guid.NewGuid()), Guid.NewGuid(), Guid.NewGuid()},
-                a))
-        );
+        await using (var db = Db)
+        {
+            var s = from chat in db.Chats select chat;
+            var d = s;
+            var lastChats = await QBuilder.Select(from chat in db.Chats select chat, pagination);
+            return new Resp(200, new ChatAnswer(lastChats));
+        }
     }
 
     [HttpGet("get/with_message/last")]
     [ValidationActionFilter]
-    [AuthorizeWithMods(AllModsEnum.chatReader)]
+    // [AuthorizeWithMods(AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswerWithMessage), StatusCodes.Status200OK)]
     [MyProducesResponseType(typeof(ChatAnswerWithMessage<Pagination>), 422)]
     public async Task<IActionResult> GelLastChatsWithlastMessage([FromQuery] Pagination pagination)
@@ -73,7 +80,7 @@ public class ChatController : Controller
 
     [HttpGet("get/{chat_id:guid}")]
     [ValidationActionFilter]
-    [AuthorizeWithMods(AllModsEnum.chatCreator, AllModsEnum.chatReader)]
+    // [AuthorizeWithMods(AllModsEnum.chatCreator, AllModsEnum.chatReader)]
     [ProducesResponseType(typeof(ChatAnswer), StatusCodes.Status200OK)]
     public async Task<IActionResult> GelChatOnId(Guid chat_id)
     {
@@ -116,26 +123,56 @@ public class ChatController : Controller
 
     [HttpPost("new")]
     [ValidationActionFilter]
+    [Authorize]
     [ProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), StatusCodes.Status201Created)]
     [MyProducesResponseType(typeof(ChatAnswerWithMessage<CreateChatDto>), 422)]
     public async Task<IActionResult> CreateChat(CreateChatDto newChatDto)
     {
-        Guid a;
-        return new Resp(201, new ChatAnswerWithMessage(new ChatWithMessageDto(
-            a = Guid.NewGuid(),
-            newChatDto.Name,
-            DateTime.Now,
-            newChatDto.Users,
-            Guid.NewGuid(),
-            new MessageDto(new Guid(), SystemMessages.CreateChat, null, a, DateTime.Now, null,
-                MessageType.SystemMassage),
-            null,
-            newChatDto.ChatCreatorTypeField,
-            newChatDto.ChatType,
-            null,
-            null,
-            newChatDto.Photo
-        )));
+        // var chatDb = new ChatDb(newChatDto);
+        // var creator = context.User.FindFirst(ClaimsIdentity.DefaultNameClaimType);
+        // creator.
+        // var httpC = HttpContext.HttpContext;
+        var userId = Guid.Parse(this.User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
+        newChatDto.Users.Add(userId);
+        var chatId = Guid.NewGuid();
+        var chatToUserList = newChatDto.Users
+            .Select(x => new ChatToUserDb {ChatId = chatId, UserId = x}).ToList();
+        chatToUserList.FirstOrDefault(x => x.UserId == userId).Roles.Add(ChatToUserRoleEnum.Creator);
+        // var startMsg = new MessageDb
+        // {
+        //     CreatedAt = DateTime.UtcNow,
+        //     Id = Guid.NewGuid(),
+        //     MessageTypeEnum = MessageTypeEnum.SystemMessage,
+        //     Text = Enum.GetName(typeof(SystemChatMessagesEnum), SystemChatMessagesEnum.ChatCreated)
+        // };
+        await using (var db = Db)
+        {
+            var chat = new ChatDb(newChatDto)
+            {
+                Id = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                ChatUserEntities = chatToUserList,
+                MessageEntities = new List<MessageDb>
+                {
+                    new MessageDb
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        Id = Guid.NewGuid(),
+                        MessageTypeEnum = MessageTypeEnum.SystemMessage,
+                        Text = Enum.GetName(typeof(SystemChatMessagesEnum), SystemChatMessagesEnum.ChatCreated)
+                    }
+                }
+            };
+            
+            Console.WriteLine(chat.ToString());
+            
+            await db.Chats.AddAsync(chat);
+            // await db.ChatsToUsers.AddRangeAsync(chatToUserList);
+            // await db.Messages.AddAsync(startMsg);
+            // db.ChatsToUsers.
+            await db.SaveChangesAsync();
+            return new Resp(201, new ChatAnswerWithMessage(chat));
+        }
     }
 
     [HttpPut("edit/metainfo/{chat_id:guid}")]
