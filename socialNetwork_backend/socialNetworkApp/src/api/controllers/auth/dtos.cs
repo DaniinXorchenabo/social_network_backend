@@ -11,15 +11,15 @@ public class TokenAnswer : EmptyAnswer
 {
     [Required]
     [Display(Name = "token_type")]
-    public virtual TokenType TokenType { get; set; }
+    public virtual TokenTypeEnum TokenTypeEnum { get; set; }
 
     [Required]
     [Display(Name = "access_toke")]
     public virtual string AccessToke { get; set; }
 
-    public TokenAnswer(TokenType tokenType = default, string accessToke = null)
+    public TokenAnswer(TokenTypeEnum tokenTypeEnum = default, string accessToke = null)
     {
-        TokenType = tokenType;
+        TokenTypeEnum = tokenTypeEnum;
         AccessToke = accessToke ?? throw new ArgumentNullException(nameof(accessToke));
     }
 }
