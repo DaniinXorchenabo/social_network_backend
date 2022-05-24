@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿
+// using System.Text.Json.Serialization;
+
+using System.ComponentModel.DataAnnotations;
+
 using socialNetworkApp.api.controllers.messages;
 using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.enums;
@@ -75,7 +78,7 @@ public class ChatWithMessageDto : AbstractDto
     [Display(Name = "group_creator")] public virtual Guid? GroupCreator { get; set; } = null;
 
     [Display(Name = "chat_creator_type")]
-    [JsonPropertyName("chat_creator_type")]
+    // [JsonPropertyName("chat_creator_type")]
     public virtual ChatCreatorTypeEnum ChatCreatorTypeEnum { get; set; } = ChatCreatorTypeEnum.User;
 
     [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;

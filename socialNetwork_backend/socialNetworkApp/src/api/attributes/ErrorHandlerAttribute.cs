@@ -17,7 +17,7 @@ namespace System.Web.Http.Filters
         {
             var modelState = actionContext.ModelState;
 
-            if (!modelState.IsValid)
+            if (!modelState.IsValid && modelState.ErrorCount > 0)
             {
                 Type validationErrorAnswerType = (actionContext.ActionDescriptor.FilterDescriptors
                     .FirstOrDefault(x => x.Filter.GetType() == typeof(MyProducesResponseTypeAttribute))

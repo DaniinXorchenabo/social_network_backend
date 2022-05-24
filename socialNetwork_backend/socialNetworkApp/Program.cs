@@ -1,5 +1,5 @@
-using System.Reflection;
-using System.Security.Claims;
+// using System.Reflection;
+// using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Web.Http.Filters;
@@ -14,9 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Extensions;
 using Npgsql;
-using socialNetworkApp.api.controllers.modifiersOfAccess;
+// using socialNetworkApp.api.controllers.modifiersOfAccess;
 using socialNetworkApp.db;
-using Swashbuckle.AspNetCore.SwaggerGen;
+// using Swashbuckle.AspNetCore.SwaggerGen;
 
 // using System.Web.Http.Controllers;
 
@@ -104,6 +104,8 @@ class Program
                 c.OperationFilter<TestOperationFilter>();
                 c.ParameterFilter<TestParameterFilter>();
                 c.RequestBodyFilter<TestRequestBodyFilter>();
+                
+                
                 // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 // c.IncludeXmlComments(xmlPath);
@@ -141,7 +143,7 @@ class Program
         }); // добавление сервисов авторизации
 
 
-        builder.Services.AddSwaggerGenNewtonsoftSupport();
+        // builder.Services.AddSwaggerGenNewtonsoftSupport();
 
         builder.Services.AddControllers().AddJsonOptions(x =>
         {
@@ -150,19 +152,24 @@ class Program
             x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             
             // ignore omitted parameters on models to enable optional params (e.g. User update)
-            // x.JsonSerializerOptions.IgnoreNullValues = true;
+            x.JsonSerializerOptions.IgnoreNullValues = true;
             // x.JsonSerializerOptions.
         });
 
         builder.Services.AddDbContext<BaseBdConnection>();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         
-        var validator = builder.Services.FirstOrDefault(s => s.ServiceType == typeof(IObjectModelValidator));
-        if (validator != null)
-        {
-            builder.Services.Remove(validator);
-            builder.Services.Add(new ServiceDescriptor(typeof(IObjectModelValidator), _ => new NonValidatingValidator(), ServiceLifetime.Singleton));
-        }
+        // var validator = builder.Services.FirstOrDefault(
+        //     s => s.ServiceType == typeof(IObjectModelValidator)
+        //     );
+        // if (validator != null)
+        // {
+        //     builder.Services.Remove(validator);
+        //     builder.Services.Add(
+        //         new ServiceDescriptor(typeof(IObjectModelValidator),
+        //             _ => new NonValidatingValidator(), ServiceLifetime.Singleton)
+        //         );
+        // }
         builder.Services.Configure<ApiBehaviorOptions>(options =>
         {
             options.SuppressModelStateInvalidFilter = true;

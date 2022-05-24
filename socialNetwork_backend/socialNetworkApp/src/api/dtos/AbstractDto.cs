@@ -59,7 +59,7 @@ public class Pagination : AbstractDto
     [Required]
     [Range(0.0, long.MaxValue)]
     [Display(Name = "offset")]
-    public long Offset { get; set; } = 0;
+    public int Offset { get; set; } = 0;
 
     public Pagination(object obj) : base(obj)
     {
