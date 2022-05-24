@@ -12,7 +12,7 @@ namespace socialNetworkApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<ChatToUserRole[]>(
+            migrationBuilder.AddColumn<ChatToUserRoleEnum[]>(
                 name: "roles",
                 schema: "public",
                 table: "chats_to_users",
@@ -20,7 +20,7 @@ namespace socialNetworkApp.Migrations
                 nullable: false,
                 defaultValue: new  List<string>{"user"});
 
-            migrationBuilder.AddColumn<ChatCreatorType>(
+            migrationBuilder.AddColumn<ChatCreatorTypeEnum>(
                 name: "chat_creator_type",
                 schema: "public",
                 table: "chats",
@@ -28,7 +28,7 @@ namespace socialNetworkApp.Migrations
                 nullable: false,
                 defaultValue: "user");
 
-            migrationBuilder.AddColumn<ChatType>(
+            migrationBuilder.AddColumn<ChatTypeEnum>(
                 name: "chat_type",
                 schema: "public",
                 table: "chats",

@@ -9,7 +9,7 @@ namespace socialNetworkApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<MessageType>(
+            migrationBuilder.AddColumn<MessageTypeEnum>(
                 name: "message_type",
                 schema: "public",
                 table: "messages",
