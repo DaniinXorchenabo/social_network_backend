@@ -100,7 +100,7 @@ public class AuthController : Controller
     public async Task<IActionResult> GetAuthTokenWhereDataAsBody(
         [FromQuery]string username,
         [FromQuery]string password,
-        [FromQuery] AllModsEnum[]? scopes = null
+       AllModsEnum[]? scopes = null
     )
     {
         if (scopes == null)
