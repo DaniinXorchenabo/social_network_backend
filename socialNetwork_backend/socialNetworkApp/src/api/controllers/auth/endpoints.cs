@@ -98,9 +98,9 @@ public class AuthController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces("application/json")]
     public async Task<IActionResult> GetAuthTokenWhereDataAsBody(
-        string username,
-        string password,
-        AllModsEnum[]? scopes = null
+        [FromQuery]string username,
+        [FromQuery]string password,
+        [FromQuery] AllModsEnum[]? scopes = null
     )
     {
         if (scopes == null)
