@@ -1,7 +1,11 @@
 ﻿using System.Web.Http.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using socialNetworkApp.api.controllers.chat;
 using socialNetworkApp.api.dtos;
 using socialNetworkApp.api.responses;
+using socialNetworkApp.config;
+using socialNetworkApp.db;
 
 namespace socialNetworkApp.api.controllers.messages;
 
@@ -10,6 +14,18 @@ namespace socialNetworkApp.api.controllers.messages;
 [Produces("application/json")]
 public class MessagesController : Controller
 {
+    protected readonly IEnv Env_;
+    protected readonly BaseBdConnection Db;
+    protected readonly IHttpContextAccessor HttpContext;
+
+    public MessagesController(IEnv env, BaseBdConnection context)
+    {
+        Env_ = env;
+        Db = context;
+        // HttpContext = httpContext;
+    }
+    
+    
     [HttpGet("chat/{chat_id:guid}")]
     [ValidationActionFilter]
     [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
@@ -52,14 +68,32 @@ public class MessagesController : Controller
     }
 
     [HttpPost("chat/{chat_id:guid}/new")]
+    [Authorize]
     [ValidationActionFilter]
-    [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(MessageAnswer), StatusCodes.Status201Created)]
     [MyProducesResponseType(typeof(MessageAnswer<CreateMessageDto>), 422)]
     public async Task<IActionResult> SendMessage(Guid chat_id, CreateMessageDto new_msg)
     {
-        return new Resp(200, new MessageAnswer(
-            new MessageDto(Guid.NewGuid(), new_msg.Text, new_msg.AuthorId,
-                chat_id, DateTime.Now, null, new_msg.MessageTypeEnum)));
+        var userId = Guid.Parse(this.User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
+
+        await using (var db = Db)
+        {
+            var newMsgFb = new MessageDb(new_msg)
+            {
+                Id = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                MessageTypeEnum = MessageTypeEnum.Text,
+                AuthorId = userId,
+                ChatId = chat_id,
+
+            };
+            await db.Messages.AddAsync(newMsgFb);
+            // await db.ChatsToUsers.AddRangeAsync(chatToUserList);
+            // await db.Messages.AddAsync(startMsg);
+            // db.ChatsToUsers.
+            await db.SaveChangesAsync();
+            return new Resp(201, new MessageAnswer(newMsgFb));
+        }
     }
 
     [HttpPut("chat/{chat_id:guid}/edit/{message_id:guid}")]

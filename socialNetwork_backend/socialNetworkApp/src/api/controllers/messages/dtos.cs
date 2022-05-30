@@ -52,14 +52,10 @@ public class MessageDto : AbstractDto
 public class CreateMessageDto : AbstractDto
 {
     [Required] [Display(Name = "text")] public virtual string Text { get; set; }
-    [Required] [Display(Name = "author_id")] public virtual Guid AuthorId { get; set; }
-    [Display(Name = "message_type")] public virtual MessageTypeEnum MessageTypeEnum { get; set; } = MessageTypeEnum.Text;
 
-    public CreateMessageDto(string text = null, Guid authorId = default, MessageTypeEnum messageTypeEnum = default)
+    public CreateMessageDto(string text = null)
     {
         Text = text ?? throw new ArgumentNullException(nameof(text));
-        AuthorId = authorId;
-        MessageTypeEnum = messageTypeEnum;
     }
 
     public CreateMessageDto(object obj) : base(obj)
