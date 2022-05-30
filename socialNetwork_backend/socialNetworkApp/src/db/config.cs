@@ -25,6 +25,7 @@ public class BaseBdConnection : DbContext
 
     public DbSet<UserDb> Users { get; set; } = null!;
     public DbSet<ChatDb> Chats { get; set; } = null!;
+    // public DbSet<ChatsAndMessageTableDb> ChatsAndMessageTables { get; set; } = null!;
     public DbSet<ChatToUserDb> ChatsToUsers { get; set; } = null!;
     public DbSet<MessageDb> Messages { get; set; } = null!;
 
@@ -80,6 +81,8 @@ public class BaseBdConnection : DbContext
             .HasOne(u => u.ChatsAndUsersEntity)
             .WithMany(c => c.MessageEntities)
             .HasForeignKey(u => new {u.AuthorId, u.ChatId});
+        
+        // ModelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUsers", t => t.ExcludeFromMigrations());
         
         // builder.Entity<SubscriptionLevel>()
         //     .ToTable("SubscriptionLevels");
