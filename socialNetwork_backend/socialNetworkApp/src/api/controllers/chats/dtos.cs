@@ -71,19 +71,15 @@ public class ChatWithMessageDto : AbstractDto
     [Required]
     [Display(Name = "created_at")]
     public virtual DateTime CreatedAt { get; set; }
-
-    [Required] [Display(Name = "users")] public virtual List<Guid> Users { get; set; }
-    [Display(Name = "user_creator")] public virtual Guid? UserCreator { get; set; }
+    
     [Display(Name = "message")] public virtual MessageDto? Message { get; set; }
-    [Display(Name = "group_creator")] public virtual Guid? GroupCreator { get; set; } = null;
 
     [Display(Name = "chat_creator_type")]
     // [JsonPropertyName("chat_creator_type")]
     public virtual ChatCreatorTypeEnum ChatCreatorTypeEnum { get; set; } = ChatCreatorTypeEnum.User;
 
     [Display(Name = "chat_type")] public virtual ChatTypeEnum ChatTypeEnum { get; set; } = ChatTypeEnum.Simple;
-    [Display(Name = "admins")] public virtual List<Guid>? Admins { get; set; } = null;
-    [Display(Name = "black_list")] public virtual List<Guid>? BlackList { get; set; } = null;
+    
     [Display(Name = "photo")] public virtual string? Photo { get; set; } = null;
     [Display(Name = "invitation_url")] public virtual string? InvitationUrl { get; set; } = null;
 
@@ -95,14 +91,12 @@ public class ChatWithMessageDto : AbstractDto
         Id = id;
         Name = name ?? throw new ArgumentNullException(nameof(name));
         CreatedAt = createdAt;
-        Users = users ?? throw new ArgumentNullException(nameof(users));
-        UserCreator = userCreator;
+
         Message = message;
-        GroupCreator = groupCreator;
+
         ChatCreatorTypeEnum = chatCreatorTypeEnum;
         ChatTypeEnum = chatTypeEnum;
-        Admins = admins;
-        BlackList = blackList;
+
         Photo = photo;
         InvitationUrl = invitationUrl;
     }
