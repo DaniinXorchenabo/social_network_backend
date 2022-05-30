@@ -25,12 +25,22 @@ public class AbstractDto : EmptyAnswer
 
         foreach (var moveField in moveFields)
         {
-            this.GetType().GetProperty(moveField).SetValue(
-                this,
-                Convert.ChangeType(
-                    obj.GetType().GetProperty(moveField).GetValue(obj),
-                    this.GetType().GetProperty(moveField).PropertyType)
-            );
+            var property = this.GetType().GetProperty(moveField);
+            if (property != null)
+            {
+                Type t = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                var value = obj.GetType().GetProperty(moveField).GetValue(obj);
+                object safeValue = (value == null) ? null : Convert.ChangeType(value, t);
+
+                this.GetType().GetProperty(moveField).SetValue(this, safeValue, null);
+            }
+
+            // .GetProperty(moveField).GetProperty(moveField).SetValue(
+            //     this,
+            //     Convert.ChangeType(
+            //         value,
+            //         this.GetType().GetProperty(moveField).PropertyType)
+            // );
         }
     }
 
