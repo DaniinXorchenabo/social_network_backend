@@ -13,14 +13,7 @@ public abstract class AbstractEntity
         var ObjFields = DtoStaticData.AllClasses[obj.GetType()].PropertiesAsString;
         var moveFields = new HashSet<string>(ObjFields);
         moveFields.IntersectWith(myStaticData.PropertiesAsString);
-
-        Console.WriteLine($"-------------- {this.GetType().Name}");
-        Console.WriteLine(string.Join(", ", ObjFields));
-        Console.WriteLine(string.Join(", ", myStaticData.PropertiesAsString));
-        Console.WriteLine(string.Join(", ", moveFields));
-        Console.WriteLine("--------------");
-
-
+        
         foreach (var moveField in moveFields)
         {
             var property = this.GetType().GetProperty(moveField);
@@ -32,13 +25,6 @@ public abstract class AbstractEntity
 
                 this.GetType().GetProperty(moveField).SetValue(this, safeValue, null);
             }
-            
-            // this.GetType().GetProperty(moveField).SetValue(
-            //     this,
-            //     Convert.ChangeType(
-            //         obj.GetType().GetProperty(moveField).GetValue(obj),
-            //         this.GetType().GetProperty(moveField).PropertyType)
-            // );
         }
     }
 
@@ -107,8 +93,4 @@ public class QBuilder
         return sort(query).Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
     }
     
-    // public static Task<List<TModelType>> Select<TModelType>( IQueryable<TModelType> query, Pagination pagination )
-    // {
-    //     return query.Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
-    // }
 }

@@ -47,63 +47,9 @@ public class ChatController : Controller
             var current_user = Guid.Parse(this.User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
             var s = from chat in db.Chats select chat;
             var d = s;
-
-            // var lastChats1 = db.Chats.FromSqlRaw(
-            //     "   SELECT * FROM messages " +
-            //     "   RIGHT JOIN  (" +
-            //     "       SELECT MAX(msg.created_at) AS _created_at, msg.chat_id " +
-            //     "       FROM messages as msg " +
-            //     "       GROUP BY msg.chat_id " +
-            //     "       ORDER BY _created_at DESC" +
-            //     "   ) msg on msg.chat_id = messages.chat_id and messages.created_at = msg._created_at " +
-            //     "  ;",
-            //     current_user
-            // ).ToList();
-            // SqlP
-            // var param = new NpgsqlParameter("@current_user_id", current_user);
-            // //db;
-            // // var lastChats = await db.Chats.FromSqlRaw(
-            // var lastChatsSql = await db.Chats.FromSqlRaw(
-            //     "SELECT ch.*,  m as message_entities " +
-            //     "FROM chats_to_users AS ctu " +
-            //     "LEFT JOIN chats ch on ch.id = ctu.chat_id " +
-            //     "LEFT JOIN (" +
-            //     "   SELECT *, msg.chat_id as _chat_id FROM messages " +
-            //     "   INNER JOIN  (" +
-            //     "       SELECT MAX(msg.created_at) AS _created_at, msg.chat_id " +
-            //     "       FROM messages as msg " +
-            //     "       GROUP BY msg.chat_id " +
-            //     "       ORDER BY _created_at DESC" +
-            //     "   ) msg on msg.chat_id = messages.chat_id and messages.created_at = msg._created_at " +
-            //     ") AS m on ch.id = m._chat_id " +
-            //     " WHERE user_id = @current_user_id::uuid ;",
-            //     param
-            // ).ToListAsync();
-            // var lastChatsLinq = (from ctu in db.ChatsToUsers
-            //         // join ch in db.Chats on ch.Id equals ctu.ChatId
-            //         join c in db.Chats on ctu.ChatId equals c.Id into joined_c
-            //         from j_c in joined_c.DefaultIfEmpty()
-            //         join m in (
-            //             from m_ in db.Messages
-            //             join msg in (
-            //                 from mm_ in db.Messages
-            //                 group mm_ by mm_.ChatId
-            //                 into g
-            //                 select new
-            //                 {
-            //                     _chat_id = g.Key,
-            //                     created_at = g.Max(messageDb => messageDb.CreatedAt),
-            //                     author = g.MaxBy(messageDb => messageDb.CreatedAt).AuthorId
-            //                 }
-            //             ) on new {m_.ChatId, m_.AuthorId} equals new {msg._chat_id, msg.author}
-            //             select m_
-            //         ) on ctu.ChatId equals m.ChatId
-            //         select ctu
-            //     );
-
+            
             var lastChatsLinq2 = await QBuilder.Select(
                 (from ctu in db.ChatsToUsers
-                    // join ch in db.Chats on ch.Id equals ctu.ChatId
                     join c in db.Chats on ctu.ChatId equals c.Id into joined_c
                     from j_c in joined_c.DefaultIfEmpty()
                     join m in (
@@ -114,8 +60,6 @@ public class ChatController : Controller
                         {
                             _chat_id = g.Key,
                             created_at = g.Max(messageDb => messageDb.CreatedAt),
-                            // author = g.MaxBy(messageDb => messageDb.CreatedAt).AuthorId,
-                            // entity = g.MaxBy(messageDb => messageDb.CreatedAt)
                         }
                     ) on ctu.ChatId equals m._chat_id
                     join lastM in db.Messages on new {A = m._chat_id, B = m.created_at} equals new
@@ -126,17 +70,6 @@ public class ChatController : Controller
                 x => x.OrderByDescending(x => x.lastMessage.CreatedAt)
                 );
             Console.WriteLine(lastChatsLinq2);
-            // var lastChats = await QBuilder.Select(
-            //     from msg in db.Messages
-            //     group msg by msg.ChatId
-            //     into chatMsg
-            //     select new
-            //     {
-            //         lastMsg = (from m in chatMsg select m).MaxBy(m => m.CreatedAt),
-            //         chat = (from ch in db.Chats where ch.Id == chatMsg.Key select ch).FirstOrDefault()
-            //     }
-            //     ,
-            //     pagination);
             Console.WriteLine("");
 
             var da = new List<ChatWithMessageDto>() { };
@@ -145,11 +78,6 @@ public class ChatController : Controller
                 da.Add(new ChatWithMessageDto(x1.chatEntity)
                 {
                     Message = new MessageDto(x1.lastMessage)
-                    // Message = new MessageDto(
-                    //     Guid.NewGuid(),
-                    //     "768edyjhr678r467yuj", 
-                    //     Guid.NewGuid(), 
-                    //     Guid.NewGuid(), DateTime.Now, null)
                 });
             }
 
