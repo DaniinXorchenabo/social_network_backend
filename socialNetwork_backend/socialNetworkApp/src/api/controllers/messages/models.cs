@@ -29,7 +29,8 @@ public class MessageDb : AbstractEntity
     
     [Column("created_at")]
     public  DateTime CreatedAt { get; set; }
-    [Column("updated_at")] public  DateTime? UpdatedAt { get; set; } = null;
+    [Column("updated_at")] 
+    public  DateTime? UpdatedAt { get; set; } = null;
     
     [Column("message_type")]
     public  MessageTypeEnum MessageTypeEnum { get; set; } = MessageTypeEnum.Text;

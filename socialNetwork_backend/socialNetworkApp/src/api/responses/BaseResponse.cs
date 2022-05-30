@@ -140,7 +140,7 @@ public class BaseResponse<TAnswer, TValidate>
     }
 }
 
-public class BaseResponse<TAnswer> :
+public abstract class BaseResponse<TAnswer> :
     BaseResponse<TAnswer, AbstractDto, EmptyError>,
     IBaseResponse<TAnswer>
     where TAnswer : EmptyAnswer

@@ -10,6 +10,7 @@ public class ValidateError : BaseErrorRes
 public class ValidateError<TEnum> : ValidateError where TEnum : Enum
 {
     [DictEnumSwagger] public override Dictionary<string, ValidateOneField> Errors { get; set; }
+    // [DictEnumSwagger] public Dictionary<TEnum, ValidateOneField> EmumErrors { get; set; }
 
     public TEnum testEnum { get; set; }
 }
