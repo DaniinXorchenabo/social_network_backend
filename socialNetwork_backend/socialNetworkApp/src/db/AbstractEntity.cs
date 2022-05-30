@@ -88,8 +88,17 @@ public class EntityStaticData
 
 public class QBuilder
 {
-    public static Task<List<TModelType>> Select<TModelType>( IQueryable<TModelType> query, Pagination pagination )
+    public static Task<List<TModelType>> Select<TModelType>(
+        IQueryable<TModelType> query,
+        Pagination pagination,
+        Func<IQueryable<TModelType>, IQueryable<TModelType>> sort
+        )
     {
-        return query.Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
+        return sort(query).Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
     }
+    
+    // public static Task<List<TModelType>> Select<TModelType>( IQueryable<TModelType> query, Pagination pagination )
+    // {
+    //     return query.Skip(pagination.Offset).Take(pagination.Limit).ToListAsync();
+    // }
 }
