@@ -69,5 +69,5 @@ public class CreateMessageDto : AbstractDto
 
 public class UpdateMessageDto : AbstractDto
 {
-    [Display(Name = "new_text")] public virtual string? NewText { get; set; }
+    [Display(Name = "new_text")] public virtual string? Text { get; set; }
 }
