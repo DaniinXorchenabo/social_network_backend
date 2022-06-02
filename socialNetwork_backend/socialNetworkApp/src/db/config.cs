@@ -58,6 +58,7 @@ public class BaseBdConnection : DbContext
         builder.HasPostgresEnum<ChatTypeEnum>();
         builder.HasPostgresEnum<ChatToUserRoleEnum>();
         builder.HasPostgresEnum<MessageTypeEnum>();
+        
         builder.Entity<ChatToUserDb>()
             .HasKey(u => new { u.UserId, u.ChatId});
         builder.Entity<ChatToUserDb>()
@@ -81,15 +82,33 @@ public class BaseBdConnection : DbContext
             .HasOne(u => u.ChatsAndUsersEntity)
             .WithMany(c => c.MessageEntities)
             .HasForeignKey(u => new {u.AuthorId, u.ChatId});
-        
+
+
+        builder.Entity<ChatDb>()
+            .HasMany(x => x.UserEntities)
+            .WithMany(c => c.ChatEntities)
+            .UsingEntity<ChatToUserDb>(
+                x => x
+                    .HasOne<UserDb>(u => u.UserEntity)
+                    .WithMany(ctu => ctu.ChatUserEntities)
+                    .HasForeignKey(ctu => ctu.UserId),
+                x => x
+                    .HasOne<ChatDb>(ctu => ctu.ChatEntity)
+                    .WithMany(ch => ch.ChatUserEntities)
+                    .HasForeignKey(ctu => ctu.ChatId)
+                    
+                
+                );
+
+
         // ModelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUsers", t => t.ExcludeFromMigrations());
-        
+
         // builder.Entity<SubscriptionLevel>()
         //     .ToTable("SubscriptionLevels");
         //
         // builder.Entity<Customer>()
         //     .ToTable("Customers");
-                
+
         // builder.Entity<ChatDb>()
         //     .Property(c => c.ChatCreatorType)
         //     .HasConversion<string>();
@@ -104,13 +123,13 @@ public class BaseBdConnection : DbContext
         // builder.Entity<MessageDb>()
         //     .Property(s => s.MessageType)
         //     .HasConversion<string>();
-        
+
         // builder.Entity<UserDb>()
         //     .Property(s => s.Mods)
         //     .HasConversion<List<string>>();
 
         // base.OnModelCreating(builder);
-        
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
