@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using socialNetworkApp.api.enums;
 using socialNetworkApp.api.responses;
 using socialNetworkApp.api.responses.utils;
 using socialNetworkApp.db;
+using SuccincT.PatternMatchers;
 
 namespace socialNetworkApp.api.dtos;
 
@@ -22,6 +24,14 @@ public class AbstractDto : EmptyAnswer
         Console.WriteLine(string.Join(", ", moveFields));
         Console.WriteLine("--------------");
 
+        RecursionCreateObject(obj, moveFields, ObjFields, myStaticData);
+    }
+
+
+    public void RecursionCreateObject(object obj, HashSet<string> moveFields, HashSet<string> ObjFields, DtoStaticData myStaticData)
+    {
+
+
 
         foreach (var moveField in moveFields)
         {
@@ -29,19 +39,48 @@ public class AbstractDto : EmptyAnswer
             if (property != null)
             {
                 Type t = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-                var value = obj.GetType().GetProperty(moveField).GetValue(obj);
-                object safeValue = (value == null) ? null : Convert.ChangeType(value, t);
+                var value = obj.GetType().GetProperty(moveField)?.GetValue(obj);
+                var safeValue = ConvertFieldType(value, t);
 
-                this.GetType().GetProperty(moveField).SetValue(this, safeValue, null);
+               
+
+                property.SetValue(this, safeValue, null);
+            }
+        }
+    }
+
+    public object? ConvertFieldType(dynamic? value, Type t)
+    {
+        object safeValue = null;
+        if (value == null)
+        {
+            safeValue = value;
+        }
+        else if (value.GetType() == t)
+        {
+            safeValue = value;
+        } 
+        else if (value.GetType().IsGenericType & value is IEnumerable )
+        {
+            dynamic safeValueEnumerable = Activator.CreateInstance(t);
+
+            foreach (var o in value)
+            {
+                safeValueEnumerable.Add(ConvertFieldType(o, t.GenericTypeArguments[0]));
             }
 
-            // .GetProperty(moveField).GetProperty(moveField).SetValue(
-            //     this,
-            //     Convert.ChangeType(
-            //         value,
-            //         this.GetType().GetProperty(moveField).PropertyType)
-            // );
+            safeValue = safeValueEnumerable;
         }
+        else if (value is AbstractEntity)
+        {
+            safeValue = Activator.CreateInstance(t, value);
+        }
+        else
+        {
+            safeValue = (value == null) ? null : Convert.ChangeType(value, t);
+        }
+
+        return safeValue;
     }
 
     public AbstractDto()
