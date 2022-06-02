@@ -44,6 +44,36 @@ public abstract class AbstractEntity
             .Where(x => x != null)
             .Select(x => x?.ToString()));
     }
+
+    public AbstractEntity Update(object obj)
+    {
+        var myStaticData = EntityStaticData.AllClasses[this.GetType()];
+        var ObjFields = DtoStaticData.AllClasses[obj.GetType()].PropertiesAsString;
+        var moveFields = new HashSet<string>(ObjFields);
+        moveFields.IntersectWith(myStaticData.PropertiesAsString);
+        
+        foreach (var moveField in moveFields)
+        {
+            var property = this.GetType().GetProperty(moveField);
+            if (property != null)
+            {
+                Type t = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                var value = obj.GetType().GetProperty(moveField)?.GetValue(obj);
+                object? safeValue = (value == null) ? null : Convert.ChangeType(value, t);
+                if (safeValue != null)
+                {
+                    this.GetType().GetProperty(moveField)?.SetValue(this, safeValue, null);
+                }
+            }
+        }
+
+        return this;
+    }
+
+    public AbstractEntity Update<TEntity>(object obj) where TEntity: AbstractEntity
+    {
+        return (TEntity) this.Update(obj);
+    }
     
     // public st
 }
