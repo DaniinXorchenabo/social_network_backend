@@ -7,5 +7,6 @@ public enum AnswerType
     Chat,
     Post,
     UserAnswer,
-    Token
+    Token,
+    ChatToUserRntities
 }
