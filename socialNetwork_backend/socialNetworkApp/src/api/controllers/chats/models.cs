@@ -24,10 +24,11 @@ public class ChatDb : AbstractEntity
     [Column("image")] public string? Photo { get; set; } = null;
     [Column("invitation_url")] public string? InvitationUrl { get; set; } = null;
 
-    [NotMapped]
-    public List<ChatToUserDb> ChatUserEntities { get; set; } = new List<ChatToUserDb>();
-    [NotMapped]
-    public List<MessageDb> MessageEntities { get; set; } =  new List<MessageDb>();
+    
+        
+    [NotMapped] public List<UserDb> UserEntities { get; set; } = new List<UserDb>();
+    [NotMapped]  public List<ChatToUserDb> ChatUserEntities { get; set; } = new List<ChatToUserDb>();
+    [NotMapped] public List<MessageDb> MessageEntities { get; set; } =  new List<MessageDb>();
 
 
     public ChatDb(object obj) : base(obj)
@@ -39,35 +40,6 @@ public class ChatDb : AbstractEntity
     }
 }
 
-
-public class ChatsAndMessageTableDb : ChatDb
-{
-    [Key][Column("id")] public  Guid Id { get; set; }
-    [ForeignKey("user_id_in_msg__fk")]
-    [Column("author_id")] public  Guid? AuthorId { get; set; }
-    [ForeignKey("chat_id_in_msg__fk")]
-    [Column("chat_id")] public  Guid ChatId { get; set; }
-    
-    [NotMapped]
-    public UserDb AuthorEntity{ get; set; }
-    [NotMapped]
-    public ChatDb ChatEntity{ get; set; }
-    [NotMapped]
-    public ChatToUserDb ChatsAndUsersEntity{ get; set; }
-    
-    [Column("text")] public  string Text { get; set; }
-    
-    [Column("created_at")]
-    public  DateTime CreatedAt { get; set; }
-    [Column("updated_at")] 
-    public  DateTime? UpdatedAt { get; set; } = null;
-    
-    [Column("message_type")]
-    public  MessageTypeEnum MessageTypeEnum { get; set; } = MessageTypeEnum.Text;
-    
-    [Column("is_viewed")] public  bool Viewed { get; set; } = false;
-    [Column("is_deleted")] public  bool IsDeleted { get; set; } = false;
-}
 
 
 [Table("chats_to_users", Schema = "public")]
